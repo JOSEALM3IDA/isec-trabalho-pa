@@ -1,0 +1,4 @@
+// {type:state}
+(start)[iniciar]->(configurarJogadores)
+(configurarJogadores)[comecarJogo]->(esperarJogadas)
+()[sair]->(end)
