@@ -1,4 +1,5 @@
 // {type:state}
+
 (start)[iniciar]->(pedeDecisao)
 (pedeDecisao)[iniciarJogo]->(pedeConfiguracao)
 (pedeDecisao)[continuarJogo]->(pedeDecisaoJogada)
@@ -22,5 +23,5 @@
 (jogaMinijogo)[ganharMinijogo]->(pedeDecisaoJogada)
 (jogaMinijogo)[perderMinijogo]->(fimJogada)
 
-(fimJogo)[comecarNovoJogo]->(pedeConfiguracao)
+(fimJogo)[comecarNovoJogo]->(pedeDecisao)
 (fimJogo)[sair]->(end)
