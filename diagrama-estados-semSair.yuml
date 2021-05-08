@@ -7,17 +7,14 @@
 
 (assisteJogada)[avancar]->(assisteJogada)
 (assisteJogada)[sairReplay]->(pedeDecisaoInicio)
-(assisteJogada)[sair]->(end)
 
 (pedeConfiguracao)[avancar]->(pedeDecisaoJogada)
-(pedeConfiguracao)[sair]->(end)
 
 (pedeDecisaoJogada)[jogar]->(fimJogada)
 (pedeDecisaoJogada)[aceitarMinijogo]->(jogaMinijogo)
 (pedeDecisaoJogada)[undoJogada]->(pedeDecisaoJogada)
 (pedeDecisaoJogada)[gravarJogo]->(pedeDecisaoJogada)
 (pedeDecisaoJogada)[desistir]->(fimJogo)
-(pedeDecisaoJogada)[sair]->(end)
 
 (fimJogada)[avancar]->(pedeDecisaoJogada)
 (fimJogada)[ganharJogo]->(fimJogo)
@@ -26,4 +23,3 @@
 (jogaMinijogo)[perderMinijogo]->(fimJogada)
 
 (fimJogo)[avancar]->(pedeDecisaoInicio)
-(fimJogo)[sair]->(end)

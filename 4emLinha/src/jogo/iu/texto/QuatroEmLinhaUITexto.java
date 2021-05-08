@@ -1,6 +1,8 @@
 package jogo.iu.texto;
 
-public class QuatroEmLinhaUI {
+import jogo.logica.QuatroEmLinhaMaquinaEstados;
+
+public class QuatroEmLinhaUITexto {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_VERMELHO = "\u001B[31m";
     public static final String ANSI_VERDE = "\u001B[32m";
@@ -8,4 +10,10 @@ public class QuatroEmLinhaUI {
     public static final String FICHA_BRANCA = "\uD83D\uDCBF";
     public static final String FICHA_AZUL = ANSI_AZUL + FICHA_BRANCA + ANSI_RESET;
     public static final String FICHA_VERMELHA = ANSI_VERMELHO + FICHA_BRANCA + ANSI_RESET;
+
+    private QuatroEmLinhaMaquinaEstados maquinaEstados;
+
+    public QuatroEmLinhaUITexto(QuatroEmLinhaMaquinaEstados maquinaEstados) {
+        this.maquinaEstados = maquinaEstados;
+    }
 }

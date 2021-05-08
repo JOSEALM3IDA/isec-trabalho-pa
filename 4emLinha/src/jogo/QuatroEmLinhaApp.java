@@ -1,7 +1,11 @@
 package jogo;
 
+import jogo.logica.QuatroEmLinhaMaquinaEstados;
+import jogo.iu.texto.QuatroEmLinhaUITexto;
+
 public class QuatroEmLinhaApp {
     public static void main(String[] args) {
-        System.out.println("●⚫⚪██\uD83D\uDCBF◍ၜ◎");
+        QuatroEmLinhaMaquinaEstados maquinaEstados = new QuatroEmLinhaMaquinaEstados();
+        QuatroEmLinhaUITexto ui = new QuatroEmLinhaUITexto(maquinaEstados);
     }
 }
