@@ -6,6 +6,7 @@ import jogo.iu.texto.QuatroEmLinhaUITexto;
 public class QuatroEmLinhaApp {
     public static void main(String[] args) {
         QuatroEmLinhaMaquinaEstados maquinaEstados = new QuatroEmLinhaMaquinaEstados();
-        QuatroEmLinhaUITexto ui = new QuatroEmLinhaUITexto(maquinaEstados);
+        QuatroEmLinhaUITexto uiTexto = new QuatroEmLinhaUITexto(maquinaEstados);
+        uiTexto.comecar();
     }
 }

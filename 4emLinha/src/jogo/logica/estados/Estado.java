@@ -7,6 +7,10 @@ public interface Estado {
     Estado continuarJogo();     // -> PedeDecisaoJogada
     Estado verReplay();         // -> AssisteJogada
 
+    // PedeConfiguracao
+    Estado adicionarJogador();
+    Estado adicionarJogador(String nome);
+
     // PedeDecisaoJogada
     Estado jogar();             // -> FimJogada
     Estado undoJogada();        // -> PedeDecisaoJogada

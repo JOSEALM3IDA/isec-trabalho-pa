@@ -9,7 +9,8 @@
 (assisteJogada)[sairReplay]->(pedeDecisaoInicio)
 (assisteJogada)[sair]->(end)
 
-(pedeConfiguracao)[avancar]->(pedeDecisaoJogada)
+(pedeConfiguracao)[adicionarJogador]->(pedeConfiguracao)
+(pedeConfiguracao)[adicionarJogador]->(pedeDecisaoJogada)
 (pedeConfiguracao)[sair]->(end)
 
 (pedeDecisaoJogada)[jogar]->(fimJogada)

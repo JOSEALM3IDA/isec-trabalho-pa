@@ -17,6 +17,12 @@ public abstract class EstadoAdapter implements Estado {
     public Estado verReplay() { return this; }
 
     @Override
+    public Estado adicionarJogador() { return this; }
+
+    @Override
+    public Estado adicionarJogador(String nome) { return this; }
+
+    @Override
     public Estado jogar() { return this; }
 
     @Override
