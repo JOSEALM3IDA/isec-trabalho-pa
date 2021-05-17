@@ -1,11 +1,19 @@
 package jogo.logica.dados;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class QuatroEmLinha {
+public class QuatroEmLinha implements Serializable {
     private static final int MAX_PLAYERS = 2;
+    private static final int NUM_LINHAS = 6;
+    private static final int NUM_COLUNAS = 7;
 
     ArrayList<Jogador> jogadores = new ArrayList<>(2);
+    ArrayList<TipoFicha> tabuleiro = new ArrayList<>(NUM_LINHAS * NUM_COLUNAS);
+
+    public QuatroEmLinha() { for (int i = 0; i < NUM_LINHAS * NUM_COLUNAS; i++) tabuleiro.add(TipoFicha.FICHA_VAZIA); }
 
     public void adicionarJogador() {
         if (!isFullJogadores())
@@ -26,6 +34,8 @@ public class QuatroEmLinha {
     public boolean isFullJogadores() { return jogadores.size() == MAX_PLAYERS; }
 
     public int getNumJogadores() { return jogadores.size(); }
+    public int getNumLinhas() { return NUM_LINHAS; }
+    public int getNumColunas() { return NUM_COLUNAS; }
 
     public String getConfigJogadores() {
         StringBuilder sb = new StringBuilder();
@@ -39,4 +49,10 @@ public class QuatroEmLinha {
 
         return sb.toString();
     }
+
+    public List<TipoFicha> getTabuleiro() {
+        return Collections.unmodifiableList(tabuleiro);
+    }
+
+    public boolean temMinijogoDisponivel() { return false; }
 }

@@ -14,13 +14,6 @@ public class PedeDecisaoJogada extends EstadoAdapter {
     }
 
     @Override
-    public Estado gravarJogo() {
-        // TODO
-        System.out.println("GRAVAR JOGO - WIP");
-        return super.gravarJogo();
-    }
-
-    @Override
     public Estado desistir() {
         // TODO
         System.out.println("DESISTIR - WIP");

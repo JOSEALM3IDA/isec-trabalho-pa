@@ -1,7 +1,11 @@
 package jogo.logica.dados;
 
-public class Jogador {
+import java.io.Serializable;
+
+public class Jogador implements Serializable {
     String nome;
+
+    public Jogador() {}
 
     public Jogador(String nome) { this.nome = nome; }
 

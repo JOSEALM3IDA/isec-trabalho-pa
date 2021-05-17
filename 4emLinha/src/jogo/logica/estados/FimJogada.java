@@ -2,6 +2,8 @@ package jogo.logica.estados;
 
 import jogo.logica.dados.QuatroEmLinha;
 
+import java.io.Serializable;
+
 public class FimJogada extends EstadoAdapter {
 
     protected FimJogada(QuatroEmLinha quatroEmLinha) { super(quatroEmLinha); }

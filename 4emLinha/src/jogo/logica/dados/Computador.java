@@ -1,5 +1,7 @@
 package jogo.logica.dados;
 
+import java.io.Serializable;
+
 public class Computador extends Jogador {
     private static int count = 1;
 

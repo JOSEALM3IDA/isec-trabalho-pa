@@ -4,7 +4,6 @@ public interface Estado {
 
     // PedeDecisaoInicio
     Estado iniciarJogo();       // -> PedeConfiguracao
-    Estado continuarJogo();     // -> PedeDecisaoJogada
     Estado verReplay();         // -> AssisteJogada
 
     // PedeConfiguracao
@@ -12,9 +11,8 @@ public interface Estado {
     Estado adicionarJogador(String nome);
 
     // PedeDecisaoJogada
-    Estado jogar();             // -> FimJogada
+    Estado jogar(int col);      // -> FimJogada
     Estado undoJogada();        // -> PedeDecisaoJogada
-    Estado gravarJogo();        // -> PedeDecisaoJogada
     Estado desistir();          // -> FimJogo
     Estado aceitarMinijogo();   // -> JogoMinijogo
 
