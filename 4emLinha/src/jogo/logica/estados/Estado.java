@@ -1,5 +1,7 @@
 package jogo.logica.estados;
 
+import jogo.logica.dados.jogadores.TipoJogador;
+
 public interface Estado {
 
     // PedeDecisaoInicio
@@ -7,11 +9,10 @@ public interface Estado {
     Estado verReplay();         // -> AssisteJogada
 
     // PedeConfiguracao
-    Estado adicionarJogador();
-    Estado adicionarJogador(String nome);
+    Estado adicionarJogador(TipoJogador tipoJogador, String nomeJogador);
 
     // PedeDecisaoJogada
-    Estado jogar(int col);      // -> FimJogada
+    Estado jogarFicha(int col);      // -> FimJogada
     Estado undoJogada();        // -> PedeDecisaoJogada
     Estado desistir();          // -> FimJogo
     Estado aceitarMinijogo();   // -> JogoMinijogo

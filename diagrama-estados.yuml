@@ -12,16 +12,14 @@
 (pedeConfiguracao)[adicionarJogador]->(pedeConfiguracao)
 (pedeConfiguracao)[adicionarJogador]->(pedeDecisaoJogada)
 
-(pedeDecisaoJogada)[jogar]->(fimJogada)
+(pedeDecisaoJogada)[jogar]->(pedeDecisaoJogada)
+(pedeDecisaoJogada)[jogar]->(fimJogo)
 (pedeDecisaoJogada)[aceitarMinijogo]->(jogaMinijogo)
 (pedeDecisaoJogada)[undoJogada]->(pedeDecisaoJogada)
 (pedeDecisaoJogada)[gravarJogo]->(pedeDecisaoJogada)
 (pedeDecisaoJogada)[desistir]->(fimJogo)
 
-(fimJogada)[avancar]->(pedeDecisaoJogada)
-(fimJogada)[ganharJogo]->(fimJogo)
-
 (jogaMinijogo)[ganharMinijogo]->(pedeDecisaoJogada)
-(jogaMinijogo)[perderMinijogo]->(fimJogada)
+(jogaMinijogo)[perderMinijogo]->(pedeDecisaoJogada)
 
 (fimJogo)[avancar]->(pedeDecisaoInicio)

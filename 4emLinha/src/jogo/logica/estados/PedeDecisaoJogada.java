@@ -7,6 +7,12 @@ public class PedeDecisaoJogada extends EstadoAdapter {
     protected PedeDecisaoJogada(QuatroEmLinha quatroEmLinha) { super(quatroEmLinha); }
 
     @Override
+    public Estado jogarFicha(int col) {
+        quatroEmLinha.jogarFicha(col);
+        return quatroEmLinha.checkFimJogo() ? new FimJogo(quatroEmLinha) : new PedeDecisaoJogada(quatroEmLinha);
+    }
+
+    @Override
     public Estado undoJogada() {
         // TODO
         System.out.println("UNDO JOGADA - WIP");

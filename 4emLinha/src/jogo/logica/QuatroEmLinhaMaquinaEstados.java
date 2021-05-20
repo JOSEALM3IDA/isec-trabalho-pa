@@ -2,6 +2,7 @@ package jogo.logica;
 
 import jogo.logica.dados.QuatroEmLinha;
 import jogo.logica.dados.TipoFicha;
+import jogo.logica.dados.jogadores.TipoJogador;
 import jogo.logica.estados.Estado;
 import jogo.logica.estados.PedeDecisaoInicio;
 import jogo.logica.estados.Situacao;
@@ -20,9 +21,8 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
 
     public void iniciarJogo() { estadoAtual = estadoAtual.iniciarJogo(); }
     public void verReplay() { estadoAtual = estadoAtual.verReplay(); }
-    public void adicionarJogador() { estadoAtual = estadoAtual.adicionarJogador(); }
-    public void adicionarJogador(String nome) { estadoAtual = estadoAtual.adicionarJogador(nome); }
-    public void jogar(int col) { estadoAtual = estadoAtual.jogar(col); }
+    public void adicionarJogador(TipoJogador tipoJogador, String nomeJogador) { estadoAtual = estadoAtual.adicionarJogador(tipoJogador, nomeJogador); }
+    public void jogarFicha(int col) { estadoAtual = estadoAtual.jogarFicha(col); }
     public void undoJogada() { estadoAtual = estadoAtual.undoJogada(); }
     public void desistir() { estadoAtual = estadoAtual.desistir(); }
     public void aceitarMinijogo() { estadoAtual = estadoAtual.aceitarMinijogo(); }
@@ -38,6 +38,9 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public int getNumJogadores() { return quatroEmLinha.getNumJogadores(); }
     public int getNumLinhas() { return quatroEmLinha.getNumLinhas(); }
     public int getNumColunas() { return quatroEmLinha.getNumColunas(); }
+    public int getJogadaAutomatica() { return quatroEmLinha.getJogadaAutomatica(); }
+    public String getNomeJogadorAtual() { return quatroEmLinha.getNomeJogadorAtual(); }
+    public String getNomeVencedor() { return quatroEmLinha.getNomeVencedor(); }
 
     public Situacao getSituacao() { return estadoAtual.getSituacao(); }
 
@@ -46,4 +49,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public List<TipoFicha> getTabuleiro() { return quatroEmLinha.getTabuleiro(); }
 
     public boolean temMinijogoDisponivel() { return quatroEmLinha.temMinijogoDisponivel(); }
+
+    public boolean isComputadorAJogar() { return quatroEmLinha.isComputadorAJogar(); }
+
 }

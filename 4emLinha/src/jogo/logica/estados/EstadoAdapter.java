@@ -1,6 +1,7 @@
 package jogo.logica.estados;
 
 import jogo.logica.dados.QuatroEmLinha;
+import jogo.logica.dados.jogadores.TipoJogador;
 
 import java.io.Serializable;
 
@@ -18,13 +19,10 @@ public abstract class EstadoAdapter implements Estado, Serializable {
     public Estado verReplay() { return this; }
 
     @Override
-    public Estado adicionarJogador() { return this; }
+    public Estado adicionarJogador(TipoJogador tipoJogador, String nomeJogador) { return this; }
 
     @Override
-    public Estado adicionarJogador(String nome) { return this; }
-
-    @Override
-    public Estado jogar(int col) { return this; }
+    public Estado jogarFicha(int col) { return this; }
 
     @Override
     public Estado undoJogada() { return this; }

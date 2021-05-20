@@ -21,9 +21,7 @@ public class UtilUITexto {
 
     public static String getResposta(String pergunta) {
         String resposta;
-
-        System.out.println("");
-        System.out.println(pergunta);
+        System.out.println("\n" + pergunta);
         do {
             System.out.print("> ");
             resposta = sc.nextLine().trim();

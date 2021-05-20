@@ -5,7 +5,6 @@ public enum Situacao {
     PedeConfiguracao,
     PedeDecisaoJogada,
     JogaMinijogo,
-    FimJogada,
     FimJogo,
     AssisteJogada
 }
