@@ -6,4 +6,7 @@ public class Humano extends Jogador {
     
     public Humano(String nome, TipoFicha ficha) { super(nome, ficha); }
 
+    @Override
+    public void adicionaFichaEspecial() { numFichasEspeciais++; }
+
 }

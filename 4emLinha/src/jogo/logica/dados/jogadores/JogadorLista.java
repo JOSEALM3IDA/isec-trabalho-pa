@@ -12,7 +12,7 @@ public class JogadorLista implements Serializable {
     private static final int MAX_PLAYERS = 2;
 
     private final ArrayList<Jogador> jogadores = new ArrayList<>(2);
-    private int currJogador = 0;
+    private int currJogadorIdx = 0;
 
     public boolean isFullJogadores() { return jogadores.size() == MAX_PLAYERS; }
 
@@ -26,7 +26,7 @@ public class JogadorLista implements Serializable {
                 case COMPUTADOR -> jogadores.add(new Computador(nomeJogador, novaFicha));
             }
 
-            currJogador = 0;
+            currJogadorIdx = 0;
         }
     }
 
@@ -52,9 +52,12 @@ public class JogadorLista implements Serializable {
     }
 
     public void proxJogador() {
-        currJogador++;
+        Jogador currJogador = jogadores.get(currJogadorIdx);
+        currJogador.setNumJogadasDesdeMinijogo(currJogador.getNumJogadasDesdeMinijogo() + 1);
 
-        if (currJogador == jogadores.size()) currJogador = 0;
+        currJogadorIdx++;
+
+        if (currJogadorIdx == jogadores.size()) currJogadorIdx = 0;
     }
 
     public void setVencedorJogadorComFicha(TipoFicha ficha) {
@@ -68,12 +71,16 @@ public class JogadorLista implements Serializable {
         }
     }
 
-    public boolean isComputadorAJogar() { return jogadores.get(currJogador).isComputador(); }
+    public void aceitarMinijogo() { jogadores.get(currJogadorIdx).setNumJogadasDesdeMinijogo(0); }
+
+    public boolean isComputadorAJogar() { return jogadores.get(currJogadorIdx).isComputador(); }
     public int getNumJogadores() { return jogadores.size(); }
-    public String getNomeJogadorAtual() { return jogadores.get(currJogador).getNome(); }
-    public int getJogadaAutomatica(Tabuleiro tabuleiro) { return jogadores.get(currJogador).getJogadaAutomatica(tabuleiro); }
-    public TipoFicha getFichaAtual() { return jogadores.get(currJogador).getFicha(); }
-    public TipoFicha getFichaAnterior() { return currJogador == 0 ? jogadores.get(jogadores.size() - 1).getFicha() : jogadores.get(currJogador - 1).getFicha(); }
+    public String getNomeJogadorAtual() { return jogadores.get(currJogadorIdx).getNome(); }
+    public int getJogadaAutomatica(Tabuleiro tabuleiro) { return jogadores.get(currJogadorIdx).getJogadaAutomatica(tabuleiro); }
+    public TipoFicha getFichaAtual() { return jogadores.get(currJogadorIdx).getFicha(); }
+    public TipoFicha getFichaAnterior() { return currJogadorIdx == 0 ? jogadores.get(jogadores.size() - 1).getFicha() : jogadores.get(currJogadorIdx - 1).getFicha(); }
+    public int getNumJogadasDesdeMinijogoCurrJogador() { return jogadores.get(currJogadorIdx).getNumJogadasDesdeMinijogo(); }
+
 
     public String getNomeVencedor() {
         for (var jogador : jogadores) if (jogador.isVencedor()) return jogador.getNome();
@@ -96,4 +103,5 @@ public class JogadorLista implements Serializable {
         return sb.toString();
     }
 
+    public void adicionaFichaEspecialJogadorAtual() { jogadores.get(currJogadorIdx).adicionaFichaEspecial(); }
 }

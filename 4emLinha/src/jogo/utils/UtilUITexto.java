@@ -1,4 +1,4 @@
-package jogo.iu.texto;
+package jogo.utils;
 
 import java.util.Scanner;
 
@@ -18,14 +18,12 @@ public class UtilUITexto {
         return valor;
     }
 
-
     public static String getResposta(String pergunta) {
         String resposta;
         System.out.println("\n" + pergunta);
-        do {
-            System.out.print("> ");
-            resposta = sc.nextLine().trim();
-        } while (resposta.isEmpty());
+
+        System.out.print("> ");
+        resposta = sc.nextLine().trim();
 
         return resposta;
     }

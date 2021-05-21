@@ -28,9 +28,8 @@ public class PedeDecisaoJogada extends EstadoAdapter {
 
     @Override
     public Estado aceitarMinijogo() {
-        // TODO
-        System.out.println("ACEITAR MINI JOGO - WIP");
-        return super.aceitarMinijogo();
+        quatroEmLinha.aceitarMinijogo();
+        return new JogaMinijogo(quatroEmLinha);
     }
 
     @Override

@@ -8,6 +8,7 @@ import java.util.List;
 public class Tabuleiro implements Serializable {
     private static final int DEFAULT_NUM_LINHAS = 6;
     private static final int DEFAULT_NUM_COLUNAS = 7;
+    private static final int NUM_PECAS_PARA_GANHAR = 4;
 
     private final int numColunas;
     private final int numLinhas;
@@ -54,9 +55,13 @@ public class Tabuleiro implements Serializable {
         for (int lin = 0; lin < numLinhas; lin++) {
             counter = 0;
             for (int col = 0; col < numColunas; col++) {
-                if (getFichaEm(lin, col) == ficha) counter++;
+                if (getFichaEm(lin, col) != ficha) {
+                    counter = 0;
+                    continue;
+                }
 
-                if (counter >= 4) return true;
+                counter++;
+                if (counter >= NUM_PECAS_PARA_GANHAR) return true;
             }
         }
 
@@ -68,20 +73,88 @@ public class Tabuleiro implements Serializable {
         for (int col = 0; col < numColunas; col++) {
             counter = 0;
             for (int lin = 0; lin < numLinhas; lin++) {
-                if (getFichaEm(lin, col) == ficha) counter++;
+                if (getFichaEm(lin, col) != ficha) {
+                    counter = 0;
+                    continue;
+                }
 
-                if (counter >= 4) return true;
+                counter++;
+                if (counter >= NUM_PECAS_PARA_GANHAR) return true;
             }
         }
 
         return false;
     }
 
+    // diagonais /
     private boolean checkQuatroEmLinhaDiagonaisSubir(TipoFicha ficha) {
+        int col;
+        int lin;
+        int counter;
+
+        for (int initLin = 0; initLin < numLinhas - NUM_PECAS_PARA_GANHAR; initLin++) {
+            counter = 0;
+            for (lin = initLin, col = 0; lin < numLinhas && col < numColunas; lin++, col++) {
+                if (getFichaEm(lin, col) != ficha) {
+                    counter = 0;
+                    continue;
+                }
+
+                counter++;
+                if (counter >= NUM_PECAS_PARA_GANHAR) return true;
+            }
+        }
+
+        for (int initCol = 1; initCol < numColunas - NUM_PECAS_PARA_GANHAR; initCol++) {
+            counter = 0;
+            for (lin = 0, col = initCol; lin < numLinhas && col < numColunas; lin++, col++) {
+                if (getFichaEm(lin, col) != ficha) {
+                    counter = 0;
+                    continue;
+                }
+
+                counter++;
+                if (counter >= NUM_PECAS_PARA_GANHAR) return true;
+            }
+        }
+
+
         return false;
     }
 
+    // diagonais \
     private boolean checkQuatroEmLinhaDiagonaisDescer(TipoFicha ficha) {
+        int col;
+        int lin;
+        int counter;
+
+        for (int initLin = 0; initLin < numLinhas - NUM_PECAS_PARA_GANHAR; initLin++) {
+            counter = 0;
+            for (lin = initLin, col = numColunas - 1; lin < numLinhas && col >= 0 ; lin++, col--) {
+                if (getFichaEm(lin, col) != ficha) {
+                    counter = 0;
+                    continue;
+                }
+
+                counter++;
+                if (counter >= NUM_PECAS_PARA_GANHAR) return true;
+            }
+        }
+
+        for (int initCol = NUM_PECAS_PARA_GANHAR - 1; initCol < numColunas - 2; initCol++) {
+            counter = 0;
+            for (lin = 0, col = initCol; lin < numLinhas && col < numColunas; lin++, col++) {
+                if (getFichaEm(lin, col) != ficha) {
+                    counter = 0;
+                    continue;
+                }
+
+                counter++;
+                if (counter >= NUM_PECAS_PARA_GANHAR) return true;
+            }
+        }
+
+
         return false;
     }
 

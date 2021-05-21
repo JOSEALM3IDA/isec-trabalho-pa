@@ -34,6 +34,9 @@ public abstract class EstadoAdapter implements Estado, Serializable {
     public Estado aceitarMinijogo() { return this; }
 
     @Override
+    public Estado jogarMinijogo(String resposta) { return this; }
+
+    @Override
     public Estado ganharMinijogo() { return this; }
 
     @Override

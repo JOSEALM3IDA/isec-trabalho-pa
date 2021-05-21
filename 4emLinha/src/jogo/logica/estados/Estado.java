@@ -12,12 +12,13 @@ public interface Estado {
     Estado adicionarJogador(TipoJogador tipoJogador, String nomeJogador);
 
     // PedeDecisaoJogada
-    Estado jogarFicha(int col);      // -> FimJogada
+    Estado jogarFicha(int col);      // -> PedeDecisaoJogada / FimJogo
     Estado undoJogada();        // -> PedeDecisaoJogada
     Estado desistir();          // -> FimJogo
     Estado aceitarMinijogo();   // -> JogoMinijogo
 
     // JogoMinijogo
+    Estado jogarMinijogo(String resposta); // -> PedeDecisaoJogada
     Estado ganharMinijogo();    // -> PedeDecisaoJogada
     Estado perderMinijogo();    // -> FimJogada
 

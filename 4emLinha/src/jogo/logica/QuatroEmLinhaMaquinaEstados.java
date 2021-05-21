@@ -11,8 +11,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class QuatroEmLinhaMaquinaEstados implements Serializable {
-    Estado estadoAtual;
-    QuatroEmLinha quatroEmLinha;
+    private Estado estadoAtual;
+    protected QuatroEmLinha quatroEmLinha;
 
     public QuatroEmLinhaMaquinaEstados() {
         this.quatroEmLinha = new QuatroEmLinha();
@@ -26,6 +26,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public void undoJogada() { estadoAtual = estadoAtual.undoJogada(); }
     public void desistir() { estadoAtual = estadoAtual.desistir(); }
     public void aceitarMinijogo() { estadoAtual = estadoAtual.aceitarMinijogo(); }
+    public void enviarRespostaMinijogo(String resposta) { estadoAtual = estadoAtual.jogarMinijogo(resposta); }
     public void ganharMinijogo() { estadoAtual = estadoAtual.ganharMinijogo(); }
     public void perderMinijogo() { estadoAtual = estadoAtual.perderMinijogo(); }
     public void ganharJogo() { estadoAtual = estadoAtual.ganharJogo(); }
@@ -52,4 +53,15 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
 
     public boolean isComputadorAJogar() { return quatroEmLinha.isComputadorAJogar(); }
 
+    public boolean isComecadoMinijogo() { return quatroEmLinha.isComecadoMinijogo(); }
+
+    public String getPerguntaMinijogo() { return quatroEmLinha.getPerguntaMinijogo(); }
+
+    public boolean isValidaRespostaMinijogo(String resposta) { return quatroEmLinha.isValidaRespostaMinijogo(resposta); }
+
+    public boolean ganhouUltimoMinijogo() { return quatroEmLinha.ganhouUltimoMinijogo(); }
+
+    public boolean isAcabadoMinijogo() { return quatroEmLinha.isAcabadoMinijogo(); }
+
+    public int getPontuacaoAtualMinijogo() { return quatroEmLinha.getPontuacaoAtualMinijogo(); }
 }

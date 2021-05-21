@@ -3,6 +3,7 @@ package jogo.iu.texto;
 import jogo.logica.QuatroEmLinhaMaquinaEstados;
 import jogo.logica.dados.TipoFicha;
 import jogo.logica.dados.jogadores.TipoJogador;
+import jogo.utils.UtilUITexto;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -37,11 +38,19 @@ public class QuatroEmLinhaUITexto {
     }
 
     private void pedeDecisaoInicioUI() {
+
         switch (UtilUITexto.getOpcao("--- MENU INICIAL ---",
                 "Iniciar jogo", "Continuar jogo", "Ver replay", "Sair")) {
             case 1 -> maquinaEstados.iniciarJogo();
             case 2 -> {
-                while (!continuarJogo(UtilUITexto.getResposta("Nome do ficheiro?"))) {
+                String fileName;
+                while (true) {
+                    fileName = UtilUITexto.getResposta("Nome do ficheiro?");
+
+                    if (fileName.isEmpty()) return;
+
+                    if (continuarJogo(fileName)) break;
+
                     System.out.println("Load falhou.");
                 }
                 System.out.println("Load com sucesso!");
@@ -53,10 +62,24 @@ public class QuatroEmLinhaUITexto {
 
     private void pedeConfiguracaoUI() {
 
+        String nomeJogador;
+
         switch (UtilUITexto.getOpcao("Jogador " + (maquinaEstados.getNumJogadores() + 1) + ":",
                 "Humano", "Computador", "Sair")) {
-            case 1 -> maquinaEstados.adicionarJogador(TipoJogador.HUMANO, pedeNomeJogador());
-            case 2 -> maquinaEstados.adicionarJogador(TipoJogador.COMPUTADOR, pedeNomeJogador());
+            case 1 -> {
+                nomeJogador = pedeNomeJogador();
+
+                if (nomeJogador.isEmpty()) return;
+
+                maquinaEstados.adicionarJogador(TipoJogador.HUMANO, nomeJogador);
+            }
+            case 2 -> {
+                nomeJogador = pedeNomeJogador();
+
+                if (nomeJogador.isEmpty()) return;
+
+                maquinaEstados.adicionarJogador(TipoJogador.COMPUTADOR, nomeJogador);
+            }
             default -> doSair = true;
         }
 
@@ -64,6 +87,7 @@ public class QuatroEmLinhaUITexto {
     }
 
     private void pedeDecisaoJogadaUI() {
+
         System.out.println();
         printTabuleiro(maquinaEstados.getTabuleiro());
 
@@ -71,7 +95,7 @@ public class QuatroEmLinhaUITexto {
             int jogada = maquinaEstados.getJogadaAutomatica();
             String nomeJogadorAtual = maquinaEstados.getNomeJogadorAtual();
             maquinaEstados.jogarFicha(jogada);
-            System.out.println("\nO jogador " + nomeJogadorAtual + " jogou na coluna " + jogada + "!");
+            System.out.println("\nO jogador " + nomeJogadorAtual + " jogou na coluna " + (jogada + 1) + "!");
             return;
         }
 
@@ -80,13 +104,13 @@ public class QuatroEmLinhaUITexto {
         opcoes.add("Undo jogada");
         opcoes.add("Gravar jogo");
         if (maquinaEstados.temMinijogoDisponivel()) {
-            System.out.println("Pode jogar um minijogo!");
+            System.out.println("\nPode jogar um minijogo!");
             opcoes.add("Jogar minijogo");
         }
         opcoes.add("Sair");
 
         switch (UtilUITexto.getOpcao("--- PEDE JOGADA ---", opcoes.toArray(new String[0]))) {
-            case 1 -> maquinaEstados.jogarFicha(UtilUITexto.getInteiro("Coluna a jogar:") - 1);
+            case 1 -> maquinaEstados.jogarFicha(UtilUITexto.getInteiro("Coluna a jogar: ") - 1);
             case 2 -> maquinaEstados.undoJogada();
             case 3 -> {
                 while (!gravarJogo(UtilUITexto.getResposta("Nome do ficheiro?"))) System.out.println("Save falhou.");
@@ -98,9 +122,32 @@ public class QuatroEmLinhaUITexto {
     }
 
     private void jogaMinijogoUI() {
+
+        String pergunta = maquinaEstados.getPerguntaMinijogo();
+        String resposta;
+
+        do {
+            resposta = UtilUITexto.getResposta(pergunta);
+
+            if (maquinaEstados.isAcabadoMinijogo()) break;
+
+        } while (!maquinaEstados.isValidaRespostaMinijogo(resposta));
+
+
+        maquinaEstados.enviarRespostaMinijogo(resposta);
+
+        if (maquinaEstados.isAcabadoMinijogo()) {
+            if (maquinaEstados.ganhouUltimoMinijogo()) {
+                System.out.println("\nGanhou o minijogo e recebeu uma peça especial!");
+                return;
+            }
+
+            System.out.println("\nAcabou o tempo e perdeu o minijogo. Pontuação final: " + maquinaEstados.getPontuacaoAtualMinijogo());
+        }
     }
 
     private void fimJogoUI() {
+
         System.out.println("\n--- FIM JOGO ---\n");
 
         printTabuleiro(maquinaEstados.getTabuleiro());
@@ -122,6 +169,9 @@ public class QuatroEmLinhaUITexto {
         int numLinhas = maquinaEstados.getNumLinhas();
         int numColunas = maquinaEstados.getNumColunas();
 
+        for (int i = 1; i <= numColunas; i++) System.out.print(" " + i);
+        System.out.println();
+
         for (int i = numLinhas - 1; i >= 0; i--) {
             for (int j = 0; j < numColunas; j++) {
                 System.out.print('|');
@@ -131,7 +181,7 @@ public class QuatroEmLinhaUITexto {
                     default -> System.out.print(" ");
                 }
             }
-            System.out.println('|');
+            System.out.println("| " + (i + 1));
         }
     }
 
@@ -140,9 +190,11 @@ public class QuatroEmLinhaUITexto {
         while (true) {
             nome = UtilUITexto.getResposta("Qual o nome do jogador?");
 
+            if (nome.isEmpty()) return "";
+
             if (!maquinaEstados.existeJogador(nome)) break;
 
-            System.out.println("Esse nome ja esta a ser utilizado. Por favor insira outro nome.");
+            System.out.println("Esse nome já está a ser utilizado. Por favor insira outro nome.");
         }
 
         return nome;
@@ -150,7 +202,7 @@ public class QuatroEmLinhaUITexto {
 
     private boolean gravarJogo(String nomeFicheiro) {
         File f = new File("saves/" + nomeFicheiro + ".save");
-        if (f.getParentFile().mkdirs()) System.out.println("Criado diretorio saves...");
+        if (f.getParentFile().mkdirs()) System.out.println("Criado diretório saves...");
 
         FileOutputStream fos;
         try {
@@ -168,6 +220,7 @@ public class QuatroEmLinhaUITexto {
         return true;
     }
 
+    // Podia ir para o utils com um generico
     private boolean continuarJogo(String nomeFicheiro) {
         try (FileInputStream fis = new FileInputStream("saves/" + nomeFicheiro + ".save");
              ObjectInputStream ois = new ObjectInputStream(fis)) {

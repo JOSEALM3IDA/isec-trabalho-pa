@@ -1,14 +1,16 @@
 package jogo.logica.dados;
 
 import jogo.logica.dados.jogadores.*;
+import jogo.logica.dados.minijogos.Minijogo;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class QuatroEmLinha implements Serializable {
 
-    JogadorLista jogadorLista = new JogadorLista();
-    Tabuleiro tabuleiro = new Tabuleiro();
+    private final JogadorLista jogadorLista = new JogadorLista();
+    private final Tabuleiro tabuleiro = new Tabuleiro();
+    private transient Minijogo minijogo = null;
 
     public QuatroEmLinha() {}
 
@@ -36,7 +38,7 @@ public class QuatroEmLinha implements Serializable {
     public String getConfigJogadores() { return "Lista de jogadores:\n" + jogadorLista.toString(); }
 
     public List<TipoFicha> getTabuleiro() { return tabuleiro.getFichas(); }
-    public boolean temMinijogoDisponivel() { return false; }
+    public boolean temMinijogoDisponivel() { return jogadorLista.getNumJogadasDesdeMinijogoCurrJogador() >= 4; }
 
     public boolean isComputadorAJogar() { return jogadorLista.isComputadorAJogar(); }
 
@@ -53,4 +55,26 @@ public class QuatroEmLinha implements Serializable {
         jogadorLista.limpar();
         tabuleiro.limpar();
     }
+
+    public void aceitarMinijogo() {
+        minijogo = MinijogoFactory.getMinijogo();
+        minijogo.comecar();
+        jogadorLista.aceitarMinijogo();
+    }
+
+    public boolean isComecadoMinijogo() { return minijogo != null && minijogo.isComecado(); }
+
+    public String getPerguntaMinijogo() { return minijogo != null ? minijogo.getPerguntaAtual() : ""; }
+
+    public boolean isValidaRespostaMinijogo(String resposta) { return minijogo != null && minijogo.isValidaResposta(resposta); }
+
+    public void enviarRespostaMinijogo(String resposta) { if (minijogo != null) minijogo.receberResposta(resposta); }
+
+    public boolean ganhouUltimoMinijogo() { return minijogo != null && minijogo.isGanho(); }
+
+    public boolean isAcabadoMinijogo() { return minijogo != null && minijogo.isAcabado(); }
+
+    public void adicionaFichaEspecialJogadorAtual() { jogadorLista.adicionaFichaEspecialJogadorAtual(); }
+
+    public int getPontuacaoAtualMinijogo() { return minijogo.getPontuacaoAtual(); }
 }

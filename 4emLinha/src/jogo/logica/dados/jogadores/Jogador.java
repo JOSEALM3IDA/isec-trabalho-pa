@@ -7,9 +7,11 @@ import java.io.Serializable;
 
 public abstract class Jogador implements Serializable {
 
+    private int numJogadasDesdeMinijogo = 0;
     private final String nome;
     private final TipoFicha ficha;
     private boolean isVencedor = false;
+    protected int numFichasEspeciais = 0;
 
     public Jogador(String nome, TipoFicha ficha) {
 
@@ -24,11 +26,18 @@ public abstract class Jogador implements Serializable {
     public TipoFicha getFicha() { return ficha; }
     public String getNome() { return nome; }
 
+
     public boolean isComputador() { return false; };
+
+    public void setVencedor(boolean valor) { isVencedor = valor; }
+    public boolean isVencedor() { return isVencedor; }
+
+    public int getNumJogadasDesdeMinijogo() { return numJogadasDesdeMinijogo; }
+    public void setNumJogadasDesdeMinijogo(int numJogadasDesdeMinijogo) { this.numJogadasDesdeMinijogo = numJogadasDesdeMinijogo; }
 
     @Override
     public String toString() { return nome; }
 
-    public void setVencedor(boolean valor) { isVencedor = valor; }
-    public boolean isVencedor() { return isVencedor; }
+    public void adicionaFichaEspecial() {}
+    public int getNumFichasEspeciais() { return numFichasEspeciais; }
 }

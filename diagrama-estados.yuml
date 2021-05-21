@@ -19,7 +19,7 @@
 (pedeDecisaoJogada)[gravarJogo]->(pedeDecisaoJogada)
 (pedeDecisaoJogada)[desistir]->(fimJogo)
 
-(jogaMinijogo)[ganharMinijogo]->(pedeDecisaoJogada)
-(jogaMinijogo)[perderMinijogo]->(pedeDecisaoJogada)
+(jogaMinijogo)[jogarMinijogo]->(pedeDecisaoJogada)
+(jogaMinijogo)[jogarMinijogo]->(jogaMinijogo)
 
 (fimJogo)[avancar]->(pedeDecisaoInicio)
