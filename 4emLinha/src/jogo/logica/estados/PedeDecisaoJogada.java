@@ -13,17 +13,15 @@ public class PedeDecisaoJogada extends EstadoAdapter {
     }
 
     @Override
-    public Estado undoJogada() {
-        // TODO
-        System.out.println("UNDO JOGADA - WIP");
-        return super.undoJogada();
+    public Estado undoJogada(int numVezes) {
+        quatroEmLinhaGestor.undo(numVezes);
+        return new PedeDecisaoJogada(quatroEmLinhaGestor);
     }
 
     @Override
     public Estado desistir() {
-        // TODO
-        System.out.println("DESISTIR - WIP");
-        return super.desistir();
+        quatroEmLinhaGestor.desistir();
+        return new FimJogo(quatroEmLinhaGestor);
     }
 
     @Override

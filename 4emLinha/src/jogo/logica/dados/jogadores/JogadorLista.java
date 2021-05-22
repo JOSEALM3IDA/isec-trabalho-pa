@@ -52,12 +52,23 @@ public class JogadorLista implements Serializable {
     }
 
     public void proxJogador() {
-        Jogador currJogador = jogadores.get(currJogadorIdx);
+        Jogador currJogador = getJogadorAtual();
         currJogador.setNumJogadasDesdeMinijogo(currJogador.getNumJogadasDesdeMinijogo() + 1);
 
         currJogadorIdx++;
 
         if (currJogadorIdx == jogadores.size()) currJogadorIdx = 0;
+    }
+
+    public void undoJogador(int numVezes) {
+        for (var jogador : jogadores) jogador.setNumJogadasDesdeMinijogo(0);
+
+        for (int i = 0; i < numVezes; i++) {
+            currJogadorIdx--;
+
+            if (currJogadorIdx < 0) currJogadorIdx = jogadores.size() - 1;
+        }
+
     }
 
     public void setVencedorJogadorComFicha(TipoFicha ficha) {
@@ -71,16 +82,16 @@ public class JogadorLista implements Serializable {
         }
     }
 
-    public void aceitarMinijogo() { jogadores.get(currJogadorIdx).setNumJogadasDesdeMinijogo(0); }
+    public void aceitarMinijogo() { getJogadorAtual().setNumJogadasDesdeMinijogo(0); }
 
-    public boolean isComputadorAJogar() { return jogadores.get(currJogadorIdx).isComputador(); }
+    public boolean isComputadorAJogar() { return getJogadorAtual().isComputador(); }
     public int getNumJogadores() { return jogadores.size(); }
-    public String getNomeJogadorAtual() { return jogadores.get(currJogadorIdx).getNome(); }
-    public int getJogadaAutomatica(Tabuleiro tabuleiro) { return jogadores.get(currJogadorIdx).getJogadaAutomatica(tabuleiro); }
-    public TipoFicha getFichaAtual() { return jogadores.get(currJogadorIdx).getFicha(); }
+    public String getNomeJogadorAtual() { return getJogadorAtual().getNome(); }
+    public int getJogadaAutomatica(Tabuleiro tabuleiro) { return getJogadorAtual().getJogadaAutomatica(tabuleiro); }
+    public TipoFicha getFichaAtual() { return getJogadorAtual().getFicha(); }
     public TipoFicha getFichaAnterior() { return currJogadorIdx == 0 ? jogadores.get(jogadores.size() - 1).getFicha() : jogadores.get(currJogadorIdx - 1).getFicha(); }
-    public int getNumJogadasDesdeMinijogoCurrJogador() { return jogadores.get(currJogadorIdx).getNumJogadasDesdeMinijogo(); }
-
+    public int getNumJogadasDesdeMinijogoCurrJogador() { return getJogadorAtual().getNumJogadasDesdeMinijogo(); }
+    private Jogador getJogadorAtual() { return jogadores.get(currJogadorIdx); }
 
     public String getNomeVencedor() {
         for (var jogador : jogadores) if (jogador.isVencedor()) return jogador.getNome();
@@ -103,9 +114,18 @@ public class JogadorLista implements Serializable {
         return sb.toString();
     }
 
-    public void adicionaFichaEspecialJogadorAtual() { jogadores.get(currJogadorIdx).setNumFichasEspeciais(getNumFichasEspeciaisJogadorAtual() + 1); }
+    public void adicionaFichaEspecialJogadorAtual() { getJogadorAtual().setNumFichasEspeciais(getNumFichasEspeciaisJogadorAtual() + 1); }
 
-    public int getNumFichasEspeciaisJogadorAtual() { return jogadores.get(currJogadorIdx).getNumFichasEspeciais(); }
+    public int getNumFichasEspeciaisJogadorAtual() { return getJogadorAtual().getNumFichasEspeciais(); }
 
-    public void usarFichaEspecialJogadorAtual() { jogadores.get(currJogadorIdx).setNumFichasEspeciais(getNumFichasEspeciaisJogadorAtual() - 1); }
+    public void usarFichaEspecialJogadorAtual() { getJogadorAtual().setNumFichasEspeciais(getNumFichasEspeciaisJogadorAtual() - 1); }
+
+    public void removeCreditoJogadorAtual(int numCreditos) { getJogadorAtual().setNumCreditos(getJogadorAtual().getNumCreditos() - numCreditos); }
+
+    public boolean haVencedor() {
+        for (var jogador : jogadores) if (jogador.isVencedor()) return true;
+        return false;
+    }
+
+    public int getNumCreditosJogadorAtual() { return getJogadorAtual().getNumCreditos(); }
 }

@@ -3,6 +3,7 @@ package jogo.logica.dados;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Tabuleiro implements Serializable {
@@ -33,6 +34,17 @@ public class Tabuleiro implements Serializable {
             setFichaEm(lin, col, ficha);
             return;
         }
+    }
+
+    public boolean removeFicha(int col) {
+        for (int lin = numLinhas - 1; lin >= 0; lin--) {
+            if (getFichaEm(lin, col) != TipoFicha.NONE) {
+                setFichaEm(lin, col, TipoFicha.NONE);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private TipoFicha getFichaEm(int lin, int col) { return tabuleiro.get(lin * numColunas + col); }
@@ -160,9 +172,20 @@ public class Tabuleiro implements Serializable {
 
     public void limpar() { initTabuleiro(); }
 
-    public void setColuna(int col, List<TipoFicha> novaColuna) {
-        if (novaColuna.size() != numLinhas) return;
+    public List<TipoFicha> getColuna(int col) {
+        List<jogo.logica.dados.TipoFicha> coluna = new LinkedList<>();
+
+        for (int lin = 0; lin < numLinhas; lin++) coluna.add(getFichaEm(lin, col));
+
+        return coluna;
+    }
+
+    public boolean setColuna(int col, List<TipoFicha> novaColuna) {
+        if (novaColuna.size() != numLinhas) return false;
 
         for (int lin = 0; lin < numLinhas; lin++) setFichaEm(lin, col, novaColuna.get(lin));
+
+        return true;
     }
+
 }

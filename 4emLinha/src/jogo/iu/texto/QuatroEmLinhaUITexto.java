@@ -8,6 +8,7 @@ import jogo.utils.UtilUITexto;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class QuatroEmLinhaUITexto {
     private static final String ANSI_RESET = "\u001B[0m";
@@ -17,6 +18,8 @@ public class QuatroEmLinhaUITexto {
     private static final String FICHA_AMARELA_PRINT = ANSI_AMARELO + 'A' + ANSI_RESET;
     private static final String FICHA_VERMELHA_PRINT = ANSI_VERMELHO + 'V' + ANSI_RESET;
     private static final String DIVISORIA_TABULEIRO_PRINT = ANSI_AZUL + '|' + ANSI_RESET;
+
+    private static final int SEGUNDOS_SLEEP_JOGADA_COMPUTADOR = 2;
 
     private QuatroEmLinhaMaquinaEstados maquinaEstados;
     private boolean doSair;
@@ -93,43 +96,74 @@ public class QuatroEmLinhaUITexto {
         System.out.println();
         printTabuleiro(maquinaEstados.getTabuleiro());
 
+        System.out.println();
+
+        System.out.println("É a vez de " + maquinaEstados.getNomeJogadorAtual() + ".");
+
         if (maquinaEstados.isComputadorAJogar()) {
             int jogada = maquinaEstados.getJogadaAutomatica();
             String nomeJogadorAtual = maquinaEstados.getNomeJogadorAtual();
             maquinaEstados.jogarFicha(jogada);
             System.out.println("\nO jogador " + nomeJogadorAtual + " jogou na coluna " + (jogada + 1) + "!");
+            try { TimeUnit.SECONDS.sleep(SEGUNDOS_SLEEP_JOGADA_COMPUTADOR); } catch (InterruptedException ignored) {}
             return;
         }
 
         ArrayList<String> opcoes = new ArrayList<>();
-        opcoes.add("Jogar ficha");
-        opcoes.add("Undo jogada");
-        opcoes.add("Gravar jogo");
+        opcoes.add("Jogar ficha"); // 1
+        opcoes.add("Gravar jogo"); // 2
+
+        // 3
+        String optCreditos = "";
+        if (maquinaEstados.podeVoltarAtras()) {
+            System.out.println("\nTem " + maquinaEstados.getNumCreditos() + " créditos.");
+            System.out.println("Pode voltar atrás!");
+            optCreditos = "Voltar atrás";
+        }
+        opcoes.add(optCreditos);
+
+        // 4
+        String optMinijogo = "";
         if (maquinaEstados.temMinijogoDisponivel()) {
             System.out.println("\nPode jogar um minijogo!");
-            opcoes.add("Jogar minijogo");
+            optMinijogo = "Jogar minijogo";
         }
+        opcoes.add(optMinijogo);
 
+        // 5
         int numFichasEspeciais = maquinaEstados.getNumFichasEspeciaisJogadorAtual();
+        String optFichaEspecial = "";
         if (numFichasEspeciais > 0) {
-            opcoes.add("Jogar ficha especial");
-            printNumFichasEspeciais(numFichasEspeciais);
+            System.out.println("\nTem " + numFichasEspeciais + " ficha(s) especial(is)");
+            optFichaEspecial = "Jogar ficha especial";
         }
+        opcoes.add(optFichaEspecial);
 
-        opcoes.add("Desistir");
-        opcoes.add("Sair");
+        opcoes.add("Desistir"); // 6
 
         switch (UtilUITexto.getOpcao("--- PEDE JOGADA ---", opcoes.toArray(new String[0]))) {
-            case 1 -> maquinaEstados.jogarFicha(UtilUITexto.getInteiro("Coluna a jogar: ") - 1);
-            case 2 -> maquinaEstados.undoJogada();
-            case 3 -> {
-                while (!gravarJogo(UtilUITexto.getResposta("Nome do ficheiro?"))) System.out.println("Save falhou.");
+            case 1 -> maquinaEstados.jogarFicha(UtilUITexto.getInteiro("\nColuna a jogar: ") - 1);
+            case 2 -> {
+                while (!gravarJogo(UtilUITexto.getResposta("Nome do ficheiro: "))) System.out.println("Save falhou.");
                 System.out.println("Save com sucesso!");
+            }
+            case 3 -> {
+                int numCreditosAUtilizar;
+                int numCreditosJogaveis = maquinaEstados.getNumCreditosJogaveis();
+
+                do {
+                    numCreditosAUtilizar = UtilUITexto.getInteiro(
+                            "\nNúmero de créditos a utilizar [0 - " + numCreditosJogaveis + "]: ");
+                } while (numCreditosAUtilizar < 0 || numCreditosAUtilizar > maquinaEstados.getNumCreditosJogaveis());
+
+                if (numCreditosAUtilizar == 0) break;
+
+                maquinaEstados.undoJogada(numCreditosAUtilizar);
+                System.out.println("Voltou atrás " + numCreditosAUtilizar + " jogada(s).");
             }
             case 4 -> maquinaEstados.aceitarMinijogo();
             case 5 -> maquinaEstados.jogarFichaEspecial(UtilUITexto.getInteiro("Coluna a remover: ") - 1);
-            case 6 -> maquinaEstados.desistir();
-            default -> doSair = true;
+            default -> maquinaEstados.desistir();
         }
     }
 
@@ -164,7 +198,7 @@ public class QuatroEmLinhaUITexto {
 
         printTabuleiro(maquinaEstados.getTabuleiro());
 
-        System.out.println("\nO jogador " + maquinaEstados.getNomeVencedor() + " fez quatro em linha e ganhou o jogo!");
+        System.out.println("\nO jogador " + maquinaEstados.getNomeVencedor() + " ganhou o jogo!");
 
         if (UtilUITexto.getOpcao("O que pretende fazer?", "Voltar ao menu", "Sair") == 1) {
             maquinaEstados.avancar();
@@ -175,17 +209,6 @@ public class QuatroEmLinhaUITexto {
     }
 
     private void assisteJogadaUI() {
-    }
-
-    private void printNumFichasEspeciais(int numFichasEspeciais) {
-        if (numFichasEspeciais <= 0) return;
-
-        if (numFichasEspeciais > 1) {
-            System.out.println("\nTem " + numFichasEspeciais + " fichas especiais!");
-            return;
-        }
-
-        System.out.println("\nTem uma ficha especial!");
     }
 
     private void printTabuleiro(List<TipoFicha> tabuleiro) {

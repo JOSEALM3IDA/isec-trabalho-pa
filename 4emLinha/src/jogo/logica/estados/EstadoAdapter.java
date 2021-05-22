@@ -23,7 +23,7 @@ public abstract class EstadoAdapter implements Estado, Serializable {
     public Estado jogarFicha(int col) { return this; }
 
     @Override
-    public Estado undoJogada() { return this; }
+    public Estado undoJogada(int numVezes) { return this; }
 
     @Override
     public Estado desistir() { return this; }

@@ -17,16 +17,16 @@ public class QuatroEmLinha implements Serializable {
 
     public void addJogador(TipoJogador tipoJogador, String nomeJogador) { jogadorLista.addJogador(tipoJogador, nomeJogador); }
 
-    public void jogarFicha(int col) {
-        tabuleiro.addFicha(col, jogadorLista.getFichaAtual());
-        proxJogador();
-    }
+    public void jogarFicha(int col) { tabuleiro.addFicha(col, jogadorLista.getFichaAtual()); }
+
+    public boolean removeFicha(int col) { return tabuleiro.removeFicha(col); }
 
     public int getJogadaAutomatica() { return jogadorLista.getJogadaAutomatica(tabuleiro); }
 
     public boolean existeJogador(String nomeJogador) { return jogadorLista.existeJogador(nomeJogador); }
 
-    private void proxJogador() { jogadorLista.proxJogador(); }
+    public void proxJogador() { jogadorLista.proxJogador(); }
+    private void anteriorJogador(int numVezes) { jogadorLista.undoJogador(numVezes); }
 
     public boolean isFullJogadores() { return jogadorLista.isFullJogadores(); }
 
@@ -36,7 +36,7 @@ public class QuatroEmLinha implements Serializable {
     public String getNomeJogadorAtual() { return jogadorLista.getNomeJogadorAtual(); }
     public String getNomeVencedor() { return jogadorLista.getNomeVencedor(); }
 
-    public String getConfigJogadores() { return "Lista de jogadores:\n" + jogadorLista.toString(); }
+    public String getConfigJogadores() { return "Lista de jogadores:\n" + jogadorLista; }
 
     public List<TipoFicha> getTabuleiro() { return tabuleiro.getFichas(); }
     public boolean temMinijogoDisponivel() { return jogadorLista.getNumJogadasDesdeMinijogoCurrJogador() >= 4; }
@@ -55,6 +55,11 @@ public class QuatroEmLinha implements Serializable {
     public void limparTudo() {
         jogadorLista.limpar();
         tabuleiro.limpar();
+    }
+
+    public void desistirJogadorAtual() {
+        TipoFicha fichaAnterior = jogadorLista.getFichaAnterior();
+        jogadorLista.setVencedorJogadorComFicha(fichaAnterior);
     }
 
     public void comecarMinijogo() {
@@ -87,8 +92,22 @@ public class QuatroEmLinha implements Serializable {
 
         jogadorLista.usarFichaEspecialJogadorAtual();
         tabuleiro.setColuna(col, colunaVazia);
-        proxJogador();
     }
 
     public int getNumFichasEspeciaisJogadorAtual() { return jogadorLista.getNumFichasEspeciaisJogadorAtual(); }
+
+    public void processaUndoJogadorAtual(int numVezes) {
+        jogadorLista.removeCreditoJogadorAtual(numVezes);
+        anteriorJogador(numVezes);
+    }
+
+    public boolean jogoAcabou() { return jogadorLista.haVencedor(); }
+
+    public int getNumCreditosJogadorAtual() { return jogadorLista.getNumCreditosJogadorAtual(); }
+
+    public boolean temCreditosJogadorAtual() { return jogadorLista.getNumCreditosJogadorAtual() > 0; }
+
+    public List<TipoFicha> getColuna(int col) { return tabuleiro.getColuna(col); }
+
+    public boolean setColuna(int col, List<TipoFicha> novaColuna) { return tabuleiro.setColuna(col, novaColuna); }
 }

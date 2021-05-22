@@ -12,6 +12,7 @@ public abstract class Jogador implements Serializable {
     private final TipoFicha ficha;
     private boolean isVencedor = false;
     protected int numFichasEspeciais = 0;
+    protected int numCreditos = 0;
 
     public Jogador(String nome, TipoFicha ficha) {
 
@@ -33,7 +34,14 @@ public abstract class Jogador implements Serializable {
     public boolean isVencedor() { return isVencedor; }
 
     public int getNumJogadasDesdeMinijogo() { return numJogadasDesdeMinijogo; }
-    public void setNumJogadasDesdeMinijogo(int numJogadasDesdeMinijogo) { this.numJogadasDesdeMinijogo = numJogadasDesdeMinijogo; }
+    public void setNumJogadasDesdeMinijogo(int numJogadasDesdeMinijogo) {
+        if (numJogadasDesdeMinijogo < 0) {
+            this.numJogadasDesdeMinijogo = 0;
+            return;
+        }
+
+        this.numJogadasDesdeMinijogo = numJogadasDesdeMinijogo;
+    }
 
     @Override
     public String toString() { return nome; }
@@ -41,4 +49,14 @@ public abstract class Jogador implements Serializable {
     public int getNumFichasEspeciais() { return numFichasEspeciais; }
 
     public abstract void setNumFichasEspeciais(int num);
+
+    public int getNumCreditos() { return numCreditos; }
+    public void setNumCreditos(int numCreditos) {
+        if (numCreditos < 0) {
+            this.numCreditos = 0;
+            return;
+        }
+
+        this.numCreditos = numCreditos;
+    }
 }

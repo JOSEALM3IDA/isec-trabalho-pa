@@ -1,6 +1,8 @@
 package jogo.logica;
 
+import jogo.logica.command.JogaFichaCommand;
 import jogo.logica.command.CommandManager;
+import jogo.logica.command.JogaFichaEspecialCommand;
 import jogo.logica.dados.QuatroEmLinha;
 import jogo.logica.dados.TipoFicha;
 import jogo.logica.dados.jogadores.TipoJogador;
@@ -19,7 +21,8 @@ public class QuatroEmLinhaGestor implements Serializable {
     }
 
     public void addJogador(TipoJogador tipoJogador, String nomeJogador) { quatroEmLinha.addJogador(tipoJogador, nomeJogador); }
-    public void jogarFicha(int col) { quatroEmLinha.jogarFicha(col); }
+    public void jogarFicha(int col) { commandManager.invokeCommand(new JogaFichaCommand(quatroEmLinha, col)); }
+    public void jogarFichaEspecial(int col) { commandManager.invokeCommand(new JogaFichaEspecialCommand(quatroEmLinha, col)); }
     public int getJogadaAutomatica() { return quatroEmLinha.getJogadaAutomatica(); }
     public boolean existeJogador(String nomeJogador) { return quatroEmLinha.existeJogador(nomeJogador); }
     public boolean isFullJogadores() { return quatroEmLinha.isFullJogadores(); }
@@ -34,6 +37,7 @@ public class QuatroEmLinhaGestor implements Serializable {
     public boolean isComputadorAJogar() { return quatroEmLinha.isComputadorAJogar(); }
     public boolean checkFimJogo() { return quatroEmLinha.checkFimJogo(); }
     public void limparTudo() { quatroEmLinha.limparTudo(); }
+    public void desistir() { quatroEmLinha.desistirJogadorAtual(); }
     public void comecarMinijogo() { quatroEmLinha.comecarMinijogo(); }
     public String getPerguntaMinijogo() { return quatroEmLinha.getPerguntaMinijogo(); }
     public boolean isValidaRespostaMinijogo(String resposta) { return quatroEmLinha.isValidaRespostaMinijogo(resposta); }
@@ -42,6 +46,25 @@ public class QuatroEmLinhaGestor implements Serializable {
     public boolean isAcabadoMinijogo() { return quatroEmLinha.isAcabadoMinijogo(); }
     public void adicionaFichaEspecialJogadorAtual() { quatroEmLinha.adicionaFichaEspecialJogadorAtual(); }
     public int getPontuacaoAtualMinijogo() { return quatroEmLinha.getPontuacaoAtualMinijogo(); }
-    public void jogarFichaEspecial(int col) { quatroEmLinha.jogarFichaEspecial(col); }
     public int getNumFichasEspeciaisJogadorAtual() { return quatroEmLinha.getNumFichasEspeciaisJogadorAtual(); }
+    public int getNumCreditosJogadorAtual() { return quatroEmLinha.getNumCreditosJogadorAtual(); }
+
+    public void undo(int numVezes) {
+        if (quatroEmLinha.jogoAcabou()) return;
+
+        int i;
+        for (i = 0; i < numVezes; i++) {
+            if (!quatroEmLinha.temCreditosJogadorAtual()) break;
+            if (!commandManager.undo()) break;
+        }
+
+        System.out.println("i = " + i);
+
+        quatroEmLinha.processaUndoJogadorAtual(numVezes);
+    }
+
+    public boolean podeVoltarAtrasJogadorAtual() { return commandManager.temUndo() && quatroEmLinha.temCreditosJogadorAtual(); }
+
+    public int getNumCreditosJogaveisJogadorAtual() { return Math.min(commandManager.getNumUndosPossivel(), quatroEmLinha.getNumCreditosJogadorAtual()); }
+    // public void redo() { commandManager.redo(); }
 }

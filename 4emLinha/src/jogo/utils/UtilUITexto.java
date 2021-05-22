@@ -33,7 +33,11 @@ public class UtilUITexto {
 
         do {
             System.out.println('\n' + titulo);
-            for (int i = 0; i < opts.length - 1; i++) { System.out.printf("%3d - %s\n", i + 1, opts[i]); }
+            for (int i = 0; i < opts.length - 1; i++) {
+                if (opts[i].isEmpty()) continue;
+
+                System.out.printf("%3d - %s\n", i + 1, opts[i]);
+            }
 
             System.out.printf("\n%3d - %s\n", 0, opts[opts.length - 1]);
 

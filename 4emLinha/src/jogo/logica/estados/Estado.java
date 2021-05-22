@@ -13,7 +13,7 @@ public interface Estado {
 
     // PedeDecisaoJogada
     Estado jogarFicha(int col);      // -> PedeDecisaoJogada / FimJogo
-    Estado undoJogada();        // -> PedeDecisaoJogada
+    Estado undoJogada(int numVezes);        // -> PedeDecisaoJogada
     Estado desistir();          // -> FimJogo
     Estado aceitarMinijogo();   // -> JogoMinijogo
     Estado jogarFichaEspecial(int col); // -> PedeDecisaoJogada

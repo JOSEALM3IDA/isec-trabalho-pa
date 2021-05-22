@@ -6,8 +6,8 @@ import java.util.Random;
 
 public class Calculos extends MinijogoAdapter {
 
-    static final int TEMPO_MAXIMO = 30; // Segundos
-    static final char[] OPERADORES = {'+', '-', '/', '*'};
+    static final int TEMPO_MAXIMO = 3000; // Segundos
+    static final char[] OPERADORES = {'+', '-', '/', 'x'};
 
     private int inteiro1 = -1, inteiro2 = -1;
     private char operador = ' ';
@@ -42,19 +42,16 @@ public class Calculos extends MinijogoAdapter {
             return;
         }
 
-
-
         if (!isValidaResposta(resposta)) return;
 
-        double resultado;
-        try { resultado = aplicarOperador(inteiro1, inteiro2); } catch (NumberFormatException nfe) { return; }
+        double respostaCorreta;
+        try { respostaCorreta = aplicarOperador(inteiro1, inteiro2); } catch (NumberFormatException nfe) { return; }
         finally { gerarNovaPergunta(); }
 
-        resultado = Utils.round(resultado, 3);
+        respostaCorreta = Utils.round(respostaCorreta, 3);
 
-        if (resultado != Double.parseDouble(resposta)) return;
-
-        System.out.println("CORRETO!");
+        double respostaDada = Double.parseDouble(resposta);
+        if (respostaCorreta != respostaDada) return;
 
         numPontos++;
 
@@ -67,7 +64,6 @@ public class Calculos extends MinijogoAdapter {
 
     @Override
     protected void gerarNovaPergunta() {
-        System.out.println("NOVA PERGUNTA");
         Random random = new Random();
         inteiro1 = random.nextInt(100);
         inteiro2 = random.nextInt(100);
