@@ -38,6 +38,7 @@ public abstract class Jogador implements Serializable {
     @Override
     public String toString() { return nome; }
 
-    public void adicionaFichaEspecial() {}
     public int getNumFichasEspeciais() { return numFichasEspeciais; }
+
+    public abstract void setNumFichasEspeciais(int num);
 }

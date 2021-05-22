@@ -103,5 +103,9 @@ public class JogadorLista implements Serializable {
         return sb.toString();
     }
 
-    public void adicionaFichaEspecialJogadorAtual() { jogadores.get(currJogadorIdx).adicionaFichaEspecial(); }
+    public void adicionaFichaEspecialJogadorAtual() { jogadores.get(currJogadorIdx).setNumFichasEspeciais(getNumFichasEspeciaisJogadorAtual() + 1); }
+
+    public int getNumFichasEspeciaisJogadorAtual() { return jogadores.get(currJogadorIdx).getNumFichasEspeciais(); }
+
+    public void usarFichaEspecialJogadorAtual() { jogadores.get(currJogadorIdx).setNumFichasEspeciais(getNumFichasEspeciaisJogadorAtual() - 1); }
 }

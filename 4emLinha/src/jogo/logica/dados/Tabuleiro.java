@@ -160,4 +160,9 @@ public class Tabuleiro implements Serializable {
 
     public void limpar() { initTabuleiro(); }
 
+    public void setColuna(int col, List<TipoFicha> novaColuna) {
+        if (novaColuna.size() != numLinhas) return;
+
+        for (int lin = 0; lin < numLinhas; lin++) setFichaEm(lin, col, novaColuna.get(lin));
+    }
 }

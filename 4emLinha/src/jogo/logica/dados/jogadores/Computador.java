@@ -16,5 +16,10 @@ public class Computador extends Jogador {
     public boolean isComputador() { return true; }
 
     @Override
+    public void setNumFichasEspeciais(int num) { }
+
+    @Override
     public String toString() { return getNome() + " (CPU)"; }
+
+
 }

@@ -28,8 +28,14 @@ public class PedeDecisaoJogada extends EstadoAdapter {
 
     @Override
     public Estado aceitarMinijogo() {
-        quatroEmLinha.aceitarMinijogo();
+        quatroEmLinha.comecarMinijogo();
         return new JogaMinijogo(quatroEmLinha);
+    }
+
+    @Override
+    public Estado jogarFichaEspecial(int col) {
+        quatroEmLinha.jogarFichaEspecial(col);
+        return new PedeDecisaoJogada(quatroEmLinha);
     }
 
     @Override

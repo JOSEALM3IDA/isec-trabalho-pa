@@ -2,6 +2,6 @@ package jogo.logica.dados;
 
 public enum TipoFicha {
     FICHA_VERMELHA,
-    FICHA_AZUL,
+    FICHA_AMARELA,
     NONE
 }

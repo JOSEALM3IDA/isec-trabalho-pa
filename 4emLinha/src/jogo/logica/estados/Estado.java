@@ -16,18 +16,16 @@ public interface Estado {
     Estado undoJogada();        // -> PedeDecisaoJogada
     Estado desistir();          // -> FimJogo
     Estado aceitarMinijogo();   // -> JogoMinijogo
+    Estado jogarFichaEspecial(int col); // -> PedeDecisaoJogada
 
     // JogoMinijogo
     Estado jogarMinijogo(String resposta); // -> PedeDecisaoJogada
-    Estado ganharMinijogo();    // -> PedeDecisaoJogada
-    Estado perderMinijogo();    // -> FimJogada
 
     // FimJogada
     Estado ganharJogo();        // -> FimJogo
 
     // AssisteJogada ; PedeConfiguracao ; FimJogada ; FimJogo
     Estado avancar();           // -> Varios Estados
-
 
     Situacao getSituacao();
 

@@ -1,5 +1,7 @@
 package jogo.logica.dados.minijogos;
 
+import jogo.utils.Cronometro;
+
 public abstract class MinijogoAdapter implements Minijogo {
 
     protected String perguntaAtual = "";

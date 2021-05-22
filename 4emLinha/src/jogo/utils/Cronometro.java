@@ -1,4 +1,4 @@
-package jogo.logica.dados.minijogos;
+package jogo.utils;
 
 public class Cronometro {
 
@@ -22,8 +22,7 @@ public class Cronometro {
         if (isAcabado()) return getTempoTotal() > segundos;
 
         long tempoAtual = System.currentTimeMillis();
-        boolean rtn = (tempoAtual - tempoComeco) > (segundos * 1000L);
 
-        return rtn;
+        return (tempoAtual - tempoComeco) > (segundos * 1000L);
     }
 }

@@ -13,8 +13,10 @@ public class QuatroEmLinhaUITexto {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_VERMELHO = "\u001B[31m";
     private static final String ANSI_AZUL = "\u001B[34m";
-    private static final String FICHA_AZUL_PRINT = ANSI_AZUL + '@' + ANSI_RESET;
-    private static final String FICHA_VERMELHA_PRINT = ANSI_VERMELHO + '@' + ANSI_RESET;
+    public static final String ANSI_AMARELO = "\u001B[33m";
+    private static final String FICHA_AMARELA_PRINT = ANSI_AMARELO + 'A' + ANSI_RESET;
+    private static final String FICHA_VERMELHA_PRINT = ANSI_VERMELHO + 'V' + ANSI_RESET;
+    private static final String DIVISORIA_TABULEIRO_PRINT = ANSI_AZUL + '|' + ANSI_RESET;
 
     private QuatroEmLinhaMaquinaEstados maquinaEstados;
     private boolean doSair;
@@ -83,7 +85,7 @@ public class QuatroEmLinhaUITexto {
             default -> doSair = true;
         }
 
-        System.out.println("\n" + maquinaEstados.getConfigJogadores());
+        if (!doSair) System.out.println("\n" + maquinaEstados.getConfigJogadores());
     }
 
     private void pedeDecisaoJogadaUI() {
@@ -107,6 +109,14 @@ public class QuatroEmLinhaUITexto {
             System.out.println("\nPode jogar um minijogo!");
             opcoes.add("Jogar minijogo");
         }
+
+        int numFichasEspeciais = maquinaEstados.getNumFichasEspeciaisJogadorAtual();
+        if (numFichasEspeciais > 0) {
+            opcoes.add("Jogar ficha especial");
+            printNumFichasEspeciais(numFichasEspeciais);
+        }
+
+        opcoes.add("Desistir");
         opcoes.add("Sair");
 
         switch (UtilUITexto.getOpcao("--- PEDE JOGADA ---", opcoes.toArray(new String[0]))) {
@@ -117,6 +127,8 @@ public class QuatroEmLinhaUITexto {
                 System.out.println("Save com sucesso!");
             }
             case 4 -> maquinaEstados.aceitarMinijogo();
+            case 5 -> maquinaEstados.jogarFichaEspecial(UtilUITexto.getInteiro("Coluna a remover: ") - 1);
+            case 6 -> maquinaEstados.desistir();
             default -> doSair = true;
         }
     }
@@ -165,6 +177,17 @@ public class QuatroEmLinhaUITexto {
     private void assisteJogadaUI() {
     }
 
+    private void printNumFichasEspeciais(int numFichasEspeciais) {
+        if (numFichasEspeciais <= 0) return;
+
+        if (numFichasEspeciais > 1) {
+            System.out.println("\nTem " + numFichasEspeciais + " fichas especiais!");
+            return;
+        }
+
+        System.out.println("\nTem uma ficha especial!");
+    }
+
     private void printTabuleiro(List<TipoFicha> tabuleiro) {
         int numLinhas = maquinaEstados.getNumLinhas();
         int numColunas = maquinaEstados.getNumColunas();
@@ -174,14 +197,14 @@ public class QuatroEmLinhaUITexto {
 
         for (int i = numLinhas - 1; i >= 0; i--) {
             for (int j = 0; j < numColunas; j++) {
-                System.out.print('|');
+                System.out.print(DIVISORIA_TABULEIRO_PRINT);
                 switch (tabuleiro.get(i * numColunas + j)) {
-                    case FICHA_AZUL -> System.out.print(FICHA_AZUL_PRINT);
+                    case FICHA_AMARELA -> System.out.print(FICHA_AMARELA_PRINT);
                     case FICHA_VERMELHA -> System.out.print(FICHA_VERMELHA_PRINT);
                     default -> System.out.print(" ");
                 }
             }
-            System.out.println("| " + (i + 1));
+            System.out.println(DIVISORIA_TABULEIRO_PRINT + ' ' + (i + 1));
         }
     }
 

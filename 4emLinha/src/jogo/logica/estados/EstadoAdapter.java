@@ -8,8 +8,6 @@ import java.io.Serializable;
 public abstract class EstadoAdapter implements Estado, Serializable {
     protected QuatroEmLinha quatroEmLinha;
 
-    public EstadoAdapter() {}
-
     public EstadoAdapter(QuatroEmLinha quatroEmLinha) { this.quatroEmLinha = quatroEmLinha; }
 
     @Override
@@ -34,13 +32,10 @@ public abstract class EstadoAdapter implements Estado, Serializable {
     public Estado aceitarMinijogo() { return this; }
 
     @Override
+    public Estado jogarFichaEspecial(int col) { return this; }
+
+    @Override
     public Estado jogarMinijogo(String resposta) { return this; }
-
-    @Override
-    public Estado ganharMinijogo() { return this; }
-
-    @Override
-    public Estado perderMinijogo() { return this; }
 
     @Override
     public Estado ganharJogo() { return this; }

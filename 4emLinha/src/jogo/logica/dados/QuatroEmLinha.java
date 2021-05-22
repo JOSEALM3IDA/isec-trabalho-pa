@@ -4,6 +4,7 @@ import jogo.logica.dados.jogadores.*;
 import jogo.logica.dados.minijogos.Minijogo;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 public class QuatroEmLinha implements Serializable {
@@ -56,7 +57,9 @@ public class QuatroEmLinha implements Serializable {
         tabuleiro.limpar();
     }
 
-    public void aceitarMinijogo() {
+    public void comecarMinijogo() {
+        if (!temMinijogoDisponivel()) return;
+
         minijogo = MinijogoFactory.getMinijogo();
         minijogo.comecar();
         jogadorLista.aceitarMinijogo();
@@ -77,4 +80,15 @@ public class QuatroEmLinha implements Serializable {
     public void adicionaFichaEspecialJogadorAtual() { jogadorLista.adicionaFichaEspecialJogadorAtual(); }
 
     public int getPontuacaoAtualMinijogo() { return minijogo.getPontuacaoAtual(); }
+
+    public void jogarFichaEspecial(int col) {
+        List<TipoFicha> colunaVazia = new LinkedList<>();
+        for (int lin = 0; lin < tabuleiro.getNumLinhas(); lin++) colunaVazia.add(TipoFicha.NONE);
+
+        jogadorLista.usarFichaEspecialJogadorAtual();
+        tabuleiro.setColuna(col, colunaVazia);
+        proxJogador();
+    }
+
+    public int getNumFichasEspeciaisJogadorAtual() { return jogadorLista.getNumFichasEspeciaisJogadorAtual(); }
 }
