@@ -21,5 +21,4 @@ public class Computador extends Jogador {
     @Override
     public String toString() { return getNome() + " (CPU)"; }
 
-
 }

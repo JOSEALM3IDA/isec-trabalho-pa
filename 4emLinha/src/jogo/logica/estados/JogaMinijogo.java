@@ -1,19 +1,19 @@
 package jogo.logica.estados;
 
-import jogo.logica.dados.QuatroEmLinha;
+import jogo.logica.QuatroEmLinhaGestor;
 
 public class JogaMinijogo extends EstadoAdapter {
 
-    protected JogaMinijogo(QuatroEmLinha quatroEmLinha) { super(quatroEmLinha); }
+    protected JogaMinijogo(QuatroEmLinhaGestor quatroEmLinhaGestor) { super(quatroEmLinhaGestor); }
 
     @Override
     public Estado jogarMinijogo(String resposta) {
-        quatroEmLinha.enviarRespostaMinijogo(resposta);
+        quatroEmLinhaGestor.enviarRespostaMinijogo(resposta);
 
-        if (quatroEmLinha.isAcabadoMinijogo()) {
-            if (quatroEmLinha.ganhouUltimoMinijogo()) quatroEmLinha.adicionaFichaEspecialJogadorAtual();
+        if (quatroEmLinhaGestor.isAcabadoMinijogo()) {
+            if (quatroEmLinhaGestor.ganhouUltimoMinijogo()) quatroEmLinhaGestor.adicionaFichaEspecialJogadorAtual();
 
-            return new PedeDecisaoJogada(quatroEmLinha);
+            return new PedeDecisaoJogada(quatroEmLinhaGestor);
         }
 
         return this;

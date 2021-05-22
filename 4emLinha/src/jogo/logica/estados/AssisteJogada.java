@@ -1,10 +1,10 @@
 package jogo.logica.estados;
 
-import jogo.logica.dados.QuatroEmLinha;
+import jogo.logica.QuatroEmLinhaGestor;
 
 public class AssisteJogada extends EstadoAdapter {
 
-    protected AssisteJogada(QuatroEmLinha quatroEmLinha) { super(quatroEmLinha); }
+    protected AssisteJogada(QuatroEmLinhaGestor quatroEmLinhaGestor) { super(quatroEmLinhaGestor); }
 
     @Override
     public Estado avancar() {

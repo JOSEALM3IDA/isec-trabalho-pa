@@ -1,15 +1,15 @@
 package jogo.logica.estados;
 
-import jogo.logica.dados.QuatroEmLinha;
+import jogo.logica.QuatroEmLinhaGestor;
 
 public class FimJogo extends EstadoAdapter {
 
-    protected FimJogo(QuatroEmLinha quatroEmLinha) { super(quatroEmLinha); }
+    protected FimJogo(QuatroEmLinhaGestor quatroEmLinhaGestor) { super(quatroEmLinhaGestor); }
 
     @Override
     public Estado avancar() {
-        quatroEmLinha.limparTudo();
-        return new PedeDecisaoInicio(quatroEmLinha);
+        quatroEmLinhaGestor.limparTudo();
+        return new PedeDecisaoInicio(quatroEmLinhaGestor);
     }
 
     @Override

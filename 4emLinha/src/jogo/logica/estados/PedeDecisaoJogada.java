@@ -1,15 +1,15 @@
 package jogo.logica.estados;
 
-import jogo.logica.dados.QuatroEmLinha;
+import jogo.logica.QuatroEmLinhaGestor;
 
 public class PedeDecisaoJogada extends EstadoAdapter {
 
-    protected PedeDecisaoJogada(QuatroEmLinha quatroEmLinha) { super(quatroEmLinha); }
+    protected PedeDecisaoJogada(QuatroEmLinhaGestor quatroEmLinhaGestor) { super(quatroEmLinhaGestor); }
 
     @Override
     public Estado jogarFicha(int col) {
-        quatroEmLinha.jogarFicha(col);
-        return quatroEmLinha.checkFimJogo() ? new FimJogo(quatroEmLinha) : new PedeDecisaoJogada(quatroEmLinha);
+        quatroEmLinhaGestor.jogarFicha(col);
+        return quatroEmLinhaGestor.checkFimJogo() ? new FimJogo(quatroEmLinhaGestor) : new PedeDecisaoJogada(quatroEmLinhaGestor);
     }
 
     @Override
@@ -28,14 +28,14 @@ public class PedeDecisaoJogada extends EstadoAdapter {
 
     @Override
     public Estado aceitarMinijogo() {
-        quatroEmLinha.comecarMinijogo();
-        return new JogaMinijogo(quatroEmLinha);
+        quatroEmLinhaGestor.comecarMinijogo();
+        return new JogaMinijogo(quatroEmLinhaGestor);
     }
 
     @Override
     public Estado jogarFichaEspecial(int col) {
-        quatroEmLinha.jogarFichaEspecial(col);
-        return new PedeDecisaoJogada(quatroEmLinha);
+        quatroEmLinhaGestor.jogarFichaEspecial(col);
+        return new PedeDecisaoJogada(quatroEmLinhaGestor);
     }
 
     @Override

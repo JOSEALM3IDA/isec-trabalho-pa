@@ -1,13 +1,13 @@
 package jogo.logica.estados;
 
-import jogo.logica.dados.QuatroEmLinha;
+import jogo.logica.QuatroEmLinhaGestor;
 
 public class PedeDecisaoInicio extends EstadoAdapter {
 
-    public PedeDecisaoInicio(QuatroEmLinha quatroEmLinha) { super(quatroEmLinha); }
+    public PedeDecisaoInicio(QuatroEmLinhaGestor quatroEmLinhaGestor) { super(quatroEmLinhaGestor); }
 
     @Override
-    public Estado iniciarJogo() { return new PedeConfiguracao(quatroEmLinha); }
+    public Estado iniciarJogo() { return new PedeConfiguracao(quatroEmLinhaGestor); }
 
     @Override
     public Estado verReplay() {

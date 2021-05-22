@@ -1,6 +1,5 @@
 package jogo.logica;
 
-import jogo.logica.dados.QuatroEmLinha;
 import jogo.logica.dados.TipoFicha;
 import jogo.logica.dados.jogadores.TipoJogador;
 import jogo.logica.estados.Estado;
@@ -11,12 +10,13 @@ import java.io.Serializable;
 import java.util.List;
 
 public class QuatroEmLinhaMaquinaEstados implements Serializable {
+
     private Estado estadoAtual;
-    protected QuatroEmLinha quatroEmLinha;
+    QuatroEmLinhaGestor quatroEmLinhaGestor;
 
     public QuatroEmLinhaMaquinaEstados() {
-        this.quatroEmLinha = new QuatroEmLinha();
-        this.estadoAtual = new PedeDecisaoInicio(quatroEmLinha);
+        this.quatroEmLinhaGestor = new QuatroEmLinhaGestor();
+        this.estadoAtual = new PedeDecisaoInicio(quatroEmLinhaGestor);
     }
 
     public void iniciarJogo() { estadoAtual = estadoAtual.iniciarJogo(); }
@@ -30,38 +30,34 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public void enviarRespostaMinijogo(String resposta) { estadoAtual = estadoAtual.jogarMinijogo(resposta); }
     public void avancar() { estadoAtual = estadoAtual.avancar(); }
 
-    public boolean existeJogador(String nome) { return quatroEmLinha.existeJogador(nome); }
+    public boolean existeJogador(String nome) { return quatroEmLinhaGestor.existeJogador(nome); }
 
-    public boolean isFullJogadores() { return quatroEmLinha.isFullJogadores(); }
-
-    public int getNumJogadores() { return quatroEmLinha.getNumJogadores(); }
-    public int getNumLinhas() { return quatroEmLinha.getNumLinhas(); }
-    public int getNumColunas() { return quatroEmLinha.getNumColunas(); }
-    public int getJogadaAutomatica() { return quatroEmLinha.getJogadaAutomatica(); }
-    public String getNomeJogadorAtual() { return quatroEmLinha.getNomeJogadorAtual(); }
-    public String getNomeVencedor() { return quatroEmLinha.getNomeVencedor(); }
+    public int getNumJogadores() { return quatroEmLinhaGestor.getNumJogadores(); }
+    public int getNumLinhas() { return quatroEmLinhaGestor.getNumLinhas(); }
+    public int getNumColunas() { return quatroEmLinhaGestor.getNumColunas(); }
+    public int getJogadaAutomatica() { return quatroEmLinhaGestor.getJogadaAutomatica(); }
+    public String getNomeJogadorAtual() { return quatroEmLinhaGestor.getNomeJogadorAtual(); }
+    public String getNomeVencedor() { return quatroEmLinhaGestor.getNomeVencedor(); }
 
     public Situacao getSituacao() { return estadoAtual.getSituacao(); }
 
-    public String getConfigJogadores() { return quatroEmLinha.getConfigJogadores(); }
+    public String getConfigJogadores() { return quatroEmLinhaGestor.getConfigJogadores(); }
 
-    public List<TipoFicha> getTabuleiro() { return quatroEmLinha.getTabuleiro(); }
+    public List<TipoFicha> getTabuleiro() { return quatroEmLinhaGestor.getTabuleiro(); }
 
-    public boolean temMinijogoDisponivel() { return quatroEmLinha.temMinijogoDisponivel(); }
+    public boolean temMinijogoDisponivel() { return quatroEmLinhaGestor.temMinijogoDisponivel(); }
 
-    public boolean isComputadorAJogar() { return quatroEmLinha.isComputadorAJogar(); }
+    public boolean isComputadorAJogar() { return quatroEmLinhaGestor.isComputadorAJogar(); }
 
-    public boolean isComecadoMinijogo() { return quatroEmLinha.isComecadoMinijogo(); }
+    public String getPerguntaMinijogo() { return quatroEmLinhaGestor.getPerguntaMinijogo(); }
 
-    public String getPerguntaMinijogo() { return quatroEmLinha.getPerguntaMinijogo(); }
+    public boolean isValidaRespostaMinijogo(String resposta) { return quatroEmLinhaGestor.isValidaRespostaMinijogo(resposta); }
 
-    public boolean isValidaRespostaMinijogo(String resposta) { return quatroEmLinha.isValidaRespostaMinijogo(resposta); }
+    public boolean ganhouUltimoMinijogo() { return quatroEmLinhaGestor.ganhouUltimoMinijogo(); }
 
-    public boolean ganhouUltimoMinijogo() { return quatroEmLinha.ganhouUltimoMinijogo(); }
+    public boolean isAcabadoMinijogo() { return quatroEmLinhaGestor.isAcabadoMinijogo(); }
 
-    public boolean isAcabadoMinijogo() { return quatroEmLinha.isAcabadoMinijogo(); }
+    public int getPontuacaoAtualMinijogo() { return quatroEmLinhaGestor.getPontuacaoAtualMinijogo(); }
 
-    public int getPontuacaoAtualMinijogo() { return quatroEmLinha.getPontuacaoAtualMinijogo(); }
-
-    public int getNumFichasEspeciaisJogadorAtual() { return quatroEmLinha.getNumFichasEspeciaisJogadorAtual(); }
+    public int getNumFichasEspeciaisJogadorAtual() { return quatroEmLinhaGestor.getNumFichasEspeciaisJogadorAtual(); }
 }

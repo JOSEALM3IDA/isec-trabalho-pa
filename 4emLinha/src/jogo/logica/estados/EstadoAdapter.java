@@ -1,14 +1,14 @@
 package jogo.logica.estados;
 
-import jogo.logica.dados.QuatroEmLinha;
+import jogo.logica.QuatroEmLinhaGestor;
 import jogo.logica.dados.jogadores.TipoJogador;
 
 import java.io.Serializable;
 
 public abstract class EstadoAdapter implements Estado, Serializable {
-    protected QuatroEmLinha quatroEmLinha;
+    protected QuatroEmLinhaGestor quatroEmLinhaGestor;
 
-    public EstadoAdapter(QuatroEmLinha quatroEmLinha) { this.quatroEmLinha = quatroEmLinha; }
+    public EstadoAdapter(QuatroEmLinhaGestor quatroEmLinhaGestor) { this.quatroEmLinhaGestor = quatroEmLinhaGestor; }
 
     @Override
     public Estado iniciarJogo() { return this; }
