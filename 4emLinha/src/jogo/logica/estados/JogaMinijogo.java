@@ -1,6 +1,6 @@
 package jogo.logica.estados;
 
-import jogo.logica.QuatroEmLinhaGestor;
+import jogo.logica.dados.QuatroEmLinhaGestor;
 
 public class JogaMinijogo extends EstadoAdapter {
 

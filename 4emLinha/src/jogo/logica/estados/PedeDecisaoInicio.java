@@ -1,29 +1,20 @@
 package jogo.logica.estados;
 
-import jogo.logica.QuatroEmLinhaGestor;
-import jogo.utils.Constantes;
-import jogo.utils.Utils;
-
-import java.io.IOException;
+import jogo.logica.dados.QuatroEmLinhaGestor;
 
 public class PedeDecisaoInicio extends EstadoAdapter {
 
     public PedeDecisaoInicio(QuatroEmLinhaGestor quatroEmLinhaGestor) { super(quatroEmLinhaGestor); }
 
     @Override
-    public Estado iniciarJogo() { return new PedeConfiguracao(quatroEmLinhaGestor); }
+    public Estado iniciarJogo() {
+        quatroEmLinhaGestor.limparTudo();
+        return new PedeConfiguracao(quatroEmLinhaGestor);
+    }
 
     @Override
-    public Estado verReplay(String nomeFicheiro) {
-        try {
-            quatroEmLinhaGestor = Utils.lerObjeto(Constantes.REPLAY_PATH + nomeFicheiro, QuatroEmLinhaGestor.class);
-        } catch (IOException | ClassNotFoundException ignored) { ignored.printStackTrace(); }
-
-        if (quatroEmLinhaGestor == null) return null;
-
-        quatroEmLinhaGestor.resetTabuleiro();
-        quatroEmLinhaGestor.resetEstadoJogadores();
-
+    public Estado verReplay(QuatroEmLinhaGestor quatroEmLinhaGestor) {
+        this.quatroEmLinhaGestor = quatroEmLinhaGestor;
         return new AssisteJogada(quatroEmLinhaGestor);
     }
 

@@ -1,7 +1,7 @@
 package jogo.logica.command;
 
 import jogo.logica.dados.QuatroEmLinha;
-import jogo.logica.dados.TipoFicha;
+import jogo.logica.dados.tabuleiro.TipoFicha;
 
 import java.util.List;
 
@@ -17,6 +17,8 @@ public class JogaFichaEspecialCommand extends CommandAdapter {
 
     @Override
     public boolean execute() {
+        if (receiver == null) return false;
+
         colunaRemovida = receiver.getColuna(col);
         receiver.jogarFichaEspecial(col);
         receiver.proxJogador();
@@ -24,5 +26,15 @@ public class JogaFichaEspecialCommand extends CommandAdapter {
     }
 
     @Override
-    public boolean undo() { return receiver.setColuna(col, colunaRemovida); }
+    public void undo() {
+        if (receiver == null) return;
+
+        receiver.setColuna(col, colunaRemovida);
+    }
+
+    @Override
+    public boolean temUndo() { return true; }
+
+    @Override
+    public String toString() { return nomeJogador + " joga ficha especial em " + (col + 1); }
 }

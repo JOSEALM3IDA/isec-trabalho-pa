@@ -6,13 +6,22 @@ import java.io.Serializable;
 
 public class CommandAdapter implements Command, Serializable {
     protected final QuatroEmLinha receiver;
+    protected final String nomeJogador;
 
-    protected CommandAdapter() { receiver = null; }
-    protected CommandAdapter(QuatroEmLinha receiver) { this.receiver = receiver; }
+    protected CommandAdapter(QuatroEmLinha receiver) {
+        this.receiver = receiver;
+        this.nomeJogador = receiver.getNomeJogadorAtual();
+    }
 
     @Override
     public boolean execute() { return false; }
 
     @Override
-    public boolean undo() { return false; }
+    public void undo() {}
+
+    @Override
+    public boolean temUndo() { return false; }
+
+    @Override
+    public String toString() { return nomeJogador + " fez algo indefinido"; }
 }

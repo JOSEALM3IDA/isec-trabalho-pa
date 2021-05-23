@@ -1,16 +1,21 @@
 package jogo.logica.dados.jogadores;
 
-import jogo.logica.dados.Tabuleiro;
-import jogo.logica.dados.TipoFicha;
+import jogo.logica.dados.tabuleiro.Tabuleiro;
+import jogo.logica.dados.tabuleiro.TipoFicha;
+import jogo.utils.Utils;
 
-import java.util.Random;
-
-public class Computador extends Jogador {
+public class Computador extends JogadorAdapter {
 
     public Computador(String nome, TipoFicha ficha) { super(nome, ficha); }
 
     @Override
-    public int getJogadaAutomatica(Tabuleiro tabuleiro) { return (new Random()).nextInt(tabuleiro.getNumColunas()); }
+    public int getJogadaAutomatica(Tabuleiro tabuleiro) {
+        int coluna;
+
+        do { coluna = Utils.getNumeroRandom(tabuleiro.getNumColunas()); } while (!tabuleiro.isJogavelColuna(coluna));
+
+        return coluna;
+    }
 
     @Override
     public boolean isComputador() { return true; }

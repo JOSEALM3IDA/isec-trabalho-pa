@@ -54,16 +54,17 @@ public class Utils {
             oos.writeObject(objeto);
             oos.close();
             fos.close();
-        } catch (IOException ioe) { return false; }
+        } catch (IOException ioe) { ioe.printStackTrace(); return false; }
 
         return true;
     }
 
-    public static <T> T lerObjeto(String path, Class<T> tClass) throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(path);
-        ObjectInputStream ois = new ObjectInputStream(fis);
+    public static <T> T lerObjeto(String path, Class<T> tClass) {
 
-        Object obj = ois.readObject();
+        Object obj;
+        try (FileInputStream fis = new FileInputStream(path); ObjectInputStream ois = new ObjectInputStream(fis)) {
+            obj = ois.readObject();
+        } catch (IOException | ClassNotFoundException ex) { ex.printStackTrace(); return null; }
 
         if (obj == null) return null;
 

@@ -1,6 +1,11 @@
 package jogo.logica.command;
 
+import jogo.logica.dados.QuatroEmLinha;
+
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 public class CommandManager implements Serializable {
@@ -9,33 +14,30 @@ public class CommandManager implements Serializable {
     private final Stack<Command> fullHistorico = new Stack<>();
 
     public void invokeCommand(Command command) {
-        if (command instanceof DesfazerJogadaCommand) {
-            System.out.println("INVOKE UNDO COMMAND");
+        if (!command.temUndo()) {
             fullHistorico.push(command);
             command.execute();
-
-
-            System.out.println(fullHistorico);
             return;
         }
 
         if (command.execute()) {
             fullHistorico.push(command);
             historico.push(command);
-            System.out.println("historico = " + historico.size());
             return;
         }
 
         historico.clear();
     }
 
-    public boolean undo() {
-        if (historico.size() <= 0) return false;
+    public void undo(int numVezes, QuatroEmLinha receiver) {
+        if (historico.size() < numVezes) return;
 
-        Command commandToUndo = historico.pop();
+        List<Command> commandsToUndo = new LinkedList<>();
+        for (int i = 0; i < numVezes; i++) commandsToUndo.add(historico.pop());
 
-        invokeCommand(new DesfazerJogadaCommand(commandToUndo));
-        return true;
+        Collections.reverse(commandsToUndo);
+
+        invokeCommand(new DesfazerJogadasCommand(commandsToUndo, receiver));
     }
 
     public boolean temUndo() { return !historico.isEmpty(); }
@@ -49,5 +51,12 @@ public class CommandManager implements Serializable {
 
         Command primeiroDaLista = fullHistorico.remove(0);
         primeiroDaLista.execute();
+    }
+
+    public String getDescricaoComandoAtual() { return fullHistorico.get(0).toString(); }
+
+    public void resetHistorico() {
+        historico.empty();
+        fullHistorico.empty();
     }
 }

@@ -1,4 +1,4 @@
-package jogo.logica.dados;
+package jogo.logica.dados.tabuleiro;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,6 +28,8 @@ public class Tabuleiro implements Serializable {
     }
 
     public void addFicha(int col, TipoFicha ficha) {
+        if (!isJogavelColuna(col)) return;
+
         for (int lin = 0; lin < numLinhas; lin++) {
             if (getFichaEm(lin, col) != TipoFicha.NONE) continue;
 
@@ -47,13 +49,22 @@ public class Tabuleiro implements Serializable {
         return false;
     }
 
-    private TipoFicha getFichaEm(int lin, int col) { return tabuleiro.get(lin * numColunas + col); }
+    private TipoFicha getFichaEm(int lin, int col) {
+        if (lin >= numLinhas || col >= numColunas) return null;
+        if (lin < 0 || col < 0) return null;
+        return tabuleiro.get(lin * numColunas + col);
+    }
 
     private void setFichaEm(int lin, int col, TipoFicha tipoFicha) { tabuleiro.set(lin * numColunas + col, tipoFicha); }
 
     public List<TipoFicha> getFichas() { return Collections.unmodifiableList(tabuleiro); }
     public int getNumLinhas() { return numLinhas; }
     public int getNumColunas() { return numColunas; }
+
+    public boolean isEmpatado() {
+        for (int col = 0; col < numColunas; col++) if (getFichaEm(numLinhas - 1, col) == TipoFicha.NONE) return false;
+        return true;
+    }
 
     public boolean checkQuatroEmLinha(TipoFicha ficha) {
         return checkQuatroEmLinhaLinhas(ficha)
@@ -173,7 +184,7 @@ public class Tabuleiro implements Serializable {
     public void limpar() { initTabuleiro(); }
 
     public List<TipoFicha> getColuna(int col) {
-        List<jogo.logica.dados.TipoFicha> coluna = new LinkedList<>();
+        List<TipoFicha> coluna = new LinkedList<>();
 
         for (int lin = 0; lin < numLinhas; lin++) coluna.add(getFichaEm(lin, col));
 
@@ -186,6 +197,13 @@ public class Tabuleiro implements Serializable {
         for (int lin = 0; lin < numLinhas; lin++) setFichaEm(lin, col, novaColuna.get(lin));
 
         return true;
+    }
+
+    public boolean isJogavelColuna(int col) {
+        if (col >= numColunas || col < 0) return false;
+
+        for (int lin = 0; lin < numLinhas; lin++) if (getFichaEm(lin, col) == TipoFicha.NONE) return true;
+        return false;
     }
 
 }

@@ -1,8 +1,8 @@
 package jogo.logica.dados.jogadores;
 
-import jogo.logica.dados.TipoFicha;
+import jogo.logica.dados.tabuleiro.TipoFicha;
 
-public class Humano extends Jogador {
+public class Humano extends JogadorAdapter {
 
     private static final int NUM_CREDITOS_INICIAIS = 5;
     

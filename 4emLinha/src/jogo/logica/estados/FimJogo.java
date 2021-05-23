@@ -1,6 +1,6 @@
 package jogo.logica.estados;
 
-import jogo.logica.QuatroEmLinhaGestor;
+import jogo.logica.dados.QuatroEmLinhaGestor;
 import jogo.utils.Constantes;
 import jogo.utils.Utils;
 
@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class FimJogo extends EstadoAdapter {
-
-
 
     protected FimJogo(QuatroEmLinhaGestor quatroEmLinhaGestor) {
         super(quatroEmLinhaGestor);
@@ -21,7 +19,7 @@ public class FimJogo extends EstadoAdapter {
         String[] replaysExistentes = Utils.getFicheirosNoDiretorio(Constantes.REPLAY_PATH);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss");
         LocalDateTime ldt = LocalDateTime.now();
-        String nomeNovoFicheiro = Constantes.REPLAY_PATH + dtf.format(ldt) + ".replay";
+        String nomeNovoFicheiro = Constantes.REPLAY_PATH + dtf.format(ldt);
 
 
         if (replaysExistentes.length < Constantes.NUM_MAX_REPLAYS) {

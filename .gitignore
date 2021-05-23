@@ -1,23 +1,27 @@
 # Compiled class file
-*.class
+4emLinha/*.class
 
 # Log file
-*.log
+4emLinha/*.log
 
 # BlueJ files
-*.ctxt
+4emLinha/*.ctxt
 
 # Mobile Tools for Java (J2ME)
-.mtj.tmp/
+4emLinha/.mtj.tmp/
 
 # Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+4emLinha/*.jar
+4emLinha/*.war
+4emLinha/*.nar
+4emLinha/*.ear
+4emLinha/*.zip
+4emLinha/*.tar.gz
+4emLinha/*.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+4emLinha/hs_err_pid*
+
+# Saves & Replays
+4emLinha/saves/*
+4emLinha/replays/*

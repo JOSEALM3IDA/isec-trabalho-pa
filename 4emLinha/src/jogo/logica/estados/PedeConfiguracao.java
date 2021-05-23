@@ -1,6 +1,6 @@
 package jogo.logica.estados;
 
-import jogo.logica.QuatroEmLinhaGestor;
+import jogo.logica.dados.QuatroEmLinhaGestor;
 import jogo.logica.dados.jogadores.TipoJogador;
 
 public class PedeConfiguracao extends EstadoAdapter {
@@ -10,7 +10,10 @@ public class PedeConfiguracao extends EstadoAdapter {
     @Override
     public Estado adicionarJogador(TipoJogador tipoJogador, String nomeJogador) {
         quatroEmLinhaGestor.addJogador(tipoJogador, nomeJogador);
-        return quatroEmLinhaGestor.isFullJogadores() ? new PedeDecisaoJogada(quatroEmLinhaGestor) : new PedeConfiguracao(quatroEmLinhaGestor);
+        return quatroEmLinhaGestor.isFullJogadores() ?
+                new PedeDecisaoJogada(quatroEmLinhaGestor)
+                :
+                new PedeConfiguracao(quatroEmLinhaGestor);
     }
 
     @Override

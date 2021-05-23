@@ -1,6 +1,6 @@
 package jogo.logica.estados;
 
-import jogo.logica.QuatroEmLinhaGestor;
+import jogo.logica.dados.QuatroEmLinhaGestor;
 
 public class AssisteJogada extends EstadoAdapter {
 
@@ -9,8 +9,11 @@ public class AssisteJogada extends EstadoAdapter {
     @Override
     public Estado avancar() {
         quatroEmLinhaGestor.executarProximo();
+        quatroEmLinhaGestor.checkFimJogo();
 
-        return quatroEmLinhaGestor.temProximo() ? new AssisteJogada(quatroEmLinhaGestor) : new PedeDecisaoInicio(quatroEmLinhaGestor);
+        if (quatroEmLinhaGestor.temProximo()) return new AssisteJogada(quatroEmLinhaGestor);
+
+        return new PedeDecisaoInicio(quatroEmLinhaGestor);
     }
 
     @Override

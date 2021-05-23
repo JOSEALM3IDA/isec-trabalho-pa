@@ -2,6 +2,9 @@ package jogo.logica.dados;
 
 import jogo.logica.dados.jogadores.*;
 import jogo.logica.dados.minijogos.Minijogo;
+import jogo.logica.dados.minijogos.MinijogoFactory;
+import jogo.logica.dados.tabuleiro.Tabuleiro;
+import jogo.logica.dados.tabuleiro.TipoFicha;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -13,39 +16,10 @@ public class QuatroEmLinha implements Serializable {
     private final Tabuleiro tabuleiro = new Tabuleiro();
     private transient Minijogo minijogo = null;
 
-    public QuatroEmLinha() {}
-
-    public void addJogador(TipoJogador tipoJogador, String nomeJogador) { jogadorLista.addJogador(tipoJogador, nomeJogador); }
-
-    public void jogarFicha(int col) { tabuleiro.addFicha(col, jogadorLista.getFichaAtual()); }
-
-    public boolean removeFicha(int col) { return tabuleiro.removeFicha(col); }
-
-    public int getJogadaAutomatica() { return jogadorLista.getJogadaAutomatica(tabuleiro); }
-
-    public boolean existeJogador(String nomeJogador) { return jogadorLista.existeJogador(nomeJogador); }
-
-    public void proxJogador() { jogadorLista.proxJogador(); }
-    private void anteriorJogador(int numVezes) { jogadorLista.undoJogador(numVezes); }
-
-    public boolean isFullJogadores() { return jogadorLista.isFullJogadores(); }
-
-    public int getNumJogadores() { return jogadorLista.getNumJogadores(); }
-    public int getNumLinhas() { return tabuleiro.getNumLinhas(); }
-    public int getNumColunas() { return tabuleiro.getNumColunas(); }
-    public String getNomeJogadorAtual() { return jogadorLista.getNomeJogadorAtual(); }
-    public String getNomeVencedor() { return jogadorLista.getNomeVencedor(); }
-
-    public String getConfigJogadores() { return "Lista de jogadores:\n" + jogadorLista; }
-
-    public List<TipoFicha> getTabuleiro() { return tabuleiro.getFichas(); }
-    public boolean temMinijogoDisponivel() { return jogadorLista.getNumJogadasDesdeMinijogoCurrJogador() >= 4; }
-
-    public boolean isComputadorAJogar() { return jogadorLista.isComputadorAJogar(); }
-
     public boolean checkFimJogo() {
         TipoFicha fichaAnterior = jogadorLista.getFichaAnterior();
 
+        if (tabuleiro.isEmpatado()) return true;
         if (!tabuleiro.checkQuatroEmLinha(fichaAnterior)) return false;
 
         jogadorLista.setVencedorJogadorComFicha(fichaAnterior);
@@ -70,22 +44,6 @@ public class QuatroEmLinha implements Serializable {
         jogadorLista.aceitarMinijogo();
     }
 
-    public boolean isComecadoMinijogo() { return minijogo != null && minijogo.isComecado(); }
-
-    public String getPerguntaMinijogo() { return minijogo != null ? minijogo.getPerguntaAtual() : ""; }
-
-    public boolean isValidaRespostaMinijogo(String resposta) { return minijogo != null && minijogo.isValidaResposta(resposta); }
-
-    public void enviarRespostaMinijogo(String resposta) { if (minijogo != null) minijogo.receberResposta(resposta); }
-
-    public boolean ganhouUltimoMinijogo() { return minijogo != null && minijogo.isGanho(); }
-
-    public boolean isAcabadoMinijogo() { return minijogo != null && minijogo.isAcabado(); }
-
-    public void adicionaFichaEspecialJogadorAtual() { jogadorLista.adicionaFichaEspecialJogadorAtual(); }
-
-    public int getPontuacaoAtualMinijogo() { return minijogo.getPontuacaoAtual(); }
-
     public void jogarFichaEspecial(int col) {
         List<TipoFicha> colunaVazia = new LinkedList<>();
         for (int lin = 0; lin < tabuleiro.getNumLinhas(); lin++) colunaVazia.add(TipoFicha.NONE);
@@ -94,24 +52,46 @@ public class QuatroEmLinha implements Serializable {
         tabuleiro.setColuna(col, colunaVazia);
     }
 
-    public int getNumFichasEspeciaisJogadorAtual() { return jogadorLista.getNumFichasEspeciaisJogadorAtual(); }
-
     public void processaUndoJogadorAtual(int numVezes) {
         jogadorLista.removeCreditoJogadorAtual(numVezes);
         anteriorJogador(numVezes);
     }
 
-    public boolean jogoAcabou() { return jogadorLista.haVencedor(); }
-
-    public int getNumCreditosJogadorAtual() { return jogadorLista.getNumCreditosJogadorAtual(); }
-
-    public boolean temCreditosJogadorAtual() { return jogadorLista.getNumCreditosJogadorAtual() > 0; }
-
-    public List<TipoFicha> getColuna(int col) { return tabuleiro.getColuna(col); }
-
-    public boolean setColuna(int col, List<TipoFicha> novaColuna) { return tabuleiro.setColuna(col, novaColuna); }
-
+    public void addJogador(TipoJogador tipoJogador, String nomeJogador) { jogadorLista.addJogador(tipoJogador, nomeJogador); }
+    public void jogarFicha(int col) { tabuleiro.addFicha(col, jogadorLista.getFichaAtual()); }
+    public void removeFicha(int col) { tabuleiro.removeFicha(col); }
+    public void setColuna(int col, List<TipoFicha> novaColuna) { tabuleiro.setColuna(col, novaColuna); }
     public void resetTabuleiro() { tabuleiro.limpar(); }
-
     public void resetEstadoJogadores() { jogadorLista.resetEstadoJogadores(); }
+    public void proxJogador() { jogadorLista.proxJogador(); }
+    private void anteriorJogador(int numVezes) { jogadorLista.undoJogador(numVezes); }
+    public void enviarRespostaMinijogo(String resposta) { if (minijogo != null) minijogo.receberResposta(resposta); }
+    public void adicionaFichaEspecialJogadorAtual() { jogadorLista.adicionaFichaEspecialJogadorAtual(); }
+
+    public int getJogadaAutomatica() { return jogadorLista.getJogadaAutomatica(tabuleiro); }
+    public boolean existeJogador(String nomeJogador) { return jogadorLista.existeJogador(nomeJogador); }
+    public boolean isFullJogadores() { return jogadorLista.isFullJogadores(); }
+    public int getNumJogadores() { return jogadorLista.getNumJogadores(); }
+    public int getNumLinhas() { return tabuleiro.getNumLinhas(); }
+    public int getNumColunas() { return tabuleiro.getNumColunas(); }
+    public String getNomeJogadorAtual() { return jogadorLista.getNomeJogadorAtual(); }
+    public String getNomeVencedor() { return jogadorLista.getNomeVencedor(); }
+    public String getConfigJogadores() { return "Lista de jogadores:\n" + jogadorLista; }
+    public List<TipoFicha> getTabuleiro() { return tabuleiro.getFichas(); }
+    public boolean temMinijogoDisponivel() { return jogadorLista.getNumJogadasDesdeMinijogoCurrJogador() >= 4; }
+    public boolean isComputadorAJogar() { return jogadorLista.isComputadorAJogar(); }
+    public String getPerguntaMinijogo() { return minijogo != null ? minijogo.getPerguntaAtual() : ""; }
+    public boolean isValidaRespostaMinijogo(String resposta) { return minijogo != null && minijogo.isValidaResposta(resposta); }
+    public boolean ganhouUltimoMinijogo() { return minijogo != null && minijogo.isGanho(); }
+    public boolean isAcabadoMinijogo() { return minijogo != null && minijogo.isAcabado(); }
+    public int getPontuacaoAtualMinijogo() { return minijogo.getPontuacaoAtual(); }
+    public int getNumFichasEspeciaisJogadorAtual() { return jogadorLista.getNumFichasEspeciaisJogadorAtual(); }
+    public boolean jogoAcabou() { return jogadorLista.haVencedor(); }
+    public int getNumCreditosJogadorAtual() { return jogadorLista.getNumCreditosJogadorAtual(); }
+    public boolean temCreditosJogadorAtual(int numCreditos) { return jogadorLista.getNumCreditosJogadorAtual() >= numCreditos; }
+    public boolean temCreditosJogadorAtual() { return temCreditosJogadorAtual(1); }
+    public List<TipoFicha> getColuna(int col) { return tabuleiro.getColuna(col); }
+    public boolean isJogavelColuna(int coluna) { return tabuleiro.isJogavelColuna(coluna); }
+    public boolean isEmpatado() { return tabuleiro.isEmpatado(); }
+    public TipoFicha getFichaAtual() { return jogadorLista.getFichaAtual(); }
 }

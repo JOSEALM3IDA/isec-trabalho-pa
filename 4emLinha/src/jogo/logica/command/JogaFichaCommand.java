@@ -14,11 +14,22 @@ public class JogaFichaCommand extends CommandAdapter {
 
     @Override
     public boolean execute() {
+        if (receiver == null) return false;
+        
         receiver.jogarFicha(col);
         receiver.proxJogador();
         return true;
     }
 
     @Override
-    public boolean undo() { return receiver.removeFicha(col); }
+    public void undo() {
+        if (receiver == null) return;
+        receiver.removeFicha(col);
+    }
+
+    @Override
+    public boolean temUndo() { return true; }
+
+    @Override
+    public String toString() { return nomeJogador + " joga ficha em " + (col + 1); }
 }

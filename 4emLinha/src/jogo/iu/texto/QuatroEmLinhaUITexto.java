@@ -1,14 +1,14 @@
 package jogo.iu.texto;
 
 import jogo.logica.QuatroEmLinhaMaquinaEstados;
-import jogo.logica.dados.TipoFicha;
+import jogo.logica.dados.tabuleiro.TipoFicha;
 import jogo.logica.dados.jogadores.TipoJogador;
 import jogo.utils.Constantes;
 import jogo.utils.UtilUITexto;
 import jogo.utils.Utils;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,8 +20,6 @@ public class QuatroEmLinhaUITexto {
     private static final String FICHA_AMARELA_PRINT = ANSI_AMARELO + 'A' + ANSI_RESET;
     private static final String FICHA_VERMELHA_PRINT = ANSI_VERMELHO + 'V' + ANSI_RESET;
     private static final String DIVISORIA_TABULEIRO_PRINT = ANSI_AZUL + '|' + ANSI_RESET;
-
-    private static final int MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR = 1200;
 
     private QuatroEmLinhaMaquinaEstados maquinaEstados;
     private boolean doSair;
@@ -44,88 +42,240 @@ public class QuatroEmLinhaUITexto {
         }
     }
 
-    private void pedeDecisaoInicioUI() {
 
+
+    ///////////////////// UIs PRIMÁRIAS /////////////////////
+
+    private void pedeDecisaoInicioUI() {
         switch (UtilUITexto.getOpcao("--- MENU INICIAL ---",
                 "Iniciar jogo", "Continuar jogo", "Ver replay", "Sair")) {
             case 1 -> maquinaEstados.iniciarJogo();
-            case 2 -> {
-                String nomeFicheiro;
-                while (true) {
-                    nomeFicheiro = UtilUITexto.getResposta("Nome do ficheiro?");
-
-                    if (nomeFicheiro.isEmpty()) return;
-
-                    String path = "saves/" + nomeFicheiro + ".save";
-
-                    try {
-                        maquinaEstados = Utils.lerObjeto(path, QuatroEmLinhaMaquinaEstados.class);
-                        System.out.println("Load com sucesso!");
-                        break;
-                    } catch (ClassNotFoundException | IOException ignored) {}
-                }
-
-            }
-            case 3 -> {
-                String[] ficheiros = Utils.getFicheirosNoDiretorio(Constantes.REPLAY_PATH);
-
-                if (ficheiros.length <= 0) {
-                    System.out.println("\nNão há jogos para dar replay.");
-                    break;
-                }
-
-                int opt = UtilUITexto.getOpcao("Ficheiro: ", false, ficheiros);
-                maquinaEstados.verReplay( ficheiros[opt - 1]);
-            }
+            case 2 -> pedeLoadUI();
+            case 3 -> pedeReplayUI();
             default -> doSair = true;
         }
+
     }
 
     private void pedeConfiguracaoUI() {
 
-        String nomeJogador;
-
         switch (UtilUITexto.getOpcao("Jogador " + (maquinaEstados.getNumJogadores() + 1) + ":",
                 "Humano", "Computador", "Sair")) {
-            case 1 -> {
-                nomeJogador = pedeNomeJogador();
-
-                if (nomeJogador.isEmpty()) return;
-
-                maquinaEstados.adicionarJogador(TipoJogador.HUMANO, nomeJogador);
-            }
-            case 2 -> {
-                nomeJogador = pedeNomeJogador();
-
-                if (nomeJogador.isEmpty()) return;
-
-                maquinaEstados.adicionarJogador(TipoJogador.COMPUTADOR, nomeJogador);
-            }
+            case 1 -> adicionaJogadorUI(TipoJogador.HUMANO);
+            case 2 -> adicionaJogadorUI(TipoJogador.COMPUTADOR);
             default -> doSair = true;
         }
 
         if (!doSair) System.out.println("\n" + maquinaEstados.getConfigJogadores());
     }
 
+    private void adicionaJogadorUI(TipoJogador computador) {
+        String nomeJogador;
+        nomeJogador = pedeNomeJogadorUI();
+
+        if (nomeJogador.isEmpty()) return;
+
+        maquinaEstados.adicionarJogador(computador, nomeJogador);
+    }
+
     private void pedeDecisaoJogadaUI() {
 
         System.out.println();
         printTabuleiro(maquinaEstados.getTabuleiro());
-
         System.out.println();
 
-        System.out.println("É a vez de " + maquinaEstados.getNomeJogadorAtual() + ".");
+        printJogadorAtual();
+
 
         if (maquinaEstados.isComputadorAJogar()) {
             int jogada = maquinaEstados.getJogadaAutomatica();
             String nomeJogadorAtual = maquinaEstados.getNomeJogadorAtual();
             maquinaEstados.jogarFicha(jogada);
             System.out.println("\nO jogador " + nomeJogadorAtual + " jogou na coluna " + (jogada + 1) + "!");
-            try { TimeUnit.MILLISECONDS.sleep(MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR); } catch (InterruptedException ignored) {}
+            try { TimeUnit.MILLISECONDS.sleep(Constantes.MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR); }
+            catch (InterruptedException ignored) {}
+
             return;
         }
 
-        ArrayList<String> opcoes = new ArrayList<>();
+        String[] opcoes = getOpcoesDecisaoJogada();
+
+        switch (UtilUITexto.getOpcao("--- PEDE JOGADA ---", opcoes)) {
+            case 1 -> pedeFichaColunaUI();
+            case 2 -> gravaJogoUI();
+            case 3 -> voltaAtrasUI();
+            case 4 -> maquinaEstados.aceitarMinijogo();
+            case 5 -> maquinaEstados.jogarFichaEspecial(UtilUITexto.getInteiro("\nColuna a remover: ") - 1);
+            default -> maquinaEstados.desistir();
+        }
+    }
+
+    private void gravaJogoUI() {
+
+        while (true) {
+            String pathFicheiro = UtilUITexto.getResposta("Nome do ficheiro: ");
+
+            if (pathFicheiro.isEmpty()) return;
+
+            pathFicheiro = Constantes.SAVE_PATH + pathFicheiro;
+
+            if (Utils.gravarObjeto(pathFicheiro, maquinaEstados)) break;
+
+            System.out.println("Save falhou.");
+        }
+
+        System.out.println("Save com sucesso!");
+    }
+
+    private void jogaMinijogoUI() {
+
+        String pergunta = maquinaEstados.getPerguntaMinijogo();
+        String resposta;
+
+        do {
+            resposta = UtilUITexto.getResposta(pergunta);
+
+            if (maquinaEstados.isAcabadoMinijogo()) break;
+
+        } while (!maquinaEstados.isValidaRespostaMinijogo(resposta));
+
+
+        maquinaEstados.enviarRespostaMinijogo(resposta);
+
+        if (!maquinaEstados.isAcabadoMinijogo()) return;
+
+        if (maquinaEstados.ganhouUltimoMinijogo()) {
+            System.out.println("\nGanhou o minijogo e recebeu uma peça especial!");
+            return;
+        }
+
+        System.out.println("\nAcabou o tempo e perdeu o minijogo. Pontuação final: " +
+                maquinaEstados.getPontuacaoAtualMinijogo());
+    }
+
+    private void fimJogoUI() {
+
+        System.out.println("\n--- FIM JOGO ---\n");
+
+        printTabuleiro(maquinaEstados.getTabuleiro());
+
+        printResultadoJogo();
+
+        if (UtilUITexto.getOpcao("O que pretende fazer?", "Voltar ao menu", "Sair") == 1) {
+            maquinaEstados.avancar();
+            return;
+        }
+
+        doSair = true;
+    }
+
+    private void assisteJogadaUI() {
+
+        String descricao = maquinaEstados.getDescricaoComandoAtual();
+        maquinaEstados.avancar();
+
+        System.out.println("\n" + descricao + "\n");
+
+        printTabuleiro(maquinaEstados.getTabuleiro());
+
+        if (!maquinaEstados.temProximo()) printResultadoJogo();
+
+        System.out.print("\nEnter para continuar...");
+        try { System.in.read(); } catch (IOException ignored) {}
+
+    }
+
+
+    ///////////////////// UIs SECUNDÁRIAS /////////////////////
+
+    private void pedeFichaColunaUI() {
+        int coluna;
+
+        while (true) {
+            coluna = UtilUITexto.getInteiro("\nColuna a jogar: ");
+
+            if (coluna == 0) return;
+
+            coluna -= 1;
+
+            if (maquinaEstados.isJogavelColuna(coluna)) break;
+
+            System.out.println("Essa coluna está cheia ou não existe!");
+        }
+
+        maquinaEstados.jogarFicha(coluna);
+
+    }
+
+    private String pedeNomeJogadorUI() {
+        String nome;
+        while (true) {
+            nome = UtilUITexto.getResposta("Qual o nome do jogador?");
+
+            if (nome.isEmpty()) return "";
+
+            if (!maquinaEstados.existeJogador(nome)) break;
+
+            System.out.println("Esse nome já está a ser utilizado. Por favor insira outro nome.");
+        }
+
+        return nome;
+    }
+
+    private void pedeLoadUI() {
+        String[] ficheiros = Utils.getFicheirosNoDiretorio(Constantes.SAVE_PATH);
+
+        if (ficheiros.length <= 0) {
+            System.out.println("\nNão há saves para carregar.");
+            return;
+        }
+
+        while (true) {
+            int opt = UtilUITexto.getOpcao("Ficheiro: ", false, ficheiros);
+            String path = Constantes.SAVE_PATH + ficheiros[opt - 1];
+            maquinaEstados = Utils.lerObjeto(path, QuatroEmLinhaMaquinaEstados.class);
+            if (maquinaEstados != null) {
+                System.out.println("Load com sucesso!");
+                break;
+            }
+
+            System.out.println("Load falhou!");
+        }
+    }
+
+    private void pedeReplayUI() {
+        String[] ficheiros = Utils.getFicheirosNoDiretorio(Constantes.REPLAY_PATH);
+
+        if (ficheiros.length <= 0) {
+            System.out.println("\nNão há jogos para dar replay.");
+            return;
+        }
+
+        int opt = UtilUITexto.getOpcao("Ficheiro: ", false, ficheiros);
+        maquinaEstados.verReplay(ficheiros[opt - 1]);
+    }
+
+    private void voltaAtrasUI() {
+        int numCreditosAUtilizar;
+        int numCreditosJogaveis = maquinaEstados.getNumCreditosJogaveis();
+
+        do {
+            numCreditosAUtilizar = UtilUITexto.getInteiro(
+                    "\nNúmero de créditos a utilizar [0 - " + numCreditosJogaveis + "]: ");
+        } while (numCreditosAUtilizar < 0 || numCreditosAUtilizar > maquinaEstados.getNumCreditosJogaveis());
+
+        if (numCreditosAUtilizar == 0) return;
+
+        maquinaEstados.undoJogada(numCreditosAUtilizar);
+        System.out.println("Voltou atrás " + numCreditosAUtilizar + " jogada(s).");
+    }
+
+
+
+    ///////////////////// OUTRAS UTILS /////////////////////
+
+    private String[] getOpcoesDecisaoJogada() {
+        List<String> opcoes = new LinkedList<>();
         opcoes.add("Jogar ficha"); // 1
         opcoes.add("Gravar jogo"); // 2
 
@@ -157,80 +307,26 @@ public class QuatroEmLinhaUITexto {
 
         opcoes.add("Desistir"); // 6
 
-        switch (UtilUITexto.getOpcao("--- PEDE JOGADA ---", opcoes.toArray(new String[0]))) {
-            case 1 -> maquinaEstados.jogarFicha(UtilUITexto.getInteiro("\nColuna a jogar: ") - 1);
-            case 2 -> {
-                while (!gravarJogo(UtilUITexto.getResposta("Nome do ficheiro: "))) System.out.println("Save falhou.");
-                System.out.println("Save com sucesso!");
-            }
-            case 3 -> {
-                int numCreditosAUtilizar;
-                int numCreditosJogaveis = maquinaEstados.getNumCreditosJogaveis();
-
-                do {
-                    numCreditosAUtilizar = UtilUITexto.getInteiro(
-                            "\nNúmero de créditos a utilizar [0 - " + numCreditosJogaveis + "]: ");
-                } while (numCreditosAUtilizar < 0 || numCreditosAUtilizar > maquinaEstados.getNumCreditosJogaveis());
-
-                if (numCreditosAUtilizar == 0) break;
-
-                maquinaEstados.undoJogada(numCreditosAUtilizar);
-                System.out.println("Voltou atrás " + numCreditosAUtilizar + " jogada(s).");
-            }
-            case 4 -> maquinaEstados.aceitarMinijogo();
-            case 5 -> maquinaEstados.jogarFichaEspecial(UtilUITexto.getInteiro("Coluna a remover: ") - 1);
-            default -> maquinaEstados.desistir();
-        }
+        return opcoes.toArray(new String[0]);
     }
 
-    private void jogaMinijogoUI() {
+    private void printResultadoJogo() {
+        String resultado = "\nO jogo empatou.";
+        if (!maquinaEstados.isEmpatado()) resultado = "\nO jogador " + maquinaEstados.getNomeVencedor() + " ganhou o jogo!";
 
-        String pergunta = maquinaEstados.getPerguntaMinijogo();
-        String resposta;
-
-        do {
-            resposta = UtilUITexto.getResposta(pergunta);
-
-            if (maquinaEstados.isAcabadoMinijogo()) break;
-
-        } while (!maquinaEstados.isValidaRespostaMinijogo(resposta));
-
-
-        maquinaEstados.enviarRespostaMinijogo(resposta);
-
-        if (maquinaEstados.isAcabadoMinijogo()) {
-            if (maquinaEstados.ganhouUltimoMinijogo()) {
-                System.out.println("\nGanhou o minijogo e recebeu uma peça especial!");
-                return;
-            }
-
-            System.out.println("\nAcabou o tempo e perdeu o minijogo. Pontuação final: " + maquinaEstados.getPontuacaoAtualMinijogo());
-        }
+        System.out.println(resultado);
     }
 
-    private void fimJogoUI() {
+    private void printJogadorAtual() {
+        System.out.print("É a vez de " + maquinaEstados.getNomeJogadorAtual() + " (Ficha ");
 
-        System.out.println("\n--- FIM JOGO ---\n");
-
-        printTabuleiro(maquinaEstados.getTabuleiro());
-
-        System.out.println("\nO jogador " + maquinaEstados.getNomeVencedor() + " ganhou o jogo!");
-
-        if (UtilUITexto.getOpcao("O que pretende fazer?", "Voltar ao menu", "Sair") == 1) {
-            maquinaEstados.avancar();
-            return;
+        switch(maquinaEstados.getFichaAtual()) {
+            case FICHA_AMARELA -> System.out.print(FICHA_AMARELA_PRINT);
+            case FICHA_VERMELHA -> System.out.print(FICHA_VERMELHA_PRINT);
+            default -> System.out.print("ERRO");
         }
 
-        doSair = true;
-    }
-
-    private void assisteJogadaUI() {
-        System.out.println();
-        printTabuleiro(maquinaEstados.getTabuleiro());
-
-        System.out.print("\nEnter para continuar...");
-        try { System.in.read(); } catch (IOException e) { e.printStackTrace(); }
-        maquinaEstados.avancar();
+        System.out.println(").");
     }
 
     private void printTabuleiro(List<TipoFicha> tabuleiro) {
@@ -251,25 +347,5 @@ public class QuatroEmLinhaUITexto {
             }
             System.out.println(DIVISORIA_TABULEIRO_PRINT + ' ' + (i + 1));
         }
-    }
-
-    private String pedeNomeJogador() {
-        String nome;
-        while (true) {
-            nome = UtilUITexto.getResposta("Qual o nome do jogador?");
-
-            if (nome.isEmpty()) return "";
-
-            if (!maquinaEstados.existeJogador(nome)) break;
-
-            System.out.println("Esse nome já está a ser utilizado. Por favor insira outro nome.");
-        }
-
-        return nome;
-    }
-
-    private boolean gravarJogo(String nomeFicheiro) {
-        String path = "saves/" + nomeFicheiro + ".save";
-        return Utils.gravarObjeto(path, maquinaEstados);
     }
 }

@@ -1,4 +1,4 @@
-package jogo.logica.dados;
+package jogo.logica.dados.tabuleiro;
 
 public enum TipoFicha {
     FICHA_VERMELHA,

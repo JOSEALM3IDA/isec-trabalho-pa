@@ -1,8 +1,4 @@
-package jogo.logica.dados;
-
-import jogo.logica.dados.minijogos.Calculos;
-import jogo.logica.dados.minijogos.Minijogo;
-import jogo.logica.dados.minijogos.Palavras;
+package jogo.logica.dados.minijogos;
 
 public class MinijogoFactory {
 

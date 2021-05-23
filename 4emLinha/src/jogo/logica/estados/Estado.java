@@ -1,12 +1,13 @@
 package jogo.logica.estados;
 
+import jogo.logica.dados.QuatroEmLinhaGestor;
 import jogo.logica.dados.jogadores.TipoJogador;
 
 public interface Estado {
 
     // PedeDecisaoInicio
     Estado iniciarJogo();       // -> PedeConfiguracao
-    Estado verReplay(String nomeFicheiro);         // -> AssisteJogada
+    Estado verReplay(QuatroEmLinhaGestor quatroEmLinhaGestor);         // -> AssisteJogada
 
     // PedeConfiguracao
     Estado adicionarJogador(TipoJogador tipoJogador, String nomeJogador);
