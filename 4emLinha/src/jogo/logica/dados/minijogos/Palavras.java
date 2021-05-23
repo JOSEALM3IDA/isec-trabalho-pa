@@ -4,7 +4,6 @@ import jogo.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class Palavras extends MinijogoAdapter {
 
@@ -53,11 +52,10 @@ public class Palavras extends MinijogoAdapter {
 
     @Override
     protected void gerarNovaPergunta() {
-        Random random = new Random();
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < NUM_PALAVRAS; i++) {
-            sb.append(listaPalavras.get(random.nextInt(listaPalavras.size())));
+            sb.append(listaPalavras.get(Utils.getNumeroRandom(listaPalavras.size())));
 
             if (i != NUM_PALAVRAS - 1) sb.append(' ');
         }

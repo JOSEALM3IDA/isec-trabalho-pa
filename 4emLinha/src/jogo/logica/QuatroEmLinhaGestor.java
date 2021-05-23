@@ -36,7 +36,7 @@ public class QuatroEmLinhaGestor implements Serializable {
     public boolean temMinijogoDisponivel() { return quatroEmLinha.temMinijogoDisponivel(); }
     public boolean isComputadorAJogar() { return quatroEmLinha.isComputadorAJogar(); }
     public boolean checkFimJogo() { return quatroEmLinha.checkFimJogo(); }
-    public void limparTudo() { quatroEmLinha.limparTudo(); }
+    public void limparTudo() { quatroEmLinha.resetJogo(); }
     public void desistir() { quatroEmLinha.desistirJogadorAtual(); }
     public void comecarMinijogo() { quatroEmLinha.comecarMinijogo(); }
     public String getPerguntaMinijogo() { return quatroEmLinha.getPerguntaMinijogo(); }
@@ -66,5 +66,11 @@ public class QuatroEmLinhaGestor implements Serializable {
     public boolean podeVoltarAtrasJogadorAtual() { return commandManager.temUndo() && quatroEmLinha.temCreditosJogadorAtual(); }
 
     public int getNumCreditosJogaveisJogadorAtual() { return Math.min(commandManager.getNumUndosPossivel(), quatroEmLinha.getNumCreditosJogadorAtual()); }
+
+    public void resetTabuleiro() { quatroEmLinha.resetTabuleiro(); }
+    public void resetEstadoJogadores() { quatroEmLinha.resetEstadoJogadores(); }
+
+    public boolean temProximo() { return commandManager.temProximo(); }
+    public void executarProximo() { commandManager.executarProximo(); }
     // public void redo() { commandManager.redo(); }
 }

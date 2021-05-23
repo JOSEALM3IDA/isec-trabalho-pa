@@ -3,7 +3,9 @@ package jogo.iu.texto;
 import jogo.logica.QuatroEmLinhaMaquinaEstados;
 import jogo.logica.dados.TipoFicha;
 import jogo.logica.dados.jogadores.TipoJogador;
+import jogo.utils.Constantes;
 import jogo.utils.UtilUITexto;
+import jogo.utils.Utils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,12 +16,12 @@ public class QuatroEmLinhaUITexto {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_VERMELHO = "\u001B[31m";
     private static final String ANSI_AZUL = "\u001B[34m";
-    public static final String ANSI_AMARELO = "\u001B[33m";
+    private static final String ANSI_AMARELO = "\u001B[33m";
     private static final String FICHA_AMARELA_PRINT = ANSI_AMARELO + 'A' + ANSI_RESET;
     private static final String FICHA_VERMELHA_PRINT = ANSI_VERMELHO + 'V' + ANSI_RESET;
     private static final String DIVISORIA_TABULEIRO_PRINT = ANSI_AZUL + '|' + ANSI_RESET;
 
-    private static final int SEGUNDOS_SLEEP_JOGADA_COMPUTADOR = 2;
+    private static final int MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR = 1200;
 
     private QuatroEmLinhaMaquinaEstados maquinaEstados;
     private boolean doSair;
@@ -48,19 +50,33 @@ public class QuatroEmLinhaUITexto {
                 "Iniciar jogo", "Continuar jogo", "Ver replay", "Sair")) {
             case 1 -> maquinaEstados.iniciarJogo();
             case 2 -> {
-                String fileName;
+                String nomeFicheiro;
                 while (true) {
-                    fileName = UtilUITexto.getResposta("Nome do ficheiro?");
+                    nomeFicheiro = UtilUITexto.getResposta("Nome do ficheiro?");
 
-                    if (fileName.isEmpty()) return;
+                    if (nomeFicheiro.isEmpty()) return;
 
-                    if (continuarJogo(fileName)) break;
+                    String path = "saves/" + nomeFicheiro + ".save";
 
-                    System.out.println("Load falhou.");
+                    try {
+                        maquinaEstados = Utils.lerObjeto(path, QuatroEmLinhaMaquinaEstados.class);
+                        System.out.println("Load com sucesso!");
+                        break;
+                    } catch (ClassNotFoundException | IOException ignored) {}
                 }
-                System.out.println("Load com sucesso!");
+
             }
-            case 3 -> maquinaEstados.verReplay();
+            case 3 -> {
+                String[] ficheiros = Utils.getFicheirosNoDiretorio(Constantes.REPLAY_PATH);
+
+                if (ficheiros.length <= 0) {
+                    System.out.println("\nNão há jogos para dar replay.");
+                    break;
+                }
+
+                int opt = UtilUITexto.getOpcao("Ficheiro: ", false, ficheiros);
+                maquinaEstados.verReplay( ficheiros[opt - 1]);
+            }
             default -> doSair = true;
         }
     }
@@ -105,7 +121,7 @@ public class QuatroEmLinhaUITexto {
             String nomeJogadorAtual = maquinaEstados.getNomeJogadorAtual();
             maquinaEstados.jogarFicha(jogada);
             System.out.println("\nO jogador " + nomeJogadorAtual + " jogou na coluna " + (jogada + 1) + "!");
-            try { TimeUnit.SECONDS.sleep(SEGUNDOS_SLEEP_JOGADA_COMPUTADOR); } catch (InterruptedException ignored) {}
+            try { TimeUnit.MILLISECONDS.sleep(MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR); } catch (InterruptedException ignored) {}
             return;
         }
 
@@ -209,6 +225,12 @@ public class QuatroEmLinhaUITexto {
     }
 
     private void assisteJogadaUI() {
+        System.out.println();
+        printTabuleiro(maquinaEstados.getTabuleiro());
+
+        System.out.print("\nEnter para continuar...");
+        try { System.in.read(); } catch (IOException e) { e.printStackTrace(); }
+        maquinaEstados.avancar();
     }
 
     private void printTabuleiro(List<TipoFicha> tabuleiro) {
@@ -247,37 +269,7 @@ public class QuatroEmLinhaUITexto {
     }
 
     private boolean gravarJogo(String nomeFicheiro) {
-        File f = new File("saves/" + nomeFicheiro + ".save");
-        if (f.getParentFile().mkdirs()) System.out.println("Criado diretório saves...");
-
-        FileOutputStream fos;
-        try {
-            if (!f.createNewFile()) {
-                System.out.println("Ficheiro " + nomeFicheiro + " ja existe! ");
-                return false;
-            }
-            fos = new FileOutputStream(f);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(maquinaEstados);
-            oos.close();
-            fos.close();
-        } catch (IOException ioe) { ioe.printStackTrace(); return false; }
-
-        return true;
-    }
-
-    // Podia ir para o utils com um generico
-    private boolean continuarJogo(String nomeFicheiro) {
-        try (FileInputStream fis = new FileInputStream("saves/" + nomeFicheiro + ".save");
-             ObjectInputStream ois = new ObjectInputStream(fis)) {
-
-            Object obj = ois.readObject();
-
-            if (!(obj instanceof QuatroEmLinhaMaquinaEstados)) return false;
-
-            maquinaEstados = (QuatroEmLinhaMaquinaEstados) obj;
-        } catch (IOException | ClassNotFoundException ex) { return false; }
-
-        return true;
+        String path = "saves/" + nomeFicheiro + ".save";
+        return Utils.gravarObjeto(path, maquinaEstados);
     }
 }

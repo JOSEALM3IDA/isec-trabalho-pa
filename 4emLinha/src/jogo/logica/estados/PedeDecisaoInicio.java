@@ -1,6 +1,10 @@
 package jogo.logica.estados;
 
 import jogo.logica.QuatroEmLinhaGestor;
+import jogo.utils.Constantes;
+import jogo.utils.Utils;
+
+import java.io.IOException;
 
 public class PedeDecisaoInicio extends EstadoAdapter {
 
@@ -10,10 +14,17 @@ public class PedeDecisaoInicio extends EstadoAdapter {
     public Estado iniciarJogo() { return new PedeConfiguracao(quatroEmLinhaGestor); }
 
     @Override
-    public Estado verReplay() {
-        // TODO
-        System.out.println("VER REPLAY - WIP");
-        return super.verReplay();
+    public Estado verReplay(String nomeFicheiro) {
+        try {
+            quatroEmLinhaGestor = Utils.lerObjeto(Constantes.REPLAY_PATH + nomeFicheiro, QuatroEmLinhaGestor.class);
+        } catch (IOException | ClassNotFoundException ignored) { ignored.printStackTrace(); }
+
+        if (quatroEmLinhaGestor == null) return null;
+
+        quatroEmLinhaGestor.resetTabuleiro();
+        quatroEmLinhaGestor.resetEstadoJogadores();
+
+        return new AssisteJogada(quatroEmLinhaGestor);
     }
 
     @Override

@@ -46,4 +46,24 @@ public class UtilUITexto {
 
         return opt;
     }
+
+    public static int getOpcao(String titulo, boolean mostrarUltimaOpcao, String... opts) {
+
+        if (mostrarUltimaOpcao) return getOpcao(titulo, opts);
+
+        int opt;
+        do {
+            System.out.println('\n' + titulo);
+            for (int i = 0; i < opts.length; i++) {
+                if (opts[i].isEmpty()) continue;
+
+                System.out.printf("%3d - %s\n", i + 1, opts[i]);
+            }
+
+            opt = getInteiro("\n> ");
+        } while (opt < 1 || opt > opts.length);
+
+        return opt;
+    }
+
 }

@@ -19,6 +19,14 @@ public class Computador extends Jogador {
     public void setNumFichasEspeciais(int num) { }
 
     @Override
+    public void resetEstado() {
+        numJogadasDesdeMinijogo = 0;
+        isVencedor = false;
+        numFichasEspeciais = 0;
+        numCreditos = 0;
+    }
+
+    @Override
     public String toString() { return getNome() + " (CPU)"; }
 
 }

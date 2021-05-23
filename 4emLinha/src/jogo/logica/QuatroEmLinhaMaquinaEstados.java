@@ -20,7 +20,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     }
 
     public void iniciarJogo() { estadoAtual = estadoAtual.iniciarJogo(); }
-    public void verReplay() { estadoAtual = estadoAtual.verReplay(); }
+    public void verReplay(String nomeFicheiro) { estadoAtual = estadoAtual.verReplay(nomeFicheiro); }
     public void adicionarJogador(TipoJogador tipoJogador, String nomeJogador) { estadoAtual = estadoAtual.adicionarJogador(tipoJogador, nomeJogador); }
     public void jogarFicha(int col) { estadoAtual = estadoAtual.jogarFicha(col); }
     public void undoJogada(int numVezes) { estadoAtual = estadoAtual.undoJogada(numVezes); }

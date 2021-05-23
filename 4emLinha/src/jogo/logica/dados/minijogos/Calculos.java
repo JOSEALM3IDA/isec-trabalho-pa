@@ -64,11 +64,10 @@ public class Calculos extends MinijogoAdapter {
 
     @Override
     protected void gerarNovaPergunta() {
-        Random random = new Random();
-        inteiro1 = random.nextInt(100);
-        inteiro2 = random.nextInt(100);
+        inteiro1 = Utils.getNumeroRandom(100);
+        inteiro2 = Utils.getNumeroRandom(100);
 
-        operador = OPERADORES[random.nextInt(OPERADORES.length)];
+        operador = OPERADORES[Utils.getNumeroRandom(OPERADORES.length)];
 
         perguntaAtual = inteiro1 + " " + operador + " " + inteiro2 + " = ?";
     }

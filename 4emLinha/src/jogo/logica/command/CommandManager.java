@@ -6,12 +6,21 @@ import java.util.Stack;
 public class CommandManager implements Serializable {
 
     private final Stack<Command> historico = new Stack<>();
-    private final Stack<Command> redoLista = new Stack<>();
+    private final Stack<Command> fullHistorico = new Stack<>();
 
     public void invokeCommand(Command command) {
-        redoLista.clear();
+        if (command instanceof DesfazerJogadaCommand) {
+            System.out.println("INVOKE UNDO COMMAND");
+            fullHistorico.push(command);
+            command.execute();
+
+
+            System.out.println(fullHistorico);
+            return;
+        }
 
         if (command.execute()) {
+            fullHistorico.push(command);
             historico.push(command);
             System.out.println("historico = " + historico.size());
             return;
@@ -23,25 +32,22 @@ public class CommandManager implements Serializable {
     public boolean undo() {
         if (historico.size() <= 0) return false;
 
-        Command commandoUndo = historico.pop();
-        if (commandoUndo.undo()) {
-            redoLista.push(commandoUndo);
-            System.out.println("Undo! Historico = " + historico.size());
-            return true;
-        }
+        Command commandToUndo = historico.pop();
 
-        return false;
+        invokeCommand(new DesfazerJogadaCommand(commandToUndo));
+        return true;
     }
 
     public boolean temUndo() { return !historico.isEmpty(); }
 
     public int getNumUndosPossivel() { return historico.size(); }
 
-    /*public void redo() {
-        if (redoLista.size() <= 0) return;
+    public boolean temProximo() { return !fullHistorico.isEmpty(); }
 
-        Command commandoRedo = redoLista.pop();
-        commandoRedo.execute();
-        historico.push(commandoRedo);
-    }*/
+    public void executarProximo() {
+        if (!temProximo()) return;
+
+        Command primeiroDaLista = fullHistorico.remove(0);
+        primeiroDaLista.execute();
+    }
 }

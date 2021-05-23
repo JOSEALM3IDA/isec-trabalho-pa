@@ -2,10 +2,13 @@ package jogo.logica.estados;
 
 import jogo.logica.QuatroEmLinhaGestor;
 import jogo.logica.dados.jogadores.TipoJogador;
+import jogo.utils.Utils;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 public abstract class EstadoAdapter implements Estado, Serializable {
+
     protected QuatroEmLinhaGestor quatroEmLinhaGestor;
 
     public EstadoAdapter(QuatroEmLinhaGestor quatroEmLinhaGestor) { this.quatroEmLinhaGestor = quatroEmLinhaGestor; }
@@ -14,7 +17,7 @@ public abstract class EstadoAdapter implements Estado, Serializable {
     public Estado iniciarJogo() { return this; }
 
     @Override
-    public Estado verReplay() { return this; }
+    public Estado verReplay(String nomeFicheiro) { return this; }
 
     @Override
     public Estado adicionarJogador(TipoJogador tipoJogador, String nomeJogador) { return this; }
@@ -38,11 +41,7 @@ public abstract class EstadoAdapter implements Estado, Serializable {
     public Estado jogarMinijogo(String resposta) { return this; }
 
     @Override
-    public Estado ganharJogo() { return this; }
-
-    @Override
     public Estado avancar() { return this; }
-
 
     @Override
     public abstract Situacao getSituacao();

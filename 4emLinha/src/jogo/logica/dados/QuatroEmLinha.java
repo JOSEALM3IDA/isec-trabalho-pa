@@ -52,7 +52,7 @@ public class QuatroEmLinha implements Serializable {
         return true;
     }
 
-    public void limparTudo() {
+    public void resetJogo() {
         jogadorLista.limpar();
         tabuleiro.limpar();
     }
@@ -110,4 +110,8 @@ public class QuatroEmLinha implements Serializable {
     public List<TipoFicha> getColuna(int col) { return tabuleiro.getColuna(col); }
 
     public boolean setColuna(int col, List<TipoFicha> novaColuna) { return tabuleiro.setColuna(col, novaColuna); }
+
+    public void resetTabuleiro() { tabuleiro.limpar(); }
+
+    public void resetEstadoJogadores() { jogadorLista.resetEstadoJogadores(); }
 }

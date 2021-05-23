@@ -2,31 +2,41 @@ package jogo.logica.dados.jogadores;
 
 import jogo.logica.dados.Tabuleiro;
 import jogo.logica.dados.TipoFicha;
+import jogo.utils.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class JogadorLista implements Serializable {
     private static final int MAX_PLAYERS = 2;
 
     private final ArrayList<Jogador> jogadores = new ArrayList<>(2);
     private int currJogadorIdx = 0;
+    private int primeiroJogadorIdx;
 
     public boolean isFullJogadores() { return jogadores.size() == MAX_PLAYERS; }
 
     public void addJogador(TipoJogador tipoJogador, String nomeJogador) {
+        if (isFullJogadores()) return;
+
         TipoFicha novaFicha = getRandomFichaDisponivel();
         if (novaFicha == null || novaFicha == TipoFicha.NONE) return;
 
-        if (!isFullJogadores() && !existeJogador(nomeJogador)) {
+        if (!existeJogador(nomeJogador)) {
             switch (tipoJogador) {
                 case HUMANO -> jogadores.add(new Humano(nomeJogador, novaFicha));
                 case COMPUTADOR -> jogadores.add(new Computador(nomeJogador, novaFicha));
             }
 
-            currJogadorIdx = 0;
+        }
+
+        if (isFullJogadores()) {
+            primeiroJogadorIdx = Utils.getNumeroRandom(getNumJogadores());
+            System.out.println("Primeiro a jogar: " + primeiroJogadorIdx);
+            currJogadorIdx = primeiroJogadorIdx;
         }
     }
 
@@ -128,4 +138,9 @@ public class JogadorLista implements Serializable {
     }
 
     public int getNumCreditosJogadorAtual() { return getJogadorAtual().getNumCreditos(); }
+
+    public void resetEstadoJogadores() {
+        for (var jogador : jogadores) jogador.resetEstado();
+        currJogadorIdx = primeiroJogadorIdx;
+    }
 }

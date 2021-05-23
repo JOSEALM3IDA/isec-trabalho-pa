@@ -8,9 +8,9 @@ public class AssisteJogada extends EstadoAdapter {
 
     @Override
     public Estado avancar() {
-        // TODO
-        System.out.println("AVANCAR REPLAY - WIP");
-        return super.avancar();
+        quatroEmLinhaGestor.executarProximo();
+
+        return quatroEmLinhaGestor.temProximo() ? new AssisteJogada(quatroEmLinhaGestor) : new PedeDecisaoInicio(quatroEmLinhaGestor);
     }
 
     @Override

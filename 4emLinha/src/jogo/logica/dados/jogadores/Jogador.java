@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 public abstract class Jogador implements Serializable {
 
-    private int numJogadasDesdeMinijogo = 0;
+    protected int numJogadasDesdeMinijogo = 0;
     private final String nome;
     private final TipoFicha ficha;
-    private boolean isVencedor = false;
+    protected boolean isVencedor = false;
     protected int numFichasEspeciais = 0;
     protected int numCreditos = 0;
 
@@ -59,4 +59,6 @@ public abstract class Jogador implements Serializable {
 
         this.numCreditos = numCreditos;
     }
+
+    public abstract void resetEstado();
 }
