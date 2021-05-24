@@ -18,16 +18,18 @@ public class QuatroEmLinhaGestor implements Serializable {
     }
 
     public void addJogador(TipoJogador tipoJogador, String nomeJogador) { quatroEmLinha.addJogador(tipoJogador, nomeJogador); }
-    public void jogarFicha(int col) { commandManager.invokeCommand(new JogaFichaCommand(quatroEmLinha, col)); }
-    public void jogarFichaEspecial(int col) { commandManager.invokeCommand(new JogaFichaEspecialCommand(quatroEmLinha, col)); }
-    public void adicionaFichaEspecialJogadorAtual() { commandManager.invokeCommand(new AdicionaFichaEspecialCommand(quatroEmLinha)); }
+    public void jogarFicha(int col) { commandManager.invokeCommand(new JogarFichaCommand(quatroEmLinha, col)); }
+    public void jogarFichaEspecial(int col) { commandManager.invokeCommand(new JogarFichaEspecialCommand(quatroEmLinha, col)); }
+    public void adicionaFichaEspecialJogadorAtual() { commandManager.invokeCommand(new AdicionarFichaEspecialCommand(quatroEmLinha)); }
+    public void perdeuMinijogo() { commandManager.invokeCommand(new PerdeMinijogoCommand(quatroEmLinha)); }
     public void desistir() { commandManager.invokeCommand(new DesistirCommand(quatroEmLinha)); }
     public void executarProximo() { commandManager.executarProximo(); }
     public void comecarMinijogo() { quatroEmLinha.comecarMinijogo(); }
     public void enviarRespostaMinijogo(String resposta) { quatroEmLinha.enviarRespostaMinijogo(resposta); }
-    public void limparTudo() { quatroEmLinha.resetJogo();commandManager.resetHistorico(); }
+    public void limparTudo() { quatroEmLinha.resetJogo(); commandManager.resetHistorico(); }
     public void resetTabuleiro() { quatroEmLinha.resetTabuleiro(); }
     public void resetEstadoJogadores() { quatroEmLinha.resetEstadoJogadores(); }
+    public void resetMinijogos() { quatroEmLinha.resetMinijogos(); }
 
     public int getJogadaAutomatica() { return quatroEmLinha.getJogadaAutomatica(); }
     public boolean existeJogador(String nomeJogador) { return quatroEmLinha.existeJogador(nomeJogador); }

@@ -21,9 +21,6 @@ public abstract class MinijogoAdapter implements Minijogo {
     public abstract void receberResposta(String resposta);
 
     @Override
-    public boolean isComecado() { return isComecado; }
-
-    @Override
     public String getPerguntaAtual() { return perguntaAtual; }
 
     @Override

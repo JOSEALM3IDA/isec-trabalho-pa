@@ -1,25 +1,25 @@
 // {type:state}
 // {generate:true}
 
-(start)[iniciar]->(pedeDecisaoInicio)
+(start)[new QuatroEmLinhaMaquinaEstados]->(pedeDecisaoInicio)
 (pedeDecisaoInicio)[iniciarJogo]->(pedeConfiguracao)
 (pedeDecisaoInicio)[continuarJogo]->(pedeDecisaoJogada)
 (pedeDecisaoInicio)[verReplay]->(assisteJogada)
 
 (assisteJogada)[avancar]->(assisteJogada)
-(assisteJogada)[sairReplay]->(pedeDecisaoInicio)
+(assisteJogada)[avancar]->(pedeDecisaoInicio)
 
 (pedeConfiguracao)[adicionarJogador]->(pedeConfiguracao)
 (pedeConfiguracao)[adicionarJogador]->(pedeDecisaoJogada)
 
-(pedeDecisaoJogada)[jogar]->(pedeDecisaoJogada)
-(pedeDecisaoJogada)[jogar]->(fimJogo)
+(pedeDecisaoJogada)[jogarFicha]->(pedeDecisaoJogada)
+(pedeDecisaoJogada)[jogarFicha]->(fimJogo)
 (pedeDecisaoJogada)[aceitarMinijogo]->(jogaMinijogo)
 (pedeDecisaoJogada)[undoJogada]->(pedeDecisaoJogada)
-(pedeDecisaoJogada)[gravarJogo]->(pedeDecisaoJogada)
+(pedeDecisaoJogada)[jogarFichaEspecial]->(pedeDecisaoJogada)
 (pedeDecisaoJogada)[desistir]->(fimJogo)
 
-(jogaMinijogo)[jogarMinijogo]->(pedeDecisaoJogada)
-(jogaMinijogo)[jogarMinijogo]->(jogaMinijogo)
+(jogaMinijogo)[enviarRespostaMinijogo]->(pedeDecisaoJogada)
+(jogaMinijogo)[enviarRespostaMinijogo]->(jogaMinijogo)
 
 (fimJogo)[avancar]->(pedeDecisaoInicio)

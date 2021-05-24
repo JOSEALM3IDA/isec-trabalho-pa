@@ -29,6 +29,7 @@ public class QuatroEmLinha implements Serializable {
     public void resetJogo() {
         jogadorLista.limpar();
         tabuleiro.limpar();
+        MinijogoFactory.reset();
     }
 
     public void desistirJogadorAtual() {
@@ -67,6 +68,7 @@ public class QuatroEmLinha implements Serializable {
     private void anteriorJogador(int numVezes) { jogadorLista.undoJogador(numVezes); }
     public void enviarRespostaMinijogo(String resposta) { if (minijogo != null) minijogo.receberResposta(resposta); }
     public void adicionaFichaEspecialJogadorAtual() { jogadorLista.adicionaFichaEspecialJogadorAtual(); }
+    public void resetMinijogos() { MinijogoFactory.reset(); }
 
     public int getJogadaAutomatica() { return jogadorLista.getJogadaAutomatica(tabuleiro); }
     public boolean existeJogador(String nomeJogador) { return jogadorLista.existeJogador(nomeJogador); }
@@ -94,4 +96,5 @@ public class QuatroEmLinha implements Serializable {
     public boolean isJogavelColuna(int coluna) { return tabuleiro.isJogavelColuna(coluna); }
     public boolean isEmpatado() { return tabuleiro.isEmpatado(); }
     public TipoFicha getFichaAtual() { return jogadorLista.getFichaAtual(); }
+
 }

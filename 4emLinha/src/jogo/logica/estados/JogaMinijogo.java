@@ -11,7 +11,12 @@ public class JogaMinijogo extends EstadoAdapter {
         quatroEmLinhaGestor.enviarRespostaMinijogo(resposta);
 
         if (quatroEmLinhaGestor.isAcabadoMinijogo()) {
-            if (quatroEmLinhaGestor.ganhouUltimoMinijogo()) quatroEmLinhaGestor.adicionaFichaEspecialJogadorAtual();
+            if (quatroEmLinhaGestor.ganhouUltimoMinijogo()) {
+                quatroEmLinhaGestor.adicionaFichaEspecialJogadorAtual();
+                return new PedeDecisaoJogada(quatroEmLinhaGestor);
+            }
+
+            quatroEmLinhaGestor.perdeuMinijogo();
 
             return new PedeDecisaoJogada(quatroEmLinhaGestor);
         }

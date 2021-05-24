@@ -2,11 +2,9 @@ package jogo.logica.dados.minijogos;
 
 import jogo.utils.Utils;
 
-import java.util.Random;
-
 public class Calculos extends MinijogoAdapter {
 
-    static final int TEMPO_MAXIMO = 3000; // Segundos
+    static final int TEMPO_MAXIMO_SEGUNDOS = 30;
     static final char[] OPERADORES = {'+', '-', '/', 'x'};
 
     private int inteiro1 = -1, inteiro2 = -1;
@@ -35,7 +33,7 @@ public class Calculos extends MinijogoAdapter {
 
         if (!cronometro.isAtivo()) return;
 
-        if (cronometro.passouTempo(TEMPO_MAXIMO)) {
+        if (cronometro.passouTempo(TEMPO_MAXIMO_SEGUNDOS)) {
             cronometro.acabar();
             isGanho = false;
             isAcabado = true;

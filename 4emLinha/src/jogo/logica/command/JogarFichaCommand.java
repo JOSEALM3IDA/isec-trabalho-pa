@@ -2,11 +2,11 @@ package jogo.logica.command;
 
 import jogo.logica.dados.QuatroEmLinha;
 
-public class JogaFichaCommand extends CommandAdapter {
+public class JogarFichaCommand extends CommandAdapter {
 
     int col;
 
-    public JogaFichaCommand(QuatroEmLinha receiver, int col) {
+    public JogarFichaCommand(QuatroEmLinha receiver, int col) {
         super(receiver);
         this.col = col;
 

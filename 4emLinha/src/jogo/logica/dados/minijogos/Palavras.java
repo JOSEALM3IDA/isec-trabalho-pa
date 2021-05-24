@@ -30,9 +30,9 @@ public class Palavras extends MinijogoAdapter {
         if (!cronometro.isAtivo()) return;
 
         cronometro.acabar();
+        isAcabado = true;
         if (cronometro.getTempoTotal() > perguntaAtual.length() / 2) {
             isGanho = false;
-            isAcabado = true;
             cronometro.acabar();
             return;
         }
@@ -43,9 +43,9 @@ public class Palavras extends MinijogoAdapter {
         List<String> listaResposta;
         listaResposta = Arrays.asList(resposta.split("\\s+"));
 
-        for (int i = 0; i < NUM_PALAVRAS; i++) if (listaPergunta.get(i).equalsIgnoreCase(listaResposta.get(i))) numPontos++;
+        if (listaPergunta.size() != listaResposta.size()) return;
 
-        isAcabado = true;
+        for (int i = 0; i < NUM_PALAVRAS; i++) if (listaPergunta.get(i).equalsIgnoreCase(listaResposta.get(i))) numPontos++;
 
         if (numPontos == NUM_PALAVRAS) isGanho = true;
     }

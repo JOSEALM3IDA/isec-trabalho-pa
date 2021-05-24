@@ -12,4 +12,5 @@ public class MinijogoFactory {
         return new Calculos();
     }
 
+    public static void reset() { minijogoCount = 0; }
 }

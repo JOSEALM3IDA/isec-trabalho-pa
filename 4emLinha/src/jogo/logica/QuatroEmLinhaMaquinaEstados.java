@@ -22,11 +22,12 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
         this.estadoAtual = new PedeDecisaoInicio(quatroEmLinhaGestor);
     }
 
-    public void iniciarJogo() { estadoAtual = estadoAtual.iniciarJogo(); }
     public void verReplay(String nomeFicheiro) {
         if (!carregaGestorDeFicheiro(nomeFicheiro)) return;
         estadoAtual = estadoAtual.verReplay(quatroEmLinhaGestor);
     }
+
+    public void iniciarJogo() { estadoAtual = estadoAtual.iniciarJogo(); }
     public void adicionarJogador(TipoJogador tipoJogador, String nomeJogador) { estadoAtual = estadoAtual.adicionarJogador(tipoJogador, nomeJogador); }
     public void jogarFicha(int col) { estadoAtual = estadoAtual.jogarFicha(col); }
     public void undoJogada(int numVezes) { estadoAtual = estadoAtual.undoJogada(numVezes); }
@@ -74,6 +75,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
 
         quatroEmLinhaGestor.resetTabuleiro();
         quatroEmLinhaGestor.resetEstadoJogadores();
+        quatroEmLinhaGestor.resetMinijogos();
 
         return true;
     }

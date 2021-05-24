@@ -86,7 +86,6 @@ public class QuatroEmLinhaUITexto {
 
         printJogadorAtual();
 
-
         if (maquinaEstados.isComputadorAJogar()) {
             int jogada = maquinaEstados.getJogadaAutomatica();
             String nomeJogadorAtual = maquinaEstados.getNomeJogadorAtual();

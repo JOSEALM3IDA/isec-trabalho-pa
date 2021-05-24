@@ -5,12 +5,12 @@ import jogo.logica.dados.tabuleiro.TipoFicha;
 
 import java.util.List;
 
-public class JogaFichaEspecialCommand extends CommandAdapter {
+public class JogarFichaEspecialCommand extends CommandAdapter {
 
     int col;
     List<TipoFicha> colunaRemovida;
 
-    public JogaFichaEspecialCommand(QuatroEmLinha receiver, int col) {
+    public JogarFichaEspecialCommand(QuatroEmLinha receiver, int col) {
         super(receiver);
         this.col = col;
     }

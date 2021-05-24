@@ -2,9 +2,9 @@ package jogo.logica.command;
 
 import jogo.logica.dados.QuatroEmLinha;
 
-public class AdicionaFichaEspecialCommand extends CommandAdapter {
+public class AdicionarFichaEspecialCommand extends CommandAdapter {
 
-    public AdicionaFichaEspecialCommand(QuatroEmLinha receiver) { super(receiver); }
+    public AdicionarFichaEspecialCommand(QuatroEmLinha receiver) { super(receiver); }
 
     @Override
     public boolean execute() {
