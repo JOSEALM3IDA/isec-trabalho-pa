@@ -34,12 +34,12 @@ public class Utils {
         return linhas;
     }
 
-    public static String[] getFicheirosNoDiretorio(String diretorio) {
+    public static List<String> getFicheirosNoDiretorio(String diretorio) {
         File dir = new File(diretorio);
 
-        if (dir.mkdirs()) return new String[0];
+        if (dir.mkdirs()) return Collections.emptyList();
 
-        return Objects.requireNonNull(dir.list());
+        return Arrays.asList(Objects.requireNonNull(dir.list()));
     }
 
     public static boolean gravarObjeto(String path, Object objeto) {

@@ -15,6 +15,9 @@ public abstract class EstadoAdapter implements Estado, Serializable {
     public Estado iniciarJogo() { return this; }
 
     @Override
+    public Estado continuarJogo(QuatroEmLinhaGestor quatroEmLinhaGestor) { return this; }
+
+    @Override
     public Estado verReplay(QuatroEmLinhaGestor quatroEmLinhaGestor) { return this; }
 
     @Override

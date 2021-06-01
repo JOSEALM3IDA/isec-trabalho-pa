@@ -9,13 +9,12 @@ public class JogarFichaCommand extends CommandAdapter {
     public JogarFichaCommand(QuatroEmLinha receiver, int col) {
         super(receiver);
         this.col = col;
-
     }
 
     @Override
     public boolean execute() {
         if (receiver == null) return false;
-        
+
         receiver.jogarFicha(col);
         receiver.proxJogador();
         return true;

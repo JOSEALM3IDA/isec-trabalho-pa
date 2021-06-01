@@ -22,9 +22,24 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
         this.estadoAtual = new PedeDecisaoInicio(quatroEmLinhaGestor);
     }
 
+    public boolean continuarJogo(String nomeFicheiro) {
+        if (carregaGestorDeFicheiro(Constantes.SAVE_PATH + nomeFicheiro)) {
+            estadoAtual = estadoAtual.continuarJogo(quatroEmLinhaGestor);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean gravarJogo(String path) {
+        return Utils.gravarObjeto(Constantes.SAVE_PATH + path, quatroEmLinhaGestor);
+    }
+
     public void verReplay(String nomeFicheiro) {
-        if (!carregaGestorDeFicheiro(nomeFicheiro)) return;
+        if (!carregaGestorDeFicheiro(Constantes.REPLAY_PATH + nomeFicheiro)) return;
+
         estadoAtual = estadoAtual.verReplay(quatroEmLinhaGestor);
+        resetJogo();
     }
 
     public void iniciarJogo() { estadoAtual = estadoAtual.iniciarJogo(); }
@@ -64,19 +79,20 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public String getDescricaoComandoAtual() { return quatroEmLinhaGestor.getDescricaoComandoAtual(); }
     public TipoFicha getFichaAtual() { return quatroEmLinhaGestor.getFichaAtual(); }
 
-    private boolean carregaGestorDeFicheiro(String nomeFicheiro) {
+    private boolean carregaGestorDeFicheiro(String pathFicheiro) {
         QuatroEmLinhaGestor novoGestor;
 
-        novoGestor = Utils.lerObjeto(Constantes.REPLAY_PATH + nomeFicheiro, QuatroEmLinhaGestor.class);
+        novoGestor = Utils.lerObjeto(pathFicheiro, QuatroEmLinhaGestor.class);
 
         if (novoGestor == null) return false;
 
         quatroEmLinhaGestor = novoGestor;
+        return true;
+    }
 
+    private void resetJogo() {
         quatroEmLinhaGestor.resetTabuleiro();
         quatroEmLinhaGestor.resetEstadoJogadores();
         quatroEmLinhaGestor.resetMinijogos();
-
-        return true;
     }
 }

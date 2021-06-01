@@ -4,10 +4,11 @@ import jogo.logica.QuatroEmLinhaMaquinaEstados;
 import jogo.logica.dados.tabuleiro.TipoFicha;
 import jogo.logica.dados.jogadores.TipoJogador;
 import jogo.utils.Constantes;
-import jogo.utils.UtilUITexto;
+import jogo.utils.UtilsUITexto;
 import jogo.utils.Utils;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,7 @@ public class QuatroEmLinhaUITexto {
     private static final String FICHA_VERMELHA_PRINT = ANSI_VERMELHO + 'V' + ANSI_RESET;
     private static final String DIVISORIA_TABULEIRO_PRINT = ANSI_AZUL + '|' + ANSI_RESET;
 
-    private QuatroEmLinhaMaquinaEstados maquinaEstados;
+    private final QuatroEmLinhaMaquinaEstados maquinaEstados;
     private boolean doSair;
 
     public QuatroEmLinhaUITexto(QuatroEmLinhaMaquinaEstados maquinaEstados) { this.maquinaEstados = maquinaEstados; }
@@ -47,7 +48,7 @@ public class QuatroEmLinhaUITexto {
     ///////////////////// UIs PRIMÁRIAS /////////////////////
 
     private void pedeDecisaoInicioUI() {
-        switch (UtilUITexto.getOpcao("--- MENU INICIAL ---",
+        switch (UtilsUITexto.getOpcao("--- MENU INICIAL ---",
                 "Iniciar jogo", "Continuar jogo", "Ver replay", "Sair")) {
             case 1 -> maquinaEstados.iniciarJogo();
             case 2 -> pedeLoadUI();
@@ -59,7 +60,7 @@ public class QuatroEmLinhaUITexto {
 
     private void pedeConfiguracaoUI() {
 
-        switch (UtilUITexto.getOpcao("Jogador " + (maquinaEstados.getNumJogadores() + 1) + ":",
+        switch (UtilsUITexto.getOpcao("Jogador " + (maquinaEstados.getNumJogadores() + 1) + ":",
                 "Humano", "Computador", "Sair")) {
             case 1 -> adicionaJogadorUI(TipoJogador.HUMANO);
             case 2 -> adicionaJogadorUI(TipoJogador.COMPUTADOR);
@@ -99,12 +100,12 @@ public class QuatroEmLinhaUITexto {
 
         String[] opcoes = getOpcoesDecisaoJogada();
 
-        switch (UtilUITexto.getOpcao("--- PEDE JOGADA ---", opcoes)) {
+        switch (UtilsUITexto.getOpcao("--- PEDE JOGADA ---", opcoes)) {
             case 1 -> pedeFichaColunaUI();
             case 2 -> gravaJogoUI();
             case 3 -> voltaAtrasUI();
             case 4 -> maquinaEstados.aceitarMinijogo();
-            case 5 -> maquinaEstados.jogarFichaEspecial(UtilUITexto.getInteiro("\nColuna a remover: ") - 1);
+            case 5 -> maquinaEstados.jogarFichaEspecial(UtilsUITexto.getInteiro("\nColuna a remover: ") - 1);
             default -> maquinaEstados.desistir();
         }
     }
@@ -112,13 +113,11 @@ public class QuatroEmLinhaUITexto {
     private void gravaJogoUI() {
 
         while (true) {
-            String pathFicheiro = UtilUITexto.getResposta("Nome do ficheiro: ");
+            String path = UtilsUITexto.getResposta("Nome do ficheiro: ");
 
-            if (pathFicheiro.isEmpty()) return;
+            if (path.isEmpty()) return;
 
-            pathFicheiro = Constantes.SAVE_PATH + pathFicheiro;
-
-            if (Utils.gravarObjeto(pathFicheiro, maquinaEstados)) break;
+            if (maquinaEstados.gravarJogo(path)) break;
 
             System.out.println("Save falhou.");
         }
@@ -132,7 +131,7 @@ public class QuatroEmLinhaUITexto {
         String resposta;
 
         do {
-            resposta = UtilUITexto.getResposta(pergunta);
+            resposta = UtilsUITexto.getResposta(pergunta);
 
             if (maquinaEstados.isAcabadoMinijogo()) break;
 
@@ -160,7 +159,7 @@ public class QuatroEmLinhaUITexto {
 
         printResultadoJogo();
 
-        if (UtilUITexto.getOpcao("O que pretende fazer?", "Voltar ao menu", "Sair") == 1) {
+        if (UtilsUITexto.getOpcao("O que pretende fazer?", "Voltar ao menu", "Sair") == 1) {
             maquinaEstados.avancar();
             return;
         }
@@ -191,7 +190,7 @@ public class QuatroEmLinhaUITexto {
         int coluna;
 
         while (true) {
-            coluna = UtilUITexto.getInteiro("\nColuna a jogar: ");
+            coluna = UtilsUITexto.getInteiro("\nColuna a jogar: ");
 
             if (coluna == 0) return;
 
@@ -209,7 +208,7 @@ public class QuatroEmLinhaUITexto {
     private String pedeNomeJogadorUI() {
         String nome;
         while (true) {
-            nome = UtilUITexto.getResposta("Qual o nome do jogador?");
+            nome = UtilsUITexto.getResposta("Qual o nome do jogador?");
 
             if (nome.isEmpty()) return "";
 
@@ -222,36 +221,42 @@ public class QuatroEmLinhaUITexto {
     }
 
     private void pedeLoadUI() {
-        String[] ficheiros = Utils.getFicheirosNoDiretorio(Constantes.SAVE_PATH);
+        List<String> ficheiros = new ArrayList<>(Utils.getFicheirosNoDiretorio(Constantes.SAVE_PATH));
 
-        if (ficheiros.length <= 0) {
+        if (ficheiros.isEmpty()) {
             System.out.println("\nNão há saves para carregar.");
             return;
         }
 
-        while (true) {
-            int opt = UtilUITexto.getOpcao("Ficheiro: ", false, ficheiros);
-            String path = Constantes.SAVE_PATH + ficheiros[opt - 1];
-            maquinaEstados = Utils.lerObjeto(path, QuatroEmLinhaMaquinaEstados.class);
-            if (maquinaEstados != null) {
-                System.out.println("Load com sucesso!");
-                break;
-            }
+        ficheiros.add("Sair");
 
-            System.out.println("Load falhou!");
+        while (true) {
+            int opt = UtilsUITexto.getOpcao("Ficheiro: ", ficheiros.toArray(new String[0]));
+
+            if (opt == 0) return;
+
+            if (maquinaEstados.continuarJogo(ficheiros.get(opt - 1))) break;
+            System.out.println("Load falhou.");
         }
+
+        System.out.println("Load com sucesso!");
     }
 
     private void pedeReplayUI() {
-        String[] ficheiros = Utils.getFicheirosNoDiretorio(Constantes.REPLAY_PATH);
+        List<String> ficheiros = new ArrayList<>(Utils.getFicheirosNoDiretorio(Constantes.REPLAY_PATH));
 
-        if (ficheiros.length <= 0) {
+        if (ficheiros.isEmpty()) {
             System.out.println("\nNão há jogos para dar replay.");
             return;
         }
 
-        int opt = UtilUITexto.getOpcao("Ficheiro: ", false, ficheiros);
-        maquinaEstados.verReplay(ficheiros[opt - 1]);
+        ficheiros.add("Sair");
+
+        int opt = UtilsUITexto.getOpcao("Ficheiro: ", ficheiros.toArray(new String[0]));
+
+        if (opt == 0) return;
+
+        maquinaEstados.verReplay(ficheiros.get(opt - 1));
     }
 
     private void voltaAtrasUI() {
@@ -259,7 +264,7 @@ public class QuatroEmLinhaUITexto {
         int numCreditosJogaveis = maquinaEstados.getNumCreditosJogaveis();
 
         do {
-            numCreditosAUtilizar = UtilUITexto.getInteiro(
+            numCreditosAUtilizar = UtilsUITexto.getInteiro(
                     "\nNúmero de créditos a utilizar [0 - " + numCreditosJogaveis + "]: ");
         } while (numCreditosAUtilizar < 0 || numCreditosAUtilizar > maquinaEstados.getNumCreditosJogaveis());
 

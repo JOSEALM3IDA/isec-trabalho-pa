@@ -106,19 +106,6 @@ public class JogadorLista implements Serializable {
 
     public void limpar() { jogadores.clear(); }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < jogadores.size(); i++) {
-            sb.append(i + 1).append(": ").append(jogadores.get(i).toString());
-            if (i != jogadores.size() - 1)
-                sb.append('\n');
-        }
-
-        return sb.toString();
-    }
-
     public void adicionaFichaEspecialJogadorAtual() { getJogadorAtual().setNumFichasEspeciais(getNumFichasEspeciaisJogadorAtual() + 1); }
 
     public int getNumFichasEspeciaisJogadorAtual() { return getJogadorAtual().getNumFichasEspeciais(); }
@@ -137,5 +124,20 @@ public class JogadorLista implements Serializable {
     public void resetEstadoJogadores() {
         for (var jogador : jogadores) jogador.resetEstado();
         currJogadorIdx = primeiroJogadorIdx;
+    }
+
+    @Override
+    public String toString() {
+        if (jogadores.isEmpty()) return "Sem Jogadores";
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < jogadores.size(); i++) {
+            sb.append(i + 1).append(": ").append(jogadores.get(i).toString());
+            if (i != jogadores.size() - 1)
+                sb.append('\n');
+        }
+
+        return sb.toString();
     }
 }

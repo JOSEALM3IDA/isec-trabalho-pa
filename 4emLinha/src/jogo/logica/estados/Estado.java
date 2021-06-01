@@ -7,6 +7,7 @@ public interface Estado {
 
     // PedeDecisaoInicio
     Estado iniciarJogo();       // -> PedeConfiguracao
+    Estado continuarJogo(QuatroEmLinhaGestor quatroEmLinhaGestor);      // -> PedeDecisaoJogada
     Estado verReplay(QuatroEmLinhaGestor quatroEmLinhaGestor);         // -> AssisteJogada
 
     // PedeConfiguracao
@@ -26,5 +27,4 @@ public interface Estado {
     Estado avancar();           // -> Varios Estados
 
     Situacao getSituacao();
-
 }

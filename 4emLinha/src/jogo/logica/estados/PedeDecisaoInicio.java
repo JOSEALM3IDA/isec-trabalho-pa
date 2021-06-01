@@ -13,6 +13,12 @@ public class PedeDecisaoInicio extends EstadoAdapter {
     }
 
     @Override
+    public Estado continuarJogo(QuatroEmLinhaGestor quatroEmLinhaGestor) {
+        this.quatroEmLinhaGestor = quatroEmLinhaGestor;
+        return new PedeDecisaoJogada(quatroEmLinhaGestor);
+    }
+
+    @Override
     public Estado verReplay(QuatroEmLinhaGestor quatroEmLinhaGestor) {
         this.quatroEmLinhaGestor = quatroEmLinhaGestor;
         return new AssisteJogada(quatroEmLinhaGestor);

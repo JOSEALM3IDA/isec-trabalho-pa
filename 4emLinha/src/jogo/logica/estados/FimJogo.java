@@ -7,6 +7,7 @@ import jogo.utils.Utils;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class FimJogo extends EstadoAdapter {
 
@@ -16,13 +17,13 @@ public class FimJogo extends EstadoAdapter {
     }
 
     private void gravarReplay(QuatroEmLinhaGestor quatroEmLinhaGestor) {
-        String[] replaysExistentes = Utils.getFicheirosNoDiretorio(Constantes.REPLAY_PATH);
+        List<String> replaysExistentes = Utils.getFicheirosNoDiretorio(Constantes.REPLAY_PATH);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss");
         LocalDateTime ldt = LocalDateTime.now();
         String nomeNovoFicheiro = Constantes.REPLAY_PATH + dtf.format(ldt);
 
 
-        if (replaysExistentes.length < Constantes.NUM_MAX_REPLAYS) {
+        if (replaysExistentes.size() < Constantes.NUM_MAX_REPLAYS) {
             Utils.gravarObjeto(nomeNovoFicheiro, quatroEmLinhaGestor);
             return;
         }
