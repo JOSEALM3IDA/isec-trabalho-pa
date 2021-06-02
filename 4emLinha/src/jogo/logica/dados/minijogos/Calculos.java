@@ -2,14 +2,28 @@ package jogo.logica.dados.minijogos;
 
 import jogo.utils.Utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Calculos extends MinijogoAdapter {
 
     static final int TEMPO_MAXIMO_SEGUNDOS = 30;
-    static final char[] OPERADORES = {'+', '-', '/', 'x'};
+
+    private enum Operadores {
+        SOMA('+'),
+        SUBTRACAO('-'),
+        DIVISAO('/'),
+        MULTIPLICACAO('x');
+
+        char op;
+
+        Operadores(char op) { this.op = op; }
+    }
 
     private int inteiro1 = -1;
     private int inteiro2 = -1;
-    private char operador = ' ';
+
+    private Operadores currOperador = null;
 
     @Override
     public void comecar() {
@@ -30,7 +44,7 @@ public class Calculos extends MinijogoAdapter {
         if (isAcabado) return;
 
         if (inteiro1 == -1 || inteiro2 == -1) return;
-        if (operador == ' ') return;
+        if (currOperador == null) return;
 
         if (!cronometro.isAtivo()) return;
 
@@ -67,18 +81,18 @@ public class Calculos extends MinijogoAdapter {
         inteiro1 = Utils.getNumeroRandom(100);
         inteiro2 = Utils.getNumeroRandom(100);
 
-        operador = OPERADORES[Utils.getNumeroRandom(OPERADORES.length)];
+        List<Operadores> ops = Arrays.asList(Operadores.values());
+        currOperador = ops.get(Utils.getNumeroRandom(ops.size()));
 
-        perguntaAtual = inteiro1 + " " + operador + " " + inteiro2 + " = ?";
+        perguntaAtual = inteiro1 + " " + currOperador.op + " " + inteiro2 + " = ?";
     }
 
     private double aplicarOperador(int inteiro1, int inteiro2) throws NumberFormatException {
-        return switch (operador) {
-            case '+' -> inteiro1 + inteiro2;
-            case '-' -> inteiro1 - inteiro2;
-            case '/' -> (double) inteiro1 / inteiro2;
-            case 'x' -> inteiro1 * inteiro2;
-            default -> throw new NumberFormatException();
+        return switch (currOperador) {
+            case SOMA -> inteiro1 + inteiro2;
+            case SUBTRACAO -> inteiro1 - inteiro2;
+            case DIVISAO -> (double) inteiro1 / inteiro2;
+            case MULTIPLICACAO -> inteiro1 * inteiro2;
         };
     }
 }
