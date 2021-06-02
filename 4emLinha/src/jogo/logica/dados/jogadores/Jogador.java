@@ -6,9 +6,10 @@ import jogo.logica.dados.tabuleiro.TipoFicha;
 public interface Jogador {
 
     void setNumJogadasDesdeMinijogo(int numJogadasDesdeMinijogo);
-    void setNumCreditos(int numCreditos);
+    void setNumCreditos(int num);
     void setNumFichasEspeciais(int num);
-    void resetEstado();
+    void adicionarMinijogo();
+    void reset();
 
     int getJogadaAutomatica(Tabuleiro tabuleiro);
     TipoFicha getFicha();
@@ -19,4 +20,5 @@ public interface Jogador {
     int getNumJogadasDesdeMinijogo();
     int getNumFichasEspeciais();
     int getNumCreditos();
+    int getNumMinijogos();
 }

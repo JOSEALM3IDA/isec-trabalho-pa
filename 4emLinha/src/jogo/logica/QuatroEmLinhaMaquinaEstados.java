@@ -93,6 +93,5 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     private void resetJogo() {
         quatroEmLinhaGestor.resetTabuleiro();
         quatroEmLinhaGestor.resetEstadoJogadores();
-        quatroEmLinhaGestor.resetMinijogos();
     }
 }

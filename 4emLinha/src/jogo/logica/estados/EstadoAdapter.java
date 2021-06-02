@@ -9,7 +9,7 @@ public abstract class EstadoAdapter implements Estado, Serializable {
 
     protected QuatroEmLinhaGestor quatroEmLinhaGestor;
 
-    public EstadoAdapter(QuatroEmLinhaGestor quatroEmLinhaGestor) { this.quatroEmLinhaGestor = quatroEmLinhaGestor; }
+    protected EstadoAdapter(QuatroEmLinhaGestor quatroEmLinhaGestor) { this.quatroEmLinhaGestor = quatroEmLinhaGestor; }
 
     @Override
     public Estado iniciarJogo() { return this; }
@@ -43,7 +43,4 @@ public abstract class EstadoAdapter implements Estado, Serializable {
 
     @Override
     public Estado avancar() { return this; }
-
-    @Override
-    public abstract Situacao getSituacao();
 }

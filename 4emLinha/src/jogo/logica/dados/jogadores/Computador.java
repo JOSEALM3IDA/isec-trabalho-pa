@@ -21,10 +21,10 @@ public class Computador extends JogadorAdapter {
     public boolean isComputador() { return true; }
 
     @Override
-    public void setNumFichasEspeciais(int num) { }
+    public void setNumFichasEspeciais(int num) { /* não usa fichas especiais */ }
 
     @Override
-    public void resetEstado() {
+    public void reset() {
         numJogadasDesdeMinijogo = 0;
         isVencedor = false;
         numFichasEspeciais = 0;

@@ -14,7 +14,7 @@ public class Tabuleiro implements Serializable {
     private final int numColunas;
     private final int numLinhas;
 
-    ArrayList<TipoFicha> tabuleiro = new ArrayList<>(DEFAULT_NUM_LINHAS * DEFAULT_NUM_COLUNAS);
+    ArrayList<TipoFicha> tabuleiroList = new ArrayList<>(DEFAULT_NUM_LINHAS * DEFAULT_NUM_COLUNAS);
 
     public Tabuleiro() {
         numColunas = DEFAULT_NUM_COLUNAS;
@@ -23,8 +23,8 @@ public class Tabuleiro implements Serializable {
     }
 
     private void initTabuleiro() {
-        tabuleiro.clear();
-        for (int i = 0; i < numLinhas * numColunas; i++) tabuleiro.add(TipoFicha.NONE);
+        tabuleiroList.clear();
+        for (int i = 0; i < numLinhas * numColunas; i++) tabuleiroList.add(TipoFicha.NONE);
     }
 
     public void addFicha(int col, TipoFicha ficha) {
@@ -38,26 +38,24 @@ public class Tabuleiro implements Serializable {
         }
     }
 
-    public boolean removeFicha(int col) {
+    public void removeFicha(int col) {
         for (int lin = numLinhas - 1; lin >= 0; lin--) {
             if (getFichaEm(lin, col) != TipoFicha.NONE) {
                 setFichaEm(lin, col, TipoFicha.NONE);
-                return true;
+                return;
             }
         }
-
-        return false;
     }
 
     private TipoFicha getFichaEm(int lin, int col) {
         if (lin >= numLinhas || col >= numColunas) return null;
         if (lin < 0 || col < 0) return null;
-        return tabuleiro.get(lin * numColunas + col);
+        return tabuleiroList.get(lin * numColunas + col);
     }
 
-    private void setFichaEm(int lin, int col, TipoFicha tipoFicha) { tabuleiro.set(lin * numColunas + col, tipoFicha); }
+    private void setFichaEm(int lin, int col, TipoFicha tipoFicha) { tabuleiroList.set(lin * numColunas + col, tipoFicha); }
 
-    public List<TipoFicha> getFichas() { return Collections.unmodifiableList(tabuleiro); }
+    public List<TipoFicha> getFichas() { return Collections.unmodifiableList(tabuleiroList); }
     public int getNumLinhas() { return numLinhas; }
     public int getNumColunas() { return numColunas; }
 
@@ -115,7 +113,7 @@ public class Tabuleiro implements Serializable {
         int lin;
         int counter;
 
-        for (int initLin = 0; initLin < numLinhas - NUM_PECAS_PARA_GANHAR; initLin++) {
+        for (int initLin = 0; initLin < numLinhas - (NUM_PECAS_PARA_GANHAR - 1); initLin++) {
             counter = 0;
             for (lin = initLin, col = 0; lin < numLinhas && col < numColunas; lin++, col++) {
                 if (getFichaEm(lin, col) != ficha) {
@@ -151,7 +149,7 @@ public class Tabuleiro implements Serializable {
         int lin;
         int counter;
 
-        for (int initLin = 0; initLin < numLinhas - NUM_PECAS_PARA_GANHAR; initLin++) {
+        for (int initLin = 0; initLin < numLinhas - (NUM_PECAS_PARA_GANHAR - 1); initLin++) {
             counter = 0;
             for (lin = initLin, col = numColunas - 1; lin < numLinhas && col >= 0 ; lin++, col--) {
                 if (getFichaEm(lin, col) != ficha) {
@@ -164,9 +162,9 @@ public class Tabuleiro implements Serializable {
             }
         }
 
-        for (int initCol = NUM_PECAS_PARA_GANHAR - 1; initCol < numColunas - 2; initCol++) {
+        for (int initCol = numColunas - 1 - 1; initCol >= NUM_PECAS_PARA_GANHAR - 1; initCol--) {
             counter = 0;
-            for (lin = 0, col = initCol; lin < numLinhas && col < numColunas; lin++, col++) {
+            for (lin = 0, col = initCol; lin < numLinhas && col >= 0; lin++, col--) {
                 if (getFichaEm(lin, col) != ficha) {
                     counter = 0;
                     continue;
@@ -176,7 +174,6 @@ public class Tabuleiro implements Serializable {
                 if (counter >= NUM_PECAS_PARA_GANHAR) return true;
             }
         }
-
 
         return false;
     }
@@ -191,12 +188,10 @@ public class Tabuleiro implements Serializable {
         return coluna;
     }
 
-    public boolean setColuna(int col, List<TipoFicha> novaColuna) {
-        if (novaColuna.size() != numLinhas) return false;
+    public void setColuna(int col, List<TipoFicha> novaColuna) {
+        if (novaColuna.size() != numLinhas) return;
 
         for (int lin = 0; lin < numLinhas; lin++) setFichaEm(lin, col, novaColuna.get(lin));
-
-        return true;
     }
 
     public boolean isJogavelColuna(int col) {

@@ -7,7 +7,8 @@ public class Calculos extends MinijogoAdapter {
     static final int TEMPO_MAXIMO_SEGUNDOS = 30;
     static final char[] OPERADORES = {'+', '-', '/', 'x'};
 
-    private int inteiro1 = -1, inteiro2 = -1;
+    private int inteiro1 = -1;
+    private int inteiro2 = -1;
     private char operador = ' ';
 
     @Override
@@ -42,8 +43,9 @@ public class Calculos extends MinijogoAdapter {
 
         if (!isValidaResposta(resposta)) return;
 
-        double respostaCorreta;
-        try { respostaCorreta = aplicarOperador(inteiro1, inteiro2); } catch (NumberFormatException nfe) { return; }
+        double respostaCorreta = -1;
+        try { respostaCorreta = aplicarOperador(inteiro1, inteiro2); }
+        catch (NumberFormatException nfe) { return; }
         finally { gerarNovaPergunta(); }
 
         respostaCorreta = Utils.round(respostaCorreta, 3);
@@ -71,14 +73,12 @@ public class Calculos extends MinijogoAdapter {
     }
 
     private double aplicarOperador(int inteiro1, int inteiro2) throws NumberFormatException {
-        switch (operador) {
-            case '+' -> { return inteiro1 + inteiro2; }
-            case '-' -> { return inteiro1 - inteiro2; }
-            case '/' -> { return (double) inteiro1 / inteiro2; }
-            case 'x' -> { return inteiro1 * inteiro2; }
+        return switch (operador) {
+            case '+' -> inteiro1 + inteiro2;
+            case '-' -> inteiro1 - inteiro2;
+            case '/' -> (double) inteiro1 / inteiro2;
+            case 'x' -> inteiro1 * inteiro2;
             default -> throw new NumberFormatException();
-        }
+        };
     }
-
-
 }

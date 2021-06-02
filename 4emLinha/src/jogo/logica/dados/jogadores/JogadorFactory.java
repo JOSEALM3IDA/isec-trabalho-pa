@@ -4,11 +4,12 @@ import jogo.logica.dados.tabuleiro.TipoFicha;
 
 public class JogadorFactory {
 
+    private JogadorFactory() {}
+
     public static Jogador getJogador(TipoJogador tipoJogador, String nomeJogador, TipoFicha novaFicha) {
-        switch (tipoJogador) {
-            case HUMANO -> { return new Humano(nomeJogador, novaFicha); }
-            case COMPUTADOR -> { return new Computador(nomeJogador, novaFicha); }
-            default -> { return null; }
-        }
+        return switch (tipoJogador) {
+            case HUMANO -> new Humano(nomeJogador, novaFicha);
+            case COMPUTADOR -> new Computador(nomeJogador, novaFicha);
+        };
     }
 }

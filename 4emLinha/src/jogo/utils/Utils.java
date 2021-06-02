@@ -7,6 +7,8 @@ import java.util.*;
 
 public class Utils {
 
+    private Utils() {}
+
     private static final Random random = new Random();
 
     public static int getNumeroRandom(int bound) { return random.nextInt(bound); }
@@ -44,16 +46,16 @@ public class Utils {
 
     public static boolean gravarObjeto(String path, Object objeto) {
         File f = new File(path);
+        if (f.exists()) return false;
+
         f.getParentFile().mkdirs();
 
-        FileOutputStream fos;
-        try {
-            if (!f.createNewFile()) { return false; }
-            fos = new FileOutputStream(f);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+        try (
+                FileOutputStream fos = new FileOutputStream(f);
+                ObjectOutputStream oos = new ObjectOutputStream(fos)
+                ) {
             oos.writeObject(objeto);
-            oos.close();
-            fos.close();
         } catch (IOException ioe) { ioe.printStackTrace(); return false; }
 
         return true;
@@ -64,7 +66,7 @@ public class Utils {
         Object obj;
         try (FileInputStream fis = new FileInputStream(path); ObjectInputStream ois = new ObjectInputStream(fis)) {
             obj = ois.readObject();
-        } catch (IOException | ClassNotFoundException ex) { ex.printStackTrace(); return null; }
+        } catch (IOException | ClassNotFoundException ex) { return null; }
 
         if (obj == null) return null;
 

@@ -13,8 +13,9 @@ public abstract class JogadorAdapter implements Jogador, Serializable {
     protected boolean isVencedor = false;
     protected int numFichasEspeciais = 0;
     protected int numCreditos = 0;
+    protected int numMinijogos = 0;
 
-    public JogadorAdapter(String nome, TipoFicha ficha) {
+    protected JogadorAdapter(String nome, TipoFicha ficha) {
         this.nome = nome;
         this.ficha = ficha;
     }
@@ -30,20 +31,23 @@ public abstract class JogadorAdapter implements Jogador, Serializable {
     }
 
     @Override
-    public void setNumCreditos(int numCreditos) {
-        if (numCreditos < 0) {
+    public void setNumCreditos(int num) {
+        if (num < 0) {
             this.numCreditos = 0;
             return;
         }
 
-        this.numCreditos = numCreditos;
+        this.numCreditos = num;
     }
 
     @Override
     public void setNumFichasEspeciais(int num) {}
 
     @Override
-    public void resetEstado() {
+    public void adicionarMinijogo() {}
+
+    @Override
+    public void reset() {
         numJogadasDesdeMinijogo = 0;
         isVencedor = false;
         numFichasEspeciais = 0;
@@ -76,6 +80,9 @@ public abstract class JogadorAdapter implements Jogador, Serializable {
 
     @Override
     public int getNumCreditos() { return numCreditos; }
+
+    @Override
+    public int getNumMinijogos() { return numMinijogos; }
 
     @Override
     public String toString() { return nome; }

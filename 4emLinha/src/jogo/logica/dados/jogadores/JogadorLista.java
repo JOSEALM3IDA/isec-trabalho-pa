@@ -46,7 +46,7 @@ public class JogadorLista implements Serializable {
             tipos.remove(fichaJogador);
         }
 
-        if (tipos.size() <= 0) return null;
+        if (tipos.isEmpty()) return null;
         return tipos.get(0);
     }
 
@@ -87,7 +87,7 @@ public class JogadorLista implements Serializable {
         }
     }
 
-    public void aceitarMinijogo() { getJogadorAtual().setNumJogadasDesdeMinijogo(0); }
+    public void aceitarMinijogo() { getJogadorAtual().adicionarMinijogo(); }
 
     public boolean isComputadorAJogar() { return getJogadorAtual().isComputador(); }
     public int getNumJogadores() { return jogadores.size(); }
@@ -122,7 +122,7 @@ public class JogadorLista implements Serializable {
     public int getNumCreditosJogadorAtual() { return getJogadorAtual().getNumCreditos(); }
 
     public void resetEstadoJogadores() {
-        for (var jogador : jogadores) jogador.resetEstado();
+        for (var jogador : jogadores) jogador.reset();
         currJogadorIdx = primeiroJogadorIdx;
     }
 
@@ -140,4 +140,6 @@ public class JogadorLista implements Serializable {
 
         return sb.toString();
     }
+
+    public int getNumMinijogosJogadorAtual() { return getJogadorAtual().getNumMinijogos(); }
 }

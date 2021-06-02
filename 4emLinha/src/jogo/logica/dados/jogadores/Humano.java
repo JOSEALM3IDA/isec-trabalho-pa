@@ -22,11 +22,18 @@ public class Humano extends JogadorAdapter {
     }
 
     @Override
-    public void resetEstado() {
+    public void adicionarMinijogo() {
+        numMinijogos++;
+        setNumJogadasDesdeMinijogo(0);
+    }
+
+    @Override
+    public void reset() {
         numJogadasDesdeMinijogo = 0;
         isVencedor = false;
         numFichasEspeciais = 0;
         numCreditos = NUM_CREDITOS_INICIAIS;
+        numMinijogos = 0;
     }
 
 }

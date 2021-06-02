@@ -29,7 +29,6 @@ public class QuatroEmLinhaGestor implements Serializable {
     public void limparTudo() { quatroEmLinha.resetJogo(); commandManager.resetHistorico(); }
     public void resetTabuleiro() { quatroEmLinha.resetTabuleiro(); }
     public void resetEstadoJogadores() { quatroEmLinha.resetEstadoJogadores(); }
-    public void resetMinijogos() { quatroEmLinha.resetMinijogos(); }
 
     public int getJogadaAutomatica() { return quatroEmLinha.getJogadaAutomatica(); }
     public boolean existeJogador(String nomeJogador) { return quatroEmLinha.existeJogador(nomeJogador); }

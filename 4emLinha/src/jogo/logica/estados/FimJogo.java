@@ -5,6 +5,9 @@ import jogo.utils.Constantes;
 import jogo.utils.Utils;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -46,8 +49,9 @@ public class FimJogo extends EstadoAdapter {
             }
         }
 
-        File oldestFile = new File(Constantes.REPLAY_PATH + oldest);
-        oldestFile.delete();
+        try {
+            Files.delete(Path.of(Constantes.REPLAY_PATH + oldest));
+        } catch (IOException ioe) { /* ignored */ }
 
         Utils.gravarObjeto(nomeNovoFicheiro, quatroEmLinhaGestor);
     }

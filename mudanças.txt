@@ -1,5 +1,5 @@
 - ler maquina de estados na ui - errado porque podem haver mais views que perdiam acesso
 - opcao para sair no load e escolher replay
-
-minijogo devia ser alternado ao nivel do jogador
-bug diagonaisADescer
+- refactor operadores minijogo calculos
+- bug diagonaisADescer resolvido
+- minijogo devia ser alternado ao nivel do jogador

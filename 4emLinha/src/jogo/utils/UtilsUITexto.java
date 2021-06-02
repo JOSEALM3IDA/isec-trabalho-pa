@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class UtilsUITexto {
 
+    private UtilsUITexto() {}
+
     static Scanner sc = new Scanner(System.in);
 
     public static int getInteiro(String pergunta) {
@@ -36,10 +38,10 @@ public class UtilsUITexto {
             for (int i = 0; i < opts.length - 1; i++) {
                 if (opts[i].isEmpty()) continue;
 
-                System.out.printf("%3d - %s\n", i + 1, opts[i]);
+                System.out.printf("%3d - %s%n", i + 1, opts[i]);
             }
 
-            System.out.printf("\n%3d - %s\n", 0, opts[opts.length - 1]);
+            System.out.printf("%n%3d - %s%n", 0, opts[opts.length - 1]);
 
             opt = getInteiro("\n> ");
         } while (opt < 0 || opt >= opts.length);

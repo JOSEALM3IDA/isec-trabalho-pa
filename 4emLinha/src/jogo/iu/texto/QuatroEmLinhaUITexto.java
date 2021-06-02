@@ -11,6 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class QuatroEmLinhaUITexto {
@@ -93,7 +94,7 @@ public class QuatroEmLinhaUITexto {
             maquinaEstados.jogarFicha(jogada);
             System.out.println("\nO jogador " + nomeJogadorAtual + " jogou na coluna " + (jogada + 1) + "!");
             try { TimeUnit.MILLISECONDS.sleep(Constantes.MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR); }
-            catch (InterruptedException ignored) {}
+            catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
 
             return;
         }
@@ -179,8 +180,7 @@ public class QuatroEmLinhaUITexto {
         if (!maquinaEstados.temProximo()) printResultadoJogo();
 
         System.out.print("\nEnter para continuar...");
-        try { System.in.read(); } catch (IOException ignored) {}
-
+        try{ System.in.read(); } catch(IOException ioe) {/* ignored */}
     }
 
 

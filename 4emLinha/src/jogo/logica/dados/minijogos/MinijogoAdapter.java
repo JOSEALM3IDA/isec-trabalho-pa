@@ -12,13 +12,7 @@ public abstract class MinijogoAdapter implements Minijogo {
     protected int numPontos = 0;
 
     @Override
-    public abstract void comecar();
-
-    @Override
     public boolean isValidaResposta(String resposta) { return true; }
-
-    @Override
-    public abstract void receberResposta(String resposta);
 
     @Override
     public String getPerguntaAtual() { return perguntaAtual; }
