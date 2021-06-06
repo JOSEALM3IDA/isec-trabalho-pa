@@ -1,19 +1,24 @@
 package jogo.iu.grafica.stage;
 
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import jogo.iu.grafica.resources.CSSManager;
+import jogo.logica.QuatroEmLinhaObservable;
 
 public class PaneOrganizer extends BorderPane {
-    Pane centro;
+    private final QuatroEmLinhaObservable observable;
 
-    public PaneOrganizer() {
+    private PrincipalPane principalPane;
+
+    public PaneOrganizer(QuatroEmLinhaObservable observable) {
+        this.observable = observable;
+        CSSManager.setCss(this, "styles.css");
         criarLayout();
-        registarListeners();;
+        registarListeners();
     }
 
     void criarLayout() {
-        centro = new Pane();
-        this.setCenter(centro);
+        principalPane = new PrincipalPane(observable);
+        setCenter(principalPane);
     }
 
     void registarListeners() {

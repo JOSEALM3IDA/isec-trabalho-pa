@@ -49,7 +49,7 @@ public class QuatroEmLinhaUITexto {
 
     private void pedeDecisaoInicioUI() {
         switch (UtilsUITexto.getOpcao("--- MENU INICIAL ---",
-                "Iniciar jogo", "Continuar jogo", "Ver replay", "Sair")) {
+                "Iniciar Jogo", "Continuar Jogo", "Ver Replay", "Sair")) {
             case 1 -> maquinaEstados.iniciarJogo();
             case 2 -> pedeLoadUI();
             case 3 -> pedeReplayUI();

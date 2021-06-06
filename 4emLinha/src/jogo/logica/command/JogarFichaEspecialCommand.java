@@ -7,8 +7,8 @@ import java.util.List;
 
 public class JogarFichaEspecialCommand extends CommandAdapter {
 
-    int col;
-    List<TipoFicha> colunaRemovida;
+    private int col;
+    private List<TipoFicha> colunaRemovida;
 
     public JogarFichaEspecialCommand(QuatroEmLinha receiver, int col) {
         super(receiver);

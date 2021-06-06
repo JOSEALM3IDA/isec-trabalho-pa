@@ -7,21 +7,21 @@ public interface Estado {
 
     // PedeDecisaoInicio
     Estado iniciarJogo();       // -> PedeConfiguracao
-    Estado continuarJogo(QuatroEmLinhaGestor quatroEmLinhaGestor);      // -> PedeDecisaoJogada
+    Estado continuarJogo(QuatroEmLinhaGestor quatroEmLinhaGestor);      // -> PedeDecisaoJogadaPane
     Estado verReplay(QuatroEmLinhaGestor quatroEmLinhaGestor);         // -> AssisteJogada
 
     // PedeConfiguracao
     Estado adicionarJogador(TipoJogador tipoJogador, String nomeJogador);
 
-    // PedeDecisaoJogada
-    Estado jogarFicha(int col);      // -> PedeDecisaoJogada / FimJogo
-    Estado undoJogada(int numVezes);        // -> PedeDecisaoJogada
+    // PedeDecisaoJogadaPane
+    Estado jogarFicha(int col);      // -> PedeDecisaoJogadaPane / FimJogo
+    Estado undoJogada(int numVezes);        // -> PedeDecisaoJogadaPane
     Estado desistir();          // -> FimJogo
     Estado aceitarMinijogo();   // -> JogoMinijogo
-    Estado jogarFichaEspecial(int col); // -> PedeDecisaoJogada
+    Estado jogarFichaEspecial(int col); // -> PedeDecisaoJogadaPane
 
     // JogoMinijogo
-    Estado jogarMinijogo(String resposta); // -> PedeDecisaoJogada
+    Estado jogarMinijogo(String resposta); // -> PedeDecisaoJogadaPane
 
     // AssisteJogada ; PedeConfiguracao ; FimJogada ; FimJogo
     Estado avancar();           // -> Varios Estados

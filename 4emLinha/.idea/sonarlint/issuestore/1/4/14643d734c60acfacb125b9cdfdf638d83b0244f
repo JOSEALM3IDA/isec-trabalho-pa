@@ -1,0 +1,9 @@
+
+_
+java:S1128"BRemove this unused import 'jogo.iu.grafica.resources.ImageLoader'.(µ’¯Ÿ8òçñü/
+[
+java:S1128"9Remove this unused import 'javafx.scene.image.ImageView'.(áÿ®Ãüÿÿÿÿ8òçñü/
+R
+java:S1128"5Remove this unused import 'javafx.scene.image.Image'.(‰¿½Ç8òçñü/
+t
+java:S1450"YRemove the "tituloText" field and declare it as a local variable in the relevant methods.(ÑÍƒÑüÿÿÿÿ

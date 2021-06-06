@@ -10,18 +10,14 @@ public class ImageLoader {
 
     static { imgCache = new HashMap<>(); }
 
+    private ImageLoader() {}
+
     public static Image getImage(String name) {
 
         Image img = imgCache.get(name);
         if (img != null) return img;
 
-        try {
-            return new Image(Resources.getResourceAsFileStream("images/" + name));
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erro a ler imagem");
-        }
-        return null;
+        return new Image(Resources.getResourceAsFileStream("images/" + name));
     }
 
     public static Image getImageForce(String name) {
