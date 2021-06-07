@@ -9,7 +9,7 @@ public class NormalMenuButton extends Button {
     public NormalMenuButton(String s) {
         super(s);
 
-        this.setId("normal-button");
+        this.setId("menu-button");
         this.setPrefSize(Constantes.LARG_NORMAL_BTN, Constantes.ALT_NORMAL_BTN);
 
         this.setOnMouseClicked(e -> click());

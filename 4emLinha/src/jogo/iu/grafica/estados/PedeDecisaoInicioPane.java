@@ -3,16 +3,12 @@ package jogo.iu.grafica.estados;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import jogo.iu.grafica.resources.FontManager;
-import jogo.iu.grafica.resources.ImageLoader;
 import jogo.iu.grafica.stage.MainMenuButton;
 import jogo.iu.grafica.stage.MenuBackground;
 import jogo.logica.Propriedades;
@@ -22,15 +18,15 @@ import jogo.utils.Constantes;
 
 import java.io.File;
 
-public class PedeDecisaoInicioPane extends HBox {
+public class PedeDecisaoInicioPane extends BorderPane {
     private final QuatroEmLinhaObservable observable;
 
     private Text tituloText;
 
-    private Button iniciarButton;
-    private Button continuarButton;
-    private Button replayButton;
-    private Button sairButton;
+    private MainMenuButton iniciarButton;
+    private MainMenuButton continuarButton;
+    private MainMenuButton replayButton;
+    private MainMenuButton sairButton;
 
     public PedeDecisaoInicioPane(QuatroEmLinhaObservable observable) {
         this.observable = observable;
@@ -41,7 +37,6 @@ public class PedeDecisaoInicioPane extends HBox {
     }
 
     void criarLayout() {
-
         VBox verticalBox = new VBox(100);
 
         verticalBox.setBackground(new Background(new BackgroundFill(
@@ -53,7 +48,8 @@ public class PedeDecisaoInicioPane extends HBox {
         tituloText.setFill(Color.WHITE);
         tituloText.setStroke(Color.BLACK);
         tituloText.setStrokeWidth(1);
-        tituloText.setFont(FontManager.loadFont(Constantes.FONT_MENU, 30));
+        tituloText.setFont(FontManager.loadFont(Constantes.FONT_MENU, 40));
+        tituloText.setLineSpacing(-20);
 
         VBox buttonBox = new VBox(15);
 
@@ -64,23 +60,28 @@ public class PedeDecisaoInicioPane extends HBox {
 
         buttonBox.getChildren().addAll(iniciarButton, continuarButton, replayButton, sairButton);
 
+        buttonBox.setAlignment(Pos.CENTER);
+
         verticalBox.getChildren().addAll(tituloText, buttonBox);
 
         verticalBox.setAlignment(Pos.CENTER);
         verticalBox.setPadding(new Insets(50));
 
-        setAlignment(Pos.CENTER_LEFT);
-        getChildren().addAll(new MenuBackground(), verticalBox);
+        verticalBox.setMaxWidth(Constantes.LARG_SIDEBAR);
+        verticalBox.setMinWidth(Constantes.LARG_SIDEBAR);
+
+        setRight(verticalBox);
+        setLeft(new MenuBackground());
     }
 
     void registarListeners() {
         iniciarButton.setOnMouseClicked(e -> {
-            ((MainMenuButton) iniciarButton).click();
+            iniciarButton.click();
             observable.iniciarJogo();
         });
 
         continuarButton.setOnMouseClicked(e -> {
-            ((MainMenuButton) continuarButton).click();
+            continuarButton.click();
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Escolher Save");
@@ -91,7 +92,7 @@ public class PedeDecisaoInicioPane extends HBox {
         });
 
         replayButton.setOnMouseClicked(e -> {
-            ((MainMenuButton) replayButton).click();
+            replayButton.click();
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Escolher Replay");
@@ -102,7 +103,7 @@ public class PedeDecisaoInicioPane extends HBox {
         });
 
         sairButton.setOnMouseClicked(e -> {
-            ((MainMenuButton) sairButton).click();
+            sairButton.click();
             Platform.exit();
         });
 

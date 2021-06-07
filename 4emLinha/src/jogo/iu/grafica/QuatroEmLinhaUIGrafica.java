@@ -8,6 +8,7 @@ import jogo.iu.grafica.resources.ImageLoader;
 import jogo.iu.grafica.stage.PaneOrganizer;
 import jogo.logica.QuatroEmLinhaMaquinaEstados;
 import jogo.logica.QuatroEmLinhaObservable;
+import jogo.utils.Constantes;
 
 public class QuatroEmLinhaUIGrafica extends Application {
     @Override
@@ -18,11 +19,11 @@ public class QuatroEmLinhaUIGrafica extends Application {
 
         PaneOrganizer root = new PaneOrganizer(observable);
 
-        Scene scene = new Scene(root, 1066.666, 600); // 16:9
+        Scene scene = new Scene(root, Constantes.LARG_SCENE, Constantes.ALT_SCENE); // 16:9
         stage.setScene(scene);
         stage.setTitle("Quatro em Linha");
         stage.getIcons().add(ImageLoader.getImage("icon.png"));
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.setOnCloseRequest(windowEvent -> Platform.exit());
         stage.show();
     }

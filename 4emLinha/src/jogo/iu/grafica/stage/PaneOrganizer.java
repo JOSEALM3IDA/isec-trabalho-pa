@@ -16,11 +16,11 @@ public class PaneOrganizer extends BorderPane {
         registarListeners();
     }
 
-    void criarLayout() {
+    private void criarLayout() {
         principalPane = new PrincipalPane(observable);
         setCenter(principalPane);
     }
 
-    void registarListeners() {
+    private void registarListeners() {
     }
 }
