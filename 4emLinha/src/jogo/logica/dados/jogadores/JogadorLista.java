@@ -104,6 +104,13 @@ public class JogadorLista implements Serializable {
         return null;
     }
 
+    public TipoFicha getFichaVencedor() {
+        for (var jogador : jogadores) if (jogador.isVencedor()) return jogador.getFicha();
+
+        return null;
+    }
+
+
     public void limpar() { jogadores.clear(); }
 
     public void adicionaFichaEspecialJogadorAtual() { getJogadorAtual().setNumFichasEspeciais(getNumFichasEspeciaisJogadorAtual() + 1); }

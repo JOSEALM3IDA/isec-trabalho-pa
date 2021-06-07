@@ -38,7 +38,7 @@ public class PedeDecisaoInicioPane extends BorderPane {
 
     void criarLayout() {
         VBox verticalBox = new VBox(100);
-
+        verticalBox.setId("side-box");
         verticalBox.setBackground(new Background(new BackgroundFill(
                 Color.web(Constantes.COR_AZUL_HEX),
                 CornerRadii.EMPTY, Insets.EMPTY)));

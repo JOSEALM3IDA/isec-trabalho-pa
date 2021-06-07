@@ -3,3 +3,6 @@
 - bug diagonaisADescer resolvido
 - minijogo devia ser alternado ao nivel do jogador
 - refactor operadores minijogo calculos
+- isJogavelColuna
+- jogoacabou
+-get ficha vencedor

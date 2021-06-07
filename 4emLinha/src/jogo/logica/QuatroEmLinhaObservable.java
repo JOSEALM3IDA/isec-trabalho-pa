@@ -90,6 +90,7 @@ public class QuatroEmLinhaObservable {
     public int getJogadaAutomatica() { return maquinaEstados.getJogadaAutomatica(); }
     public String getNomeJogadorAtual() { return maquinaEstados.getNomeJogadorAtual(); }
     public String getNomeVencedor() { return maquinaEstados.getNomeVencedor(); }
+    public TipoFicha getFichaVencedor() { return maquinaEstados.getFichaVencedor(); }
     public String getConfigJogadores() { return maquinaEstados.getConfigJogadores(); }
     public List<TipoFicha> getTabuleiro() { return maquinaEstados.getTabuleiro(); }
     public boolean temMinijogoDisponivel() { return maquinaEstados.temMinijogoDisponivel(); }
@@ -100,6 +101,7 @@ public class QuatroEmLinhaObservable {
     public boolean isAcabadoMinijogo() { return maquinaEstados.isAcabadoMinijogo(); }
     public int getPontuacaoAtualMinijogo() { return maquinaEstados.getPontuacaoAtualMinijogo(); }
     public int getNumFichasEspeciaisJogadorAtual() { return maquinaEstados.getNumFichasEspeciaisJogadorAtual(); }
+    public boolean jogoAcabou() { return maquinaEstados.jogoAcabou(); }
     public int getNumCreditos() { return maquinaEstados.getNumCreditos(); }
     public boolean podeVoltarAtras() { return maquinaEstados.podeVoltarAtras(); }
     public int getNumCreditosJogaveis() { return maquinaEstados.getNumCreditosJogaveis(); }

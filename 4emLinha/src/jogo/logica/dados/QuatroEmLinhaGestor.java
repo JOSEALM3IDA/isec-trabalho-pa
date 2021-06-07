@@ -38,6 +38,7 @@ public class QuatroEmLinhaGestor implements Serializable {
     public int getNumColunas() { return quatroEmLinha.getNumColunas(); }
     public String getNomeJogadorAtual() { return quatroEmLinha.getNomeJogadorAtual(); }
     public String getNomeVencedor() { return quatroEmLinha.getNomeVencedor(); }
+    public TipoFicha getFichaVencedor() { return quatroEmLinha.getFichaVencedor(); }
     public String getConfigJogadores() { return quatroEmLinha.getConfigJogadores(); }
     public List<TipoFicha> getTabuleiro() { return quatroEmLinha.getTabuleiro(); }
     public boolean temMinijogoDisponivel() { return quatroEmLinha.temMinijogoDisponivel(); }
@@ -49,6 +50,7 @@ public class QuatroEmLinhaGestor implements Serializable {
     public boolean isAcabadoMinijogo() { return quatroEmLinha.isAcabadoMinijogo(); }
     public int getPontuacaoAtualMinijogo() { return quatroEmLinha.getPontuacaoAtualMinijogo(); }
     public int getNumFichasEspeciaisJogadorAtual() { return quatroEmLinha.getNumFichasEspeciaisJogadorAtual(); }
+    public boolean jogoAcabou() { return quatroEmLinha.jogoAcabou(); }
     public int getNumCreditosJogadorAtual() { return quatroEmLinha.getNumCreditosJogadorAtual(); }
     public TipoFicha getFichaAtual() { return quatroEmLinha.getFichaAtual(); }
     public boolean podeVoltarAtrasJogadorAtual() { return commandManager.temUndo() && quatroEmLinha.temCreditosJogadorAtual(); }
@@ -59,7 +61,7 @@ public class QuatroEmLinhaGestor implements Serializable {
     public String getDescricaoComandoAtual() { return commandManager.getDescricaoComandoAtual(); }
 
     public void undo(int numVezes) {
-        if (quatroEmLinha.jogoAcabou()) return;
+        if (jogoAcabou()) return;
 
         if (!quatroEmLinha.temCreditosJogadorAtual(numVezes)) return;
         commandManager.undo(numVezes, quatroEmLinha);

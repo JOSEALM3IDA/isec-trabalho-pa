@@ -19,7 +19,6 @@ public class SlotTabuleiro extends HBox {
         this.tipoFicha = tipoFicha;
 
         setAs(tipoFicha);
-        setOnMouseClicked(e -> System.out.println("madje"));
     }
 
     public void setAs(TipoFicha tipoFicha) {
@@ -35,6 +34,8 @@ public class SlotTabuleiro extends HBox {
         imageView.setImage(ImageLoader.getImage(nomeFichImagem));
         this.getChildren().add(imageView);
     }
+
+    public TipoFicha getTipoFicha() { return tipoFicha; }
 
     public void setMouseInside(boolean val) { setMouseInside(val, Color.WHITE); }
 

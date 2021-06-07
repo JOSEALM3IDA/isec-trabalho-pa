@@ -41,6 +41,7 @@ public class PedeConfiguracaoPane extends BorderPane {
 
     private VBox getBoxConfig() {
         VBox configBox = new VBox(100);
+        configBox.setId("side-box");
         configBox.setBackground(new Background(new BackgroundFill(
                 Color.web(Constantes.COR_AZUL_HEX),
                 CornerRadii.EMPTY, Insets.EMPTY)));

@@ -3,34 +3,43 @@ package jogo.iu.grafica.estados;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Box;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import jogo.iu.grafica.resources.MusicPlayer;
-import jogo.iu.grafica.stage.MenuBarJogo;
-import jogo.iu.grafica.stage.NormalMenuButton;
-import jogo.iu.grafica.stage.SlotTabuleiro;
+import jogo.iu.grafica.stage.*;
 import jogo.logica.Propriedades;
 import jogo.logica.QuatroEmLinhaObservable;
-import jogo.logica.dados.tabuleiro.TipoFicha;
 import jogo.logica.estados.Situacao;
 import jogo.utils.Constantes;
 
-import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class PedeDecisaoJogadaPane extends BorderPane {
+    private static final String FICHA_ESPECIAL_BUTTON_TEXT = "Ficha Especial";
+
     private final QuatroEmLinhaObservable observable;
 
     private MenuBarJogo menuBarJogo;
 
-    private GridPane tabuleiro;
-    private double tamanhoSlot;
+    private Text listaJogadores;
+    private TabuleiroPane tabuleiroPane;
+    private Text jogadorText1;
+    private Text jogadorText2;
 
     private NormalMenuButton voltarAtrasButton;
+    private Slider voltarAtrasSlider;
+
     private NormalMenuButton aceitarMinijogoButton;
     private NormalMenuButton jogarFichaEspecialButton;
     private NormalMenuButton desistirButton;
+
+    private ScheduledExecutorService scheduler;
 
     public PedeDecisaoJogadaPane(QuatroEmLinhaObservable observable) {
         this.observable = observable;
@@ -40,98 +49,111 @@ public class PedeDecisaoJogadaPane extends BorderPane {
         atualiza();
     }
 
-    private void adicionarGridNode(SlotTabuleiro slot, int lin, int col) {
-        tabuleiro.add(slot, col, observable.getNumLinhas() - 1 - lin);
-
-        if (observable.isComputadorAJogar()) return;
-
-        slot.setOnMouseClicked(e -> {
-            if (!observable.isJogavelColuna(GridPane.getColumnIndex(slot))) return;
-
-            MusicPlayer.playMusic(Constantes.SOM_PECA_DROP);
-            observable.jogarFicha(GridPane.getColumnIndex(slot));
-        });
-
-        slot.setOnMouseEntered(e -> {
-            int colEntered = GridPane.getColumnIndex(slot);
-            Color corHover = Color.web(switch(observable.getFichaAtual()) {
-                case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HOVER_HEX;
-                case FICHA_AMARELA -> Constantes.COR_AMARELA_HOVER_HEX;
-                case NONE -> "0xFFFFFF";
-            });
-
-            for (Node node : tabuleiro.getChildren()) {
-                if (GridPane.getColumnIndex(node) == colEntered) {
-                    ((SlotTabuleiro) node).setMouseInside(true, corHover);
-                }
-            }
-        });
-
-        slot.setOnMouseExited(e -> {
-            int colEntered = GridPane.getColumnIndex(slot);
-            for (Node node : tabuleiro.getChildren()) {
-                if (GridPane.getColumnIndex(node) == colEntered) {
-                    ((SlotTabuleiro) node).setMouseInside(false);
-                }
-            }
-        });
-    }
-
-    private void updateTabuleiro() {
-        tabuleiro = new GridPane();
-        tabuleiro.setAlignment(Pos.CENTER);
-
-        int numColunas = observable.getNumColunas();
-        int numLinhas = observable.getNumLinhas();
-        tamanhoSlot = 600.0 / numColunas;
-
-        List<TipoFicha> tabuleiroActual = observable.getTabuleiro();
-
-        for (int col = 0; col < numColunas; col++) {
-            for (int lin = 0; lin < numLinhas; lin++) {
-                SlotTabuleiro slot = new SlotTabuleiro(tabuleiroActual.get(lin * numColunas + col), tamanhoSlot);
-                adicionarGridNode(slot, lin, col);
-            }
-        }
-
-        setCenter(tabuleiro);
-    }
-
     private void criarLayout() {
-        setBackground(new Background(new BackgroundFill(Color.web("0xc5c5c5"), CornerRadii.EMPTY, Insets.EMPTY)));
+        HBox listaBox = new HBox();
+        listaJogadores = new Text();
+        listaJogadores.setTextAlignment(TextAlignment.CENTER);
+        listaJogadores.setFill(Color.WHITE);
+        listaJogadores.setStyle("-fx-font-size: 20");
+        listaBox.setAlignment(Pos.CENTER);
+        listaBox.setPadding(new Insets(100));
+        listaBox.getChildren().add(listaJogadores);
+        listaBox.setMinWidth(Constantes.LARG_SIDEBAR); listaBox.setMaxWidth(Constantes.LARG_SIDEBAR);
+        setLeft(listaBox);
+
+        tabuleiroPane = new TabuleiroPane(observable);
+        setCenter(tabuleiroPane);
+
+        VBox jogadorTextBox = new VBox();
+        jogadorText1 = new Text("Jogador Atual:");
+        jogadorText1.setStyle("-fx-font-size: 20");
+        jogadorText1.setTextAlignment(TextAlignment.CENTER);
+        jogadorText1.setFill(Color.WHITE);
+        jogadorText2 = new Text();
+        jogadorText2.setStyle("-fx-font-size: 28; -fx-font-weight: bold");
+        jogadorText2.setStroke(Color.BLACK);
+        jogadorText2.setStrokeWidth(1);
+        jogadorTextBox.setAlignment(Pos.CENTER);
+        jogadorTextBox.getChildren().addAll(jogadorText1, jogadorText2);
+        jogadorTextBox.setPadding(new Insets(100));
+        jogadorTextBox.setMinWidth(Constantes.LARG_SIDEBAR); jogadorTextBox.setMaxWidth(Constantes.LARG_SIDEBAR);
+        setRight(jogadorTextBox);
+
+        setBackground(new Background(new BackgroundFill(Color.web(Constantes.BACKGROUND_COLOR_HEX), CornerRadii.EMPTY, Insets.EMPTY)));
 
         menuBarJogo = new MenuBarJogo();
         setTop(menuBarJogo);
 
-        HBox buttonBox = new HBox(20);
+        FooterBox buttonBox = new FooterBox(30);
 
+        HBox voltarAtrasBox = new HBox(10);
         voltarAtrasButton = new NormalMenuButton("Voltar Atrás");
+        voltarAtrasSlider = new Slider();
+        voltarAtrasSlider.setMin(1);
+        voltarAtrasSlider.setBlockIncrement(1);
+        voltarAtrasSlider.setMajorTickUnit(1);
+        voltarAtrasSlider.setMinorTickCount(0);
+        voltarAtrasSlider.setShowTickLabels(true);
+        voltarAtrasSlider.setShowTickMarks(true);
+        voltarAtrasSlider.setSnapToTicks(true);
+        voltarAtrasSlider.setValue(1);
+        voltarAtrasSlider.setId("voltar-slider");
+        voltarAtrasBox.getChildren().addAll(voltarAtrasSlider, voltarAtrasButton);
+        voltarAtrasBox.setAlignment(Pos.CENTER);
+
         aceitarMinijogoButton = new NormalMenuButton("Minijogo");
-        jogarFichaEspecialButton = new NormalMenuButton("Ficha Especial");
+        jogarFichaEspecialButton = new NormalMenuButton(FICHA_ESPECIAL_BUTTON_TEXT);
         desistirButton = new NormalMenuButton("Desistir");
 
-        buttonBox.getChildren().addAll(voltarAtrasButton, aceitarMinijogoButton, jogarFichaEspecialButton, desistirButton);
-
-        buttonBox.setBackground(new Background(new BackgroundFill(
-                Color.web(Constantes.COR_AZUL_HEX),
-                CornerRadii.EMPTY, Insets.EMPTY)));
-
-        buttonBox.setAlignment(Pos.CENTER);
-
-        buttonBox.setMinWidth(Constantes.LARG_SCENE);
-        buttonBox.setMinHeight(Constantes.ALT_FOOTER);
+        buttonBox.getChildren().addAll(voltarAtrasBox, aceitarMinijogoButton, jogarFichaEspecialButton, desistirButton);
 
         setBottom(buttonBox);
     }
 
-    private void setLockBotoes(boolean val) {
-        voltarAtrasButton.setDisable(val);
-        aceitarMinijogoButton.setDisable(val);
-        jogarFichaEspecialButton.setDisable(val);
-        desistirButton.setDisable(val);
+    private void setLockBotoes(boolean doLock) {
+        voltarAtrasButton.setDisable(doLock || !observable.podeVoltarAtras());
+        aceitarMinijogoButton.setDisable(doLock || !observable.temMinijogoDisponivel());
+        jogarFichaEspecialButton.setDisable(doLock || observable.getNumFichasEspeciaisJogadorAtual() <= 0);
+        desistirButton.setDisable(doLock);
     }
 
     private void registarListeners() {
+        voltarAtrasButton.setOnMouseClicked(e -> {
+            voltarAtrasButton.click();
+
+            double numVezes = voltarAtrasSlider.getValue();
+            if (numVezes == 0) return;
+            observable.undoJogada((int) numVezes);
+        });
+
+        aceitarMinijogoButton.setOnMouseClicked(e -> {
+            aceitarMinijogoButton.click();
+
+            observable.aceitarMinijogo();
+        });
+
+        jogarFichaEspecialButton.setOnMouseClicked(e -> {
+            boolean isColocarFichaEspecial = tabuleiroPane.isJogarFichaEspecial();
+            tabuleiroPane.setJogarFichaEspecial(!isColocarFichaEspecial);
+
+            if (!isColocarFichaEspecial) {
+                jogarFichaEspecialButton.setText(FICHA_ESPECIAL_BUTTON_TEXT);
+                return;
+            }
+
+            jogarFichaEspecialButton.setText("Ficha Regular");
+
+        });
+
+        desistirButton.setOnMouseClicked(e -> {
+            desistirButton.click();
+            observable.desistir();
+        });
+    }
+
+    private void resetJogarFichaEspecial() {
+        jogarFichaEspecialButton.setText(FICHA_ESPECIAL_BUTTON_TEXT);
+        tabuleiroPane.setJogarFichaEspecial(false);
     }
 
     private void registarObservador() { observable.addPropertyChangeListener(Propriedades.MUDA_ESTADO, evt -> atualiza()); }
@@ -141,7 +163,18 @@ public class PedeDecisaoJogadaPane extends BorderPane {
 
         if (!isEstadoCorreto) return;
 
-        updateTabuleiro();
+        tabuleiroPane.atualizar();
+
+        voltarAtrasSlider.setMax(observable.getNumCreditosJogaveis());
+        resetJogarFichaEspecial();
+
+        listaJogadores.setText(observable.getConfigJogadores());
+        jogadorText2.setText(observable.getNomeJogadorAtual());
+        jogadorText2.setFill(Color.web(switch (observable.getFichaAtual()) {
+            case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HEX;
+            case FICHA_AMARELA -> Constantes.COR_AMARELA_HEX;
+            default -> Constantes.BACKGROUND_COLOR_HEX;
+        }));
 
         if (!observable.isComputadorAJogar()) {
             setLockBotoes(false);
@@ -150,17 +183,14 @@ public class PedeDecisaoJogadaPane extends BorderPane {
 
         setLockBotoes(true);
 
-        Thread thread = new Thread(() -> {
-            try { TimeUnit.MILLISECONDS.sleep(Constantes.MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR); }
-            catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
-
+        scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(() -> {
             Platform.runLater(() -> {
                 MusicPlayer.playMusic(Constantes.SOM_PECA_DROP);
                 int jogadaAutomatica = observable.getJogadaAutomatica();
                 observable.jogarFicha(jogadaAutomatica);
             });
-        });
-
-        thread.start();
+            scheduler.shutdownNow();
+        }, Constantes.MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR, TimeUnit.MILLISECONDS);
     }
 }

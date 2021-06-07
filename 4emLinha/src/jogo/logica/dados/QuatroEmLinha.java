@@ -76,6 +76,7 @@ public class QuatroEmLinha implements Serializable {
     public int getNumColunas() { return tabuleiro.getNumColunas(); }
     public String getNomeJogadorAtual() { return jogadorLista.getNomeJogadorAtual(); }
     public String getNomeVencedor() { return jogadorLista.getNomeVencedor(); }
+    public TipoFicha getFichaVencedor() { return jogadorLista.getFichaVencedor(); }
     public String getConfigJogadores() { return "Lista de jogadores:\n" + jogadorLista; }
     public List<TipoFicha> getTabuleiro() { return tabuleiro.getFichas(); }
     public boolean temMinijogoDisponivel() { return jogadorLista.getNumJogadasDesdeMinijogoCurrJogador() >= 4; }
@@ -91,7 +92,7 @@ public class QuatroEmLinha implements Serializable {
     public boolean temCreditosJogadorAtual(int numCreditos) { return jogadorLista.getNumCreditosJogadorAtual() >= numCreditos; }
     public boolean temCreditosJogadorAtual() { return temCreditosJogadorAtual(1); }
     public List<TipoFicha> getColuna(int col) { return tabuleiro.getColuna(col); }
-    public boolean isJogavelColuna(int coluna) { return tabuleiro.isJogavelColuna(coluna); }
+    public boolean isJogavelColuna(int coluna) { return !jogoAcabou() && tabuleiro.isJogavelColuna(coluna); }
     public boolean isEmpatado() { return tabuleiro.isEmpatado(); }
     public TipoFicha getFichaAtual() { return jogadorLista.getFichaAtual(); }
 

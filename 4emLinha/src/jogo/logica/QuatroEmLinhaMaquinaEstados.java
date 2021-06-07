@@ -59,6 +59,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public int getJogadaAutomatica() { return quatroEmLinhaGestor.getJogadaAutomatica(); }
     public String getNomeJogadorAtual() { return quatroEmLinhaGestor.getNomeJogadorAtual(); }
     public String getNomeVencedor() { return quatroEmLinhaGestor.getNomeVencedor(); }
+    public TipoFicha getFichaVencedor() { return quatroEmLinhaGestor.getFichaVencedor(); }
     public Situacao getSituacao() { return estadoAtual.getSituacao(); }
     public String getConfigJogadores() { return quatroEmLinhaGestor.getConfigJogadores(); }
     public List<TipoFicha> getTabuleiro() { return quatroEmLinhaGestor.getTabuleiro(); }
@@ -70,6 +71,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public boolean isAcabadoMinijogo() { return quatroEmLinhaGestor.isAcabadoMinijogo(); }
     public int getPontuacaoAtualMinijogo() { return quatroEmLinhaGestor.getPontuacaoAtualMinijogo(); }
     public int getNumFichasEspeciaisJogadorAtual() { return quatroEmLinhaGestor.getNumFichasEspeciaisJogadorAtual(); }
+    public boolean jogoAcabou() { return quatroEmLinhaGestor.jogoAcabou(); }
     public int getNumCreditos() { return quatroEmLinhaGestor.getNumCreditosJogadorAtual(); }
     public boolean podeVoltarAtras() { return quatroEmLinhaGestor.podeVoltarAtrasJogadorAtual(); }
     public int getNumCreditosJogaveis() { return quatroEmLinhaGestor.getNumCreditosJogaveisJogadorAtual(); }
