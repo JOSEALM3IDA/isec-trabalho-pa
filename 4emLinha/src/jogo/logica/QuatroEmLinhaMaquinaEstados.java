@@ -22,8 +22,8 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
         this.estadoAtual = new PedeDecisaoInicio(quatroEmLinhaGestor);
     }
 
-    public boolean continuarJogo(String nomeFicheiro) {
-        if (carregaGestorDeFicheiro(Constantes.SAVE_PATH + nomeFicheiro)) {
+    public boolean continuarJogo(String pathFicheiro) {
+        if (carregaGestorDeFicheiro(pathFicheiro)) {
             estadoAtual = estadoAtual.continuarJogo(quatroEmLinhaGestor);
             return true;
         }
@@ -31,15 +31,15 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
         return false;
     }
 
-    public boolean gravarJogo(String path) {
-        return Utils.gravarObjeto(Constantes.SAVE_PATH + path, quatroEmLinhaGestor);
+    public boolean gravarJogo(String pathFicheiro) {
+        return Utils.gravarObjeto(pathFicheiro, quatroEmLinhaGestor);
     }
 
-    public void verReplay(String nomeFicheiro) {
-        if (!carregaGestorDeFicheiro(Constantes.REPLAY_PATH + nomeFicheiro)) return;
+    public void verReplay(String pathFicheiro) {
+        if (!carregaGestorDeFicheiro(pathFicheiro)) return;
 
         estadoAtual = estadoAtual.verReplay(quatroEmLinhaGestor);
-        resetJogo();
+        quatroEmLinhaGestor.resetJogo();
     }
 
     public void iniciarJogo() { estadoAtual = estadoAtual.iniciarJogo(); }
@@ -80,6 +80,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public boolean isEmpatado() { return quatroEmLinhaGestor.isEmpatado(); }
     public String getDescricaoComandoAtual() { return quatroEmLinhaGestor.getDescricaoComandoAtual(); }
     public TipoFicha getFichaAtual() { return quatroEmLinhaGestor.getFichaAtual(); }
+    public boolean isReplayAtivo() { return quatroEmLinhaGestor.isReplayAtivo(); }
 
     private boolean carregaGestorDeFicheiro(String pathFicheiro) {
         QuatroEmLinhaGestor novoGestor;
@@ -90,10 +91,5 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
 
         quatroEmLinhaGestor = novoGestor;
         return true;
-    }
-
-    private void resetJogo() {
-        quatroEmLinhaGestor.resetTabuleiro();
-        quatroEmLinhaGestor.resetEstadoJogadores();
     }
 }

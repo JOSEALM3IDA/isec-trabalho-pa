@@ -107,9 +107,7 @@ public class PedeConfiguracaoPane extends BorderPane {
     }
 
     private void registarListeners() {
-        adicionarButton.setOnMouseClicked(e -> {
-            adicionarButton.click();
-
+        adicionarButton.setOnAction(e -> {
             String nomeJogador = nomeField.getText();
             TipoJogador tipoJogador = tipoJogadorCombobox.getSelectionModel().getSelectedItem();
 

@@ -12,6 +12,8 @@ public class QuatroEmLinhaGestor implements Serializable {
     protected QuatroEmLinha quatroEmLinha;
     CommandManager commandManager;
 
+    private boolean isReplayAtivo = false;
+
     public QuatroEmLinhaGestor() {
         this.quatroEmLinha = new QuatroEmLinha();
         this.commandManager = new CommandManager();
@@ -23,12 +25,11 @@ public class QuatroEmLinhaGestor implements Serializable {
     public void adicionaFichaEspecialJogadorAtual() { commandManager.invokeCommand(new AdicionarFichaEspecialCommand(quatroEmLinha)); }
     public void perdeuMinijogo() { commandManager.invokeCommand(new PerdeMinijogoCommand(quatroEmLinha)); }
     public void desistir() { commandManager.invokeCommand(new DesistirCommand(quatroEmLinha)); }
-    public void executarProximo() { commandManager.executarProximo(); }
+    public void executarProximo() { commandManager.executarProximo(); quatroEmLinha.checkFimJogo(); }
     public void comecarMinijogo() { quatroEmLinha.comecarMinijogo(); }
     public void enviarRespostaMinijogo(String resposta) { quatroEmLinha.enviarRespostaMinijogo(resposta); }
-    public void limparTudo() { quatroEmLinha.resetJogo(); commandManager.resetHistorico(); }
-    public void resetTabuleiro() { quatroEmLinha.resetTabuleiro(); }
-    public void resetEstadoJogadores() { quatroEmLinha.resetEstadoJogadores(); }
+    public void resetTotal() { setReplayAtivo(false); quatroEmLinha.resetJogo(); commandManager.resetHistorico(); }
+    public void resetJogo() { quatroEmLinha.resetTabuleiro(); quatroEmLinha.resetEstadoJogadores(); }
 
     public int getJogadaAutomatica() { return quatroEmLinha.getJogadaAutomatica(); }
     public boolean existeJogador(String nomeJogador) { return quatroEmLinha.existeJogador(nomeJogador); }
@@ -59,6 +60,8 @@ public class QuatroEmLinhaGestor implements Serializable {
     public boolean isJogavelColuna(int coluna) { return quatroEmLinha.isJogavelColuna(coluna); }
     public boolean isEmpatado() { return quatroEmLinha.isEmpatado(); }
     public String getDescricaoComandoAtual() { return commandManager.getDescricaoComandoAtual(); }
+    public void setReplayAtivo(boolean val) { isReplayAtivo = val; }
+    public boolean isReplayAtivo() { return isReplayAtivo; }
 
     public void undo(int numVezes) {
         if (jogoAcabou()) return;

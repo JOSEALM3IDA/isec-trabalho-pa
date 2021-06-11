@@ -16,6 +16,9 @@ public class FimJogo extends EstadoAdapter {
 
     protected FimJogo(QuatroEmLinhaGestor quatroEmLinhaGestor) {
         super(quatroEmLinhaGestor);
+
+        if (quatroEmLinhaGestor.isReplayAtivo()) return;
+
         gravarReplay(quatroEmLinhaGestor);
     }
 
@@ -24,7 +27,6 @@ public class FimJogo extends EstadoAdapter {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss");
         LocalDateTime ldt = LocalDateTime.now();
         String nomeNovoFicheiro = Constantes.REPLAY_PATH + dtf.format(ldt);
-
 
         if (replaysExistentes.size() < Constantes.NUM_MAX_REPLAYS) {
             Utils.gravarObjeto(nomeNovoFicheiro, quatroEmLinhaGestor);
@@ -58,8 +60,26 @@ public class FimJogo extends EstadoAdapter {
 
     @Override
     public Estado avancar() {
-        quatroEmLinhaGestor.limparTudo();
+        quatroEmLinhaGestor.resetTotal();
         return new PedeDecisaoInicio(quatroEmLinhaGestor);
+    }
+
+    @Override
+    public Estado iniciarJogo() {
+        quatroEmLinhaGestor.resetTotal();
+        return new PedeConfiguracao(quatroEmLinhaGestor);
+    }
+
+    @Override
+    public Estado continuarJogo(QuatroEmLinhaGestor quatroEmLinhaGestor) {
+        this.quatroEmLinhaGestor = quatroEmLinhaGestor;
+        return new PedeDecisaoJogada(quatroEmLinhaGestor);
+    }
+
+    @Override
+    public Estado verReplay(QuatroEmLinhaGestor quatroEmLinhaGestor) {
+        this.quatroEmLinhaGestor = quatroEmLinhaGestor;
+        return new AssisteJogada(quatroEmLinhaGestor);
     }
 
     @Override

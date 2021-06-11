@@ -2,6 +2,7 @@ package jogo.iu.grafica.stage;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
 import jogo.iu.grafica.resources.MusicPlayer;
 import jogo.utils.Constantes;
 
@@ -14,11 +15,15 @@ public class MainMenuButton extends Button {
         this.setPrefSize(Constantes.LARG_MENU_BTN, Constantes.ALT_MENU_BTN);
         setAlignment(Pos.CENTER);
 
-        this.setOnMouseClicked(e -> click());
-        this.setOnMouseEntered(e -> MusicPlayer.playMusic("btn-hover.wav"));
+        registerListeners();
     }
 
-    public void click() {
-        MusicPlayer.playMusic("btn-click.mp3");
+    public void registerListeners() {
+        this.setOnMouseClicked(e -> {
+            if (e.getButton() != MouseButton.PRIMARY) return;
+            MusicPlayer.playMusic(Constantes.SOM_CLICK_BTN);
+        });
+
+        this.setOnMouseEntered(e -> MusicPlayer.playMusic(Constantes.SOM_HOVER_BTN));
     }
 }

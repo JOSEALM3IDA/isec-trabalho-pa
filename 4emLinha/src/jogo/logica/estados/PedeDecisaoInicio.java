@@ -8,7 +8,7 @@ public class PedeDecisaoInicio extends EstadoAdapter {
 
     @Override
     public Estado iniciarJogo() {
-        quatroEmLinhaGestor.limparTudo();
+        quatroEmLinhaGestor.resetTotal();
         return new PedeConfiguracao(quatroEmLinhaGestor);
     }
 

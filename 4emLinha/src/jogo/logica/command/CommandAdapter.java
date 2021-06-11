@@ -17,7 +17,7 @@ public class CommandAdapter implements Command, Serializable {
     public boolean execute() { return false; }
 
     @Override
-    public void undo() { /* deve ser overridden nos comandos */}
+    public void undo() { /* deve ser overridden nos comandos */ }
 
     @Override
     public boolean temUndo() { return false; }

@@ -66,7 +66,7 @@ public class Utils {
         Object obj;
         try (FileInputStream fis = new FileInputStream(path); ObjectInputStream ois = new ObjectInputStream(fis)) {
             obj = ois.readObject();
-        } catch (IOException | ClassNotFoundException ex) { return null; }
+        } catch (IOException | ClassNotFoundException ex) { ex.printStackTrace(); return null; }
 
         if (obj == null) return null;
 

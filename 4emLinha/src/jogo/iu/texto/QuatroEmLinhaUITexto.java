@@ -14,13 +14,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class QuatroEmLinhaUITexto {
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_VERMELHO = "\u001B[31m";
-    private static final String ANSI_AZUL = "\u001B[34m";
-    private static final String ANSI_AMARELO = "\u001B[33m";
-    private static final String FICHA_AMARELA_PRINT = ANSI_AMARELO + 'A' + ANSI_RESET;
-    private static final String FICHA_VERMELHA_PRINT = ANSI_VERMELHO + 'V' + ANSI_RESET;
-    private static final String DIVISORIA_TABULEIRO_PRINT = ANSI_AZUL + '|' + ANSI_RESET;
 
     private final QuatroEmLinhaMaquinaEstados maquinaEstados;
     private boolean doSair;
@@ -113,11 +106,11 @@ public class QuatroEmLinhaUITexto {
     private void gravaJogoUI() {
 
         while (true) {
-            String path = UtilsUITexto.getResposta("Nome do ficheiro: ");
+            String fileName = UtilsUITexto.getResposta("Nome do ficheiro: ");
 
-            if (path.isEmpty()) return;
+            if (fileName.isEmpty()) return;
 
-            if (maquinaEstados.gravarJogo(path)) break;
+            if (maquinaEstados.gravarJogo(Constantes.SAVE_PATH + fileName)) break;
 
             System.out.println("Save falhou.");
         }
@@ -176,8 +169,6 @@ public class QuatroEmLinhaUITexto {
 
         printTabuleiro(maquinaEstados.getTabuleiro());
 
-        if (!maquinaEstados.temProximo()) printResultadoJogo();
-
         System.out.print("\nEnter para continuar...");
         try{ System.in.read(); } catch(IOException ioe) {/* ignored */}
     }
@@ -234,7 +225,7 @@ public class QuatroEmLinhaUITexto {
 
             if (opt == 0) return;
 
-            if (maquinaEstados.continuarJogo(ficheiros.get(opt - 1))) break;
+            if (maquinaEstados.continuarJogo(Constantes.SAVE_PATH + ficheiros.get(opt - 1))) break;
             System.out.println("Load falhou.");
         }
 
@@ -255,7 +246,7 @@ public class QuatroEmLinhaUITexto {
 
         if (opt == 0) return;
 
-        maquinaEstados.verReplay(ficheiros.get(opt - 1));
+        maquinaEstados.verReplay(Constantes.REPLAY_PATH + ficheiros.get(opt - 1));
     }
 
     private void voltaAtrasUI() {
@@ -324,8 +315,8 @@ public class QuatroEmLinhaUITexto {
         System.out.print("É a vez de " + maquinaEstados.getNomeJogadorAtual() + " (Ficha ");
 
         switch(maquinaEstados.getFichaAtual()) {
-            case FICHA_AMARELA -> System.out.print(FICHA_AMARELA_PRINT);
-            case FICHA_VERMELHA -> System.out.print(FICHA_VERMELHA_PRINT);
+            case FICHA_AMARELA -> System.out.print(Constantes.FICHA_AMARELA_PRINT);
+            case FICHA_VERMELHA -> System.out.print(Constantes.FICHA_VERMELHA_PRINT);
             default -> System.out.print("ERRO");
         }
 
@@ -341,14 +332,14 @@ public class QuatroEmLinhaUITexto {
 
         for (int i = numLinhas - 1; i >= 0; i--) {
             for (int j = 0; j < numColunas; j++) {
-                System.out.print(DIVISORIA_TABULEIRO_PRINT);
+                System.out.print(Constantes.DIVISORIA_TABULEIRO_PRINT);
                 switch (tabuleiro.get(i * numColunas + j)) {
-                    case FICHA_AMARELA -> System.out.print(FICHA_AMARELA_PRINT);
-                    case FICHA_VERMELHA -> System.out.print(FICHA_VERMELHA_PRINT);
+                    case FICHA_AMARELA -> System.out.print(Constantes.FICHA_AMARELA_PRINT);
+                    case FICHA_VERMELHA -> System.out.print(Constantes.FICHA_VERMELHA_PRINT);
                     default -> System.out.print(" ");
                 }
             }
-            System.out.println(DIVISORIA_TABULEIRO_PRINT + ' ' + (i + 1));
+            System.out.println(Constantes.DIVISORIA_TABULEIRO_PRINT + ' ' + (i + 1));
         }
     }
 }

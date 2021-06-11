@@ -65,25 +65,21 @@ public class FimJogoPane extends BorderPane {
         jogadorTextBox.setMinWidth(Constantes.LARG_SIDEBAR); jogadorTextBox.setMaxWidth(Constantes.LARG_SIDEBAR);
         setRight(jogadorTextBox);
 
-        menuBarJogo = new MenuBarJogo();
+        menuBarJogo = new MenuBarJogo(observable);
         setTop(menuBarJogo);
 
         FooterBox buttonBox = new FooterBox(30);
 
-        avancarButton = new NormalMenuButton("Avançar");
+        avancarButton = new NormalMenuButton("Menu Inicial");
         buttonBox.getChildren().addAll(avancarButton);
 
         setBottom(buttonBox);
     }
 
-    void registarListeners() {
-        avancarButton.setOnMouseClicked(e -> {
-            avancarButton.click();
-            observable.avancar();
-        });
-    }
+    void registarListeners() { avancarButton.setOnAction(e -> observable.avancar()); }
 
     private void registarObservador() { observable.addPropertyChangeListener(Propriedades.MUDA_ESTADO, evt -> atualiza()); }
+
     private void atualiza() {
         boolean isEstadoCorreto = observable.getSituacao() == Situacao.FimJogo;
         this.setVisible(isEstadoCorreto);
@@ -100,15 +96,12 @@ public class FimJogoPane extends BorderPane {
             return;
         }
 
-
         vencedorText2.setText(observable.getNomeVencedor());
         vencedorText2.setFill(Color.web(switch (observable.getFichaVencedor()) {
             case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HEX;
             case FICHA_AMARELA -> Constantes.COR_AMARELA_HEX;
             default -> Constantes.BACKGROUND_COLOR_HEX;
         }));
-
-
 
     }
 }

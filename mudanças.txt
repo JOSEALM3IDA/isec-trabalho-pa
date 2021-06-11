@@ -5,4 +5,6 @@
 - refactor operadores minijogo calculos
 - isJogavelColuna
 - jogoacabou
--get ficha vencedor
+- get ficha vencedor
+- replay acaba no fimJogo
+- replay e continuar durante o pededecisaojogada

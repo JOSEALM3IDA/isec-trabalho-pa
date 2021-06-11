@@ -8,6 +8,7 @@
 
 (assisteJogada)[avancar]->(assisteJogada)
 (assisteJogada)[avancar]->(pedeDecisaoInicio)
+(assisteJogada)[avancar]->(fimJogo)
 
 (pedeConfiguracao)[adicionarJogador]->(pedeConfiguracao)
 (pedeConfiguracao)[adicionarJogador]->(pedeDecisaoJogada)
@@ -18,8 +19,17 @@
 (pedeDecisaoJogada)[undoJogada]->(pedeDecisaoJogada)
 (pedeDecisaoJogada)[jogarFichaEspecial]->(pedeDecisaoJogada)
 (pedeDecisaoJogada)[desistir]->(fimJogo)
+(pedeDecisaoJogada)[iniciarJogo]->(pedeConfiguracao)
+(pedeDecisaoJogada)[continuarJogo]->(pedeDecisaoJogada)
+(pedeDecisaoJogada)[verReplay]->(assisteJogada)
 
 (jogaMinijogo)[enviarRespostaMinijogo]->(pedeDecisaoJogada)
 (jogaMinijogo)[enviarRespostaMinijogo]->(jogaMinijogo)
+(jogaMinijogo)[iniciarJogo]->(pedeConfiguracao)
+(jogaMinijogo)[continuarJogo]->(pedeDecisaoJogada)
+(jogaMinijogo)[verReplay]->(assisteJogada)
 
 (fimJogo)[avancar]->(pedeDecisaoInicio)
+(fimJogo)[iniciarJogo]->(pedeConfiguracao)
+(fimJogo)[continuarJogo]->(pedeDecisaoJogada)
+(fimJogo)[verReplay]->(assisteJogada)

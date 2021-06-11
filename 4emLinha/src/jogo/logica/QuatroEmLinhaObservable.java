@@ -21,20 +21,20 @@ public class QuatroEmLinhaObservable {
         propertyChangeSupport.addPropertyChangeListener(property.name(), listener);
     }
 
-    public boolean continuarJogo(String nomeFicheiro) {
-        boolean rtn = maquinaEstados.continuarJogo(nomeFicheiro);
+    public boolean continuarJogo(String pathFicheiro) {
+        boolean rtn = maquinaEstados.continuarJogo(pathFicheiro);
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
         return rtn;
     }
 
-    public boolean gravarJogo(String path) {
-        boolean rtn = maquinaEstados.gravarJogo(path);
+    public boolean gravarJogo(String pathFicheiro) {
+        boolean rtn = maquinaEstados.gravarJogo(pathFicheiro);
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
         return rtn;
     }
 
-    public void verReplay(String nomeFicheiro) {
-        maquinaEstados.verReplay(nomeFicheiro);
+    public void verReplay(String pathFicheiro) {
+        maquinaEstados.verReplay(pathFicheiro);
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
     }
 
@@ -110,6 +110,9 @@ public class QuatroEmLinhaObservable {
     public boolean isEmpatado() { return maquinaEstados.isEmpatado(); }
     public String getDescricaoComandoAtual() { return maquinaEstados.getDescricaoComandoAtual(); }
     public TipoFicha getFichaAtual() { return maquinaEstados.getFichaAtual(); }
+    public boolean isReplayAtivo() { return maquinaEstados.isReplayAtivo(); }
 
     public Situacao getSituacao() { return maquinaEstados.getSituacao(); }
+
+
 }

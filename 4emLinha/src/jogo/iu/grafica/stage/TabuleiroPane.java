@@ -32,7 +32,7 @@ public class TabuleiroPane extends GridPane {
     private void adicionarGridNode(SlotTabuleiro slot, int lin, int col) {
         add(slot, col, observable.getNumLinhas() - 1 - lin);
 
-        if (observable.isComputadorAJogar()) return;
+        if (observable.isComputadorAJogar() || observable.isReplayAtivo()) return;
 
         slot.setOnMouseClicked(e -> {
             if (!observable.isJogavelColuna(GridPane.getColumnIndex(slot))) return;

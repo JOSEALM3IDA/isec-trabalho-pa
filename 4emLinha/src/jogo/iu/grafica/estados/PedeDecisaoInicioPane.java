@@ -75,38 +75,27 @@ public class PedeDecisaoInicioPane extends BorderPane {
     }
 
     void registarListeners() {
-        iniciarButton.setOnMouseClicked(e -> {
-            iniciarButton.click();
-            observable.iniciarJogo();
-        });
+        iniciarButton.setOnAction(e -> observable.iniciarJogo());
 
-        continuarButton.setOnMouseClicked(e -> {
-            continuarButton.click();
-
+        continuarButton.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Escolher Save");
             fileChooser.setInitialDirectory(new File(Constantes.SAVE_PATH));
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Todos", "*.*"));
-            File hFile = fileChooser.showOpenDialog(PedeDecisaoInicioPane.this.getScene().getWindow());
-            if (hFile != null) { observable.verReplay(hFile.getAbsolutePath()); }
+            File hFile = fileChooser.showOpenDialog(getScene().getWindow());
+            if (hFile != null) { observable.continuarJogo(hFile.getAbsolutePath()); }
         });
 
-        replayButton.setOnMouseClicked(e -> {
-            replayButton.click();
-
+        replayButton.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Escolher Replay");
             fileChooser.setInitialDirectory(new File(Constantes.REPLAY_PATH));
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Todos", "*.*"));
-            File hFile = fileChooser.showOpenDialog(PedeDecisaoInicioPane.this.getScene().getWindow());
+            File hFile = fileChooser.showOpenDialog(getScene().getWindow());
             if (hFile != null) { observable.verReplay(hFile.getAbsolutePath()); }
         });
 
-        sairButton.setOnMouseClicked(e -> {
-            sairButton.click();
-            Platform.exit();
-        });
-
+        sairButton.setOnAction(e -> Platform.exit());
     }
 
     private void registarObservador() { observable.addPropertyChangeListener(Propriedades.MUDA_ESTADO, evt -> atualiza()); }

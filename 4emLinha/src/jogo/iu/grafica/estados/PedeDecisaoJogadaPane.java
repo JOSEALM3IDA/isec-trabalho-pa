@@ -81,7 +81,7 @@ public class PedeDecisaoJogadaPane extends BorderPane {
 
         setBackground(new Background(new BackgroundFill(Color.web(Constantes.BACKGROUND_COLOR_HEX), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        menuBarJogo = new MenuBarJogo();
+        menuBarJogo = new MenuBarJogo(observable);
         setTop(menuBarJogo);
 
         FooterBox buttonBox = new FooterBox(30);
@@ -118,21 +118,15 @@ public class PedeDecisaoJogadaPane extends BorderPane {
     }
 
     private void registarListeners() {
-        voltarAtrasButton.setOnMouseClicked(e -> {
-            voltarAtrasButton.click();
-
+        voltarAtrasButton.setOnAction(e -> {
             double numVezes = voltarAtrasSlider.getValue();
             if (numVezes == 0) return;
             observable.undoJogada((int) numVezes);
         });
 
-        aceitarMinijogoButton.setOnMouseClicked(e -> {
-            aceitarMinijogoButton.click();
+        aceitarMinijogoButton.setOnAction(e -> observable.aceitarMinijogo());
 
-            observable.aceitarMinijogo();
-        });
-
-        jogarFichaEspecialButton.setOnMouseClicked(e -> {
+        jogarFichaEspecialButton.setOnAction(e -> {
             boolean isColocarFichaEspecial = tabuleiroPane.isJogarFichaEspecial();
             tabuleiroPane.setJogarFichaEspecial(!isColocarFichaEspecial);
 
@@ -145,10 +139,7 @@ public class PedeDecisaoJogadaPane extends BorderPane {
 
         });
 
-        desistirButton.setOnMouseClicked(e -> {
-            desistirButton.click();
-            observable.desistir();
-        });
+        desistirButton.setOnAction(e -> observable.desistir());
     }
 
     private void resetJogarFichaEspecial() {

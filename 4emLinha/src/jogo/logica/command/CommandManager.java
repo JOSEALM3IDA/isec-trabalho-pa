@@ -56,7 +56,7 @@ public class CommandManager implements Serializable {
     public String getDescricaoComandoAtual() { return fullHistorico.get(0).toString(); }
 
     public void resetHistorico() {
-        historico.empty();
-        fullHistorico.empty();
+        historico.clear();
+        fullHistorico.clear();
     }
 }
