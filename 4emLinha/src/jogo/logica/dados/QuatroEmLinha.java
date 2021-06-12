@@ -87,7 +87,7 @@ public class QuatroEmLinha implements Serializable {
     public boolean isAcabadoMinijogo() { return minijogo != null && minijogo.isAcabado(); }
     public int getPontuacaoAtualMinijogo() { return minijogo.getPontuacaoAtual(); }
     public int getNumFichasEspeciaisJogadorAtual() { return jogadorLista.getNumFichasEspeciaisJogadorAtual(); }
-    public boolean jogoAcabou() { return jogadorLista.haVencedor(); }
+    public boolean jogoAcabou() { return tabuleiro.isEmpatado() || jogadorLista.haVencedor(); }
     public int getNumCreditosJogadorAtual() { return jogadorLista.getNumCreditosJogadorAtual(); }
     public boolean temCreditosJogadorAtual(int numCreditos) { return jogadorLista.getNumCreditosJogadorAtual() >= numCreditos; }
     public boolean temCreditosJogadorAtual() { return temCreditosJogadorAtual(1); }

@@ -22,7 +22,8 @@ public class SlotTabuleiro extends HBox {
     }
 
     public void setAs(TipoFicha tipoFicha) {
-        String nomeFichImagem = switch (tipoFicha) {
+        this.tipoFicha = tipoFicha;
+        String nomeFichImagem = switch (this.tipoFicha) {
             case FICHA_VERMELHA -> Constantes.SLOT_VERMELHO_IMG;
             case FICHA_AMARELA -> Constantes.SLOT_AMARELO_IMG;
             case NONE -> Constantes.SLOT_VAZIO_IMG;

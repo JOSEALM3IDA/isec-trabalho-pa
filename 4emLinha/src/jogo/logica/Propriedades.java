@@ -1,9 +1,10 @@
 package jogo.logica;
 
 public enum Propriedades {
-    MUDA_ESTADO("mudaEstado");
-
-    private final String p;
-
-    Propriedades(String p) { this.p = p; }
+    ATUALIZAR_ESTADO,
+    ATUALIZAR_TABULEIRO,
+    ATUALIZAR_LISTA_JOGADORES,
+    ATUALIZAR_JOGADOR_ATUAL,
+    ATUALIZAR_PERGUNTA_MINIJOGO,
+    ATUALIZAR_VENCEDOR
 }

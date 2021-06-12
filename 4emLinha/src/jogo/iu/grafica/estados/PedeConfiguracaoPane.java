@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -35,8 +36,8 @@ public class PedeConfiguracaoPane extends BorderPane {
         this.observable = observable;
         criarLayout();
         registarListeners();
-        registarObservador();
-        atualiza();
+        registarObservadores();
+        atualizarVisibilidade();
     }
 
     private VBox getBoxConfig() {
@@ -124,12 +125,34 @@ public class PedeConfiguracaoPane extends BorderPane {
             observable.adicionarJogador(tipoJogador, nomeJogador);
             erroText.setText("");
         });
+
+        setOnKeyReleased(e -> {
+            if (e.getCode() != KeyCode.ENTER) return;
+            adicionarButton.fire();
+        });
+
+        setOnKeyReleased(e -> {
+            if (e.getCode() != KeyCode.ENTER) return;
+            adicionarButton.fire();
+        });
     }
 
-    private void registarObservador() { observable.addPropertyChangeListener(Propriedades.MUDA_ESTADO, evt -> atualiza()); }
-    private void atualiza() {
+    private void registarObservadores() {
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_LISTA_JOGADORES, evt -> atualizarListaJogadores());
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade());
+    }
+
+    private void atualizarListaJogadores() {
         infoText.setText(observable.getConfigJogadores());
+    }
+
+    private void atualizarVisibilidade() {
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////
         nomeField.setText("");
+        nomeField.requestFocus();
         tipoJogadorCombobox.getSelectionModel().select(TipoJogador.HUMANO);
         jogadorAtualText.setText("Jogador " + (observable.getNumJogadores() + 1));
 

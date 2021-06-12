@@ -9,6 +9,9 @@
 (assisteJogada)[avancar]->(assisteJogada)
 (assisteJogada)[avancar]->(pedeDecisaoInicio)
 (assisteJogada)[avancar]->(fimJogo)
+(assisteJogada)[iniciarJogo]->(pedeConfiguracao)
+(assisteJogada)[continuarJogo]->(pedeDecisaoJogada)
+(assisteJogada)[verReplay]->(assisteJogada)
 
 (pedeConfiguracao)[adicionarJogador]->(pedeConfiguracao)
 (pedeConfiguracao)[adicionarJogador]->(pedeDecisaoJogada)

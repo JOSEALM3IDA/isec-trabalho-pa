@@ -30,7 +30,7 @@ public class FimJogoPane extends BorderPane {
         criarLayout();
         registarListeners();
         registarObservador();
-        atualiza();
+        atualizarVisibilidade();
     }
 
     private void criarLayout() {
@@ -78,18 +78,15 @@ public class FimJogoPane extends BorderPane {
 
     void registarListeners() { avancarButton.setOnAction(e -> observable.avancar()); }
 
-    private void registarObservador() { observable.addPropertyChangeListener(Propriedades.MUDA_ESTADO, evt -> atualiza()); }
+    private void registarObservador() {
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_LISTA_JOGADORES, evt -> atualizarListaJogadores());
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_VENCEDOR, evt -> atualizarVencedor());
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade());
+    }
 
-    private void atualiza() {
-        boolean isEstadoCorreto = observable.getSituacao() == Situacao.FimJogo;
-        this.setVisible(isEstadoCorreto);
+    private void atualizarListaJogadores() { listaJogadores.setText(observable.getConfigJogadores()); }
 
-        if (!isEstadoCorreto) return;
-
-        tabuleiroPane.atualizar();
-
-        listaJogadores.setText(observable.getConfigJogadores());
-
+    private void atualizarVencedor() {
         if (observable.isEmpatado()) {
             vencedorText2.setText("Empate!");
             vencedorText2.setFill(Color.web(Constantes.COR_AZUL_HEX));
@@ -102,6 +99,7 @@ public class FimJogoPane extends BorderPane {
             case FICHA_AMARELA -> Constantes.COR_AMARELA_HEX;
             default -> Constantes.BACKGROUND_COLOR_HEX;
         }));
-
     }
+
+    private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.FimJogo); }
 }

@@ -32,8 +32,8 @@ public class PedeDecisaoInicioPane extends BorderPane {
         this.observable = observable;
         criarLayout();
         registarListeners();
-        registarObservador();
-        atualiza();
+        registarObservadores();
+        atualizarVisibilidade();
     }
 
     void criarLayout() {
@@ -98,6 +98,7 @@ public class PedeDecisaoInicioPane extends BorderPane {
         sairButton.setOnAction(e -> Platform.exit());
     }
 
-    private void registarObservador() { observable.addPropertyChangeListener(Propriedades.MUDA_ESTADO, evt -> atualiza()); }
-    private void atualiza() { this.setVisible(observable.getSituacao() == Situacao.PedeDecisaoInicio); }
+    private void registarObservadores() { observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade()); }
+
+    private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.PedeDecisaoInicio); }
 }

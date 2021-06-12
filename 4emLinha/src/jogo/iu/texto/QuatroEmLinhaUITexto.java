@@ -170,7 +170,7 @@ public class QuatroEmLinhaUITexto {
         printTabuleiro(maquinaEstados.getTabuleiro());
 
         System.out.print("\nEnter para continuar...");
-        try{ System.in.read(); } catch(IOException ioe) {/* ignored */}
+        try{ System.in.read(); } catch(IOException ioe) { /* ignored */ }
     }
 
 

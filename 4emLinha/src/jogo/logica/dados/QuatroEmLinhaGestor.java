@@ -10,7 +10,7 @@ import java.util.List;
 public class QuatroEmLinhaGestor implements Serializable {
 
     protected QuatroEmLinha quatroEmLinha;
-    CommandManager commandManager;
+    private final CommandManager commandManager;
 
     private boolean isReplayAtivo = false;
 

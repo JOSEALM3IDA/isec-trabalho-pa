@@ -6,7 +6,6 @@ import jogo.logica.dados.jogadores.TipoJogador;
 import jogo.logica.estados.Estado;
 import jogo.logica.estados.PedeDecisaoInicio;
 import jogo.logica.estados.Situacao;
-import jogo.utils.Constantes;
 import jogo.utils.Utils;
 
 import java.io.Serializable;

@@ -6,7 +6,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import jogo.iu.grafica.resources.MusicPlayer;
@@ -22,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PedeDecisaoJogadaPane extends BorderPane {
     private static final String FICHA_ESPECIAL_BUTTON_TEXT = "Ficha Especial";
+    private static final String FICHA_REGULAR_BUTTON_TEXT = "Ficha Regular";
 
     private final QuatroEmLinhaObservable observable;
 
@@ -39,14 +39,12 @@ public class PedeDecisaoJogadaPane extends BorderPane {
     private NormalMenuButton jogarFichaEspecialButton;
     private NormalMenuButton desistirButton;
 
-    private ScheduledExecutorService scheduler;
-
     public PedeDecisaoJogadaPane(QuatroEmLinhaObservable observable) {
         this.observable = observable;
         criarLayout();
         registarListeners();
-        registarObservador();
-        atualiza();
+        registarObservadores();
+        atualizarVisibilidade();
     }
 
     private void criarLayout() {
@@ -127,15 +125,15 @@ public class PedeDecisaoJogadaPane extends BorderPane {
         aceitarMinijogoButton.setOnAction(e -> observable.aceitarMinijogo());
 
         jogarFichaEspecialButton.setOnAction(e -> {
-            boolean isColocarFichaEspecial = tabuleiroPane.isJogarFichaEspecial();
-            tabuleiroPane.setJogarFichaEspecial(!isColocarFichaEspecial);
+            boolean oldColocarFichaEspecial = tabuleiroPane.isJogarFichaEspecial();
+            tabuleiroPane.setJogarFichaEspecial(!oldColocarFichaEspecial);
 
-            if (!isColocarFichaEspecial) {
-                jogarFichaEspecialButton.setText(FICHA_ESPECIAL_BUTTON_TEXT);
+            if (!oldColocarFichaEspecial) {
+                jogarFichaEspecialButton.setText(FICHA_REGULAR_BUTTON_TEXT);
                 return;
             }
 
-            jogarFichaEspecialButton.setText("Ficha Regular");
+            jogarFichaEspecialButton.setText(FICHA_ESPECIAL_BUTTON_TEXT);
 
         });
 
@@ -147,19 +145,30 @@ public class PedeDecisaoJogadaPane extends BorderPane {
         tabuleiroPane.setJogarFichaEspecial(false);
     }
 
-    private void registarObservador() { observable.addPropertyChangeListener(Propriedades.MUDA_ESTADO, evt -> atualiza()); }
-    private void atualiza() {
-        boolean isEstadoCorreto = observable.getSituacao() == Situacao.PedeDecisaoJogada;
-        this.setVisible(isEstadoCorreto);
+    private void fazJogadaAutomatica() {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(() -> {
+            Platform.runLater(() -> {
+                MusicPlayer.playMusic(Constantes.SOM_PECA_DROP);
+                int jogadaAutomatica = observable.getJogadaAutomatica();
+                observable.jogarFicha(jogadaAutomatica);
+            });
+            scheduler.shutdownNow();
+        }, Constantes.MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR, TimeUnit.MILLISECONDS);
+    }
 
-        if (!isEstadoCorreto) return;
+    private void registarObservadores() {
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_LISTA_JOGADORES, evt -> atualizarListaJogadores());
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_JOGADOR_ATUAL, evt -> atualizarJogadorAtual());
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade());
+    }
 
-        tabuleiroPane.atualizar();
+    private void atualizarListaJogadores() { listaJogadores.setText(observable.getConfigJogadores()); }
 
+    private void atualizarJogadorAtual() {
         voltarAtrasSlider.setMax(observable.getNumCreditosJogaveis());
         resetJogarFichaEspecial();
 
-        listaJogadores.setText(observable.getConfigJogadores());
         jogadorText2.setText(observable.getNomeJogadorAtual());
         jogadorText2.setFill(Color.web(switch (observable.getFichaAtual()) {
             case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HEX;
@@ -173,15 +182,8 @@ public class PedeDecisaoJogadaPane extends BorderPane {
         }
 
         setLockBotoes(true);
-
-        scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.schedule(() -> {
-            Platform.runLater(() -> {
-                MusicPlayer.playMusic(Constantes.SOM_PECA_DROP);
-                int jogadaAutomatica = observable.getJogadaAutomatica();
-                observable.jogarFicha(jogadaAutomatica);
-            });
-            scheduler.shutdownNow();
-        }, Constantes.MILISEGUNDOS_SLEEP_JOGADA_COMPUTADOR, TimeUnit.MILLISECONDS);
+        fazJogadaAutomatica();
     }
+
+    private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.PedeDecisaoJogada); }
 }

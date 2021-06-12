@@ -23,64 +23,95 @@ public class QuatroEmLinhaObservable {
 
     public boolean continuarJogo(String pathFicheiro) {
         boolean rtn = maquinaEstados.continuarJogo(pathFicheiro);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_LISTA_JOGADORES), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
         return rtn;
     }
 
-    public boolean gravarJogo(String pathFicheiro) {
-        boolean rtn = maquinaEstados.gravarJogo(pathFicheiro);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
-        return rtn;
-    }
+    public boolean gravarJogo(String pathFicheiro) { return maquinaEstados.gravarJogo(pathFicheiro); }
 
     public void verReplay(String pathFicheiro) {
         maquinaEstados.verReplay(pathFicheiro);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_LISTA_JOGADORES), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
     public void iniciarJogo() {
         maquinaEstados.iniciarJogo();
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_LISTA_JOGADORES), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
     public void adicionarJogador(TipoJogador tipoJogador, String nomeJogador) {
         maquinaEstados.adicionarJogador(tipoJogador, nomeJogador);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_LISTA_JOGADORES), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
     public void jogarFicha(int col) {
         maquinaEstados.jogarFicha(col);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+
+        if (maquinaEstados.jogoAcabou()) propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_VENCEDOR), null, null);
+
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
     public void undoJogada(int numVezes) {
         maquinaEstados.undoJogada(numVezes);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
     }
 
     public void desistir() {
         maquinaEstados.desistir();
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_VENCEDOR), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
     public void aceitarMinijogo() {
         maquinaEstados.aceitarMinijogo();
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_PERGUNTA_MINIJOGO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
     public void jogarFichaEspecial(int col) {
         maquinaEstados.jogarFichaEspecial(col);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
     public void enviarRespostaMinijogo(String resposta) {
         maquinaEstados.enviarRespostaMinijogo(resposta);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
+
+        if (!isAcabadoMinijogo()) {
+            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+            return;
+        }
+
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_PERGUNTA_MINIJOGO), null, null);
     }
 
     public void avancar() {
+        boolean jogoAcabou = jogoAcabou();
+
         maquinaEstados.avancar();
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.MUDA_ESTADO), null, null);
+
+        if (!jogoAcabou) {
+            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
+        }
+
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
     public boolean existeJogador(String nome) { return maquinaEstados.existeJogador(nome); }

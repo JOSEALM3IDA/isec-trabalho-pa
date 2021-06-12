@@ -1,28 +1,63 @@
 package jogo.iu.grafica.estados;
 
-import javafx.scene.layout.BorderPane;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import jogo.logica.Propriedades;
 import jogo.logica.QuatroEmLinhaObservable;
 import jogo.logica.estados.Situacao;
+import jogo.utils.Constantes;
 
 public class JogaMinijogoPane extends BorderPane {
     private final QuatroEmLinhaObservable observable;
 
+    private Text infoText;
+    private TextField respostaTextField;
 
     public JogaMinijogoPane(QuatroEmLinhaObservable observable) {
         this.observable = observable;
         criarLayout();
         registarListeners();
-        registarObservador();
-        atualiza();
+        registarObservadores();
+        atualizarVisibilidade();
     }
 
     void criarLayout() {
+        setBackground(new Background(new BackgroundFill(Color.web(Constantes.COR_AZUL_HEX), CornerRadii.EMPTY, Insets.EMPTY)));
+
+        VBox minijogoBox = new VBox(30);
+        infoText = new Text();
+        infoText.setId("minijogo-info");
+
+        respostaTextField = new TextField();
+        respostaTextField.setId("minijogo-textfield");
+        respostaTextField.setAlignment(Pos.CENTER);
+
+        minijogoBox.setAlignment(Pos.CENTER);
+        minijogoBox.getChildren().addAll(infoText, respostaTextField);
+
+        setCenter(minijogoBox);
     }
 
     void registarListeners() {
+        respostaTextField.setOnKeyReleased(e -> {
+            if (e.getCode() != KeyCode.ENTER) return;
+
+            observable.enviarRespostaMinijogo(respostaTextField.getText());
+            respostaTextField.setText("");
+        });
     }
 
-    private void registarObservador() { observable.addPropertyChangeListener(Propriedades.MUDA_ESTADO, evt -> atualiza()); }
-    private void atualiza() { this.setVisible(observable.getSituacao() == Situacao.JogaMinijogo); }
+    private void registarObservadores() {
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_PERGUNTA_MINIJOGO, evt -> atualizarPerguntaMinijogo());
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade());
+    }
+
+    private void atualizarPerguntaMinijogo() { infoText.setText(observable.getPerguntaMinijogo()); }
+
+    private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.JogaMinijogo); }
 }

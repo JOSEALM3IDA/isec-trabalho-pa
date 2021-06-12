@@ -2,6 +2,7 @@ package jogo.iu.grafica.estados;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -26,14 +27,15 @@ public class AssisteJogadaPane extends BorderPane {
     private Text jogadorText1;
     private Text jogadorText2;
 
+    private Text infoJogadaText;
     private NormalMenuButton avancarButton;
 
     public AssisteJogadaPane(QuatroEmLinhaObservable observable) {
         this.observable = observable;
         criarLayout();
         registarListeners();
-        registarObservador();
-        atualiza();
+        registarObservadores();
+        atualizarVisibilidade();
     }
 
     private void criarLayout() {
@@ -71,32 +73,51 @@ public class AssisteJogadaPane extends BorderPane {
         menuBarJogo = new MenuBarJogo(observable);
         setTop(menuBarJogo);
 
-        FooterBox buttonBox = new FooterBox(30);
+        FooterBox footerBox = new FooterBox(30);
+        BorderPane footerPane = new BorderPane();
+        footerPane.setMinWidth(footerBox.getMinWidth());
+        footerPane.setPadding(new Insets(30));
 
         avancarButton = new NormalMenuButton("Avançar");
-        buttonBox.getChildren().addAll(avancarButton);
+        footerPane.setRight(avancarButton);
 
-        setBottom(buttonBox);
+        infoJogadaText = new Text();
+        infoJogadaText.setStyle("-fx-font-size: 22; -fx-fill: white");
+        footerPane.setLeft(infoJogadaText);
+
+        footerBox.getChildren().addAll(footerPane);
+
+        setBottom(footerBox);
     }
 
-    void registarListeners() { avancarButton.setOnAction(e -> observable.avancar()); }
+    void registarListeners() {
+        avancarButton.setOnAction(e -> {
+            infoJogadaText.setText(observable.getDescricaoComandoAtual());
+            observable.avancar();
+        });
 
-    private void registarObservador() { observable.addPropertyChangeListener(Propriedades.MUDA_ESTADO, evt -> atualiza()); }
-    private void atualiza() {
-        boolean isEstadoCorreto = observable.getSituacao() == Situacao.AssisteJogada;
-        this.setVisible(isEstadoCorreto);
+        setOnKeyReleased(e -> {
+            if (e.getCode() != KeyCode.ENTER) return;
+            avancarButton.fire();
+        });
+    }
 
-        if (!isEstadoCorreto) return;
+    private void registarObservadores() {
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_LISTA_JOGADORES, evt -> atualizarListaJogadores());
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_JOGADOR_ATUAL, evt -> atualizarJogadorAtual());
+        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade());
+    }
 
-        tabuleiroPane.atualizar();
+    private void atualizarListaJogadores() { listaJogadores.setText(observable.getConfigJogadores()); }
 
-        listaJogadores.setText(observable.getConfigJogadores());
+    private void atualizarJogadorAtual() {
         jogadorText2.setText(observable.getNomeJogadorAtual());
         jogadorText2.setFill(Color.web(switch (observable.getFichaAtual()) {
             case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HEX;
             case FICHA_AMARELA -> Constantes.COR_AMARELA_HEX;
             default -> Constantes.BACKGROUND_COLOR_HEX;
         }));
-
     }
+
+    private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.AssisteJogada); }
 }

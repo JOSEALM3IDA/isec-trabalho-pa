@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import jogo.iu.grafica.resources.MusicPlayer;
+import jogo.logica.Propriedades;
 import jogo.logica.QuatroEmLinhaObservable;
 import jogo.logica.dados.tabuleiro.TipoFicha;
 import jogo.utils.Constantes;
@@ -27,6 +28,7 @@ public class TabuleiroPane extends GridPane {
         numColunas = observable.getNumColunas();
         numLinhas = observable.getNumLinhas();
         tamanhoSlot = Constantes.TAM_TABULEIRO / Math.max(numColunas, numLinhas);
+        registarObservadores();
     }
 
     private void adicionarGridNode(SlotTabuleiro slot, int lin, int col) {
@@ -35,16 +37,20 @@ public class TabuleiroPane extends GridPane {
         if (observable.isComputadorAJogar() || observable.isReplayAtivo()) return;
 
         slot.setOnMouseClicked(e -> {
-            if (!observable.isJogavelColuna(GridPane.getColumnIndex(slot))) return;
+            if (isJogarFichaEspecial) {
+                observable.jogarFichaEspecial(col);
+                return;
+            }
+
+            if (!observable.isJogavelColuna(col)) return;
 
             MusicPlayer.playMusic(Constantes.SOM_PECA_DROP);
-            observable.jogarFicha(GridPane.getColumnIndex(slot));
+            observable.jogarFicha(col);
         });
 
         slot.setOnMouseEntered(e -> {
             if (observable.jogoAcabou()) return;
 
-            int colEntered = GridPane.getColumnIndex(slot);
             Color corHover = Color.web(switch(observable.getFichaAtual()) {
                 case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HOVER_HEX;
                 case FICHA_AMARELA -> Constantes.COR_AMARELA_HOVER_HEX;
@@ -52,7 +58,7 @@ public class TabuleiroPane extends GridPane {
             });
 
             for (Node child : getChildren()) {
-                if (GridPane.getColumnIndex(child) == colEntered && ((SlotTabuleiro) child).getTipoFicha() == TipoFicha.NONE) {
+                if (GridPane.getColumnIndex(child) == col && ((SlotTabuleiro) child).getTipoFicha() == TipoFicha.NONE) {
                     ((SlotTabuleiro) child).setMouseInside(true, corHover);
                     return;
                 }
@@ -71,7 +77,13 @@ public class TabuleiroPane extends GridPane {
         });
     }
 
-    public void atualizar() {
+    public boolean isJogarFichaEspecial() { return isJogarFichaEspecial; }
+
+    public void setJogarFichaEspecial(boolean isJogarFichaEspecial) { this.isJogarFichaEspecial = isJogarFichaEspecial; }
+
+    private void registarObservadores() { observable.addPropertyChangeListener(Propriedades.ATUALIZAR_TABULEIRO, evt -> atualizarTabuleiro()); }
+
+    public void atualizarTabuleiro() {
         getChildren().clear();
 
         List<TipoFicha> tabuleiroActual = observable.getTabuleiro();
@@ -83,7 +95,4 @@ public class TabuleiroPane extends GridPane {
             }
         }
     }
-
-    public boolean isJogarFichaEspecial() { return isJogarFichaEspecial; }
-    public void setJogarFichaEspecial(boolean isJogarFichaEspecial) { this.isJogarFichaEspecial = isJogarFichaEspecial; }
 }

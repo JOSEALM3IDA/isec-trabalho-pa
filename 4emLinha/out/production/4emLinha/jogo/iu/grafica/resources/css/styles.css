@@ -35,3 +35,13 @@
     -fx-border-width: 1;
     -fx-border-color: black;
 }
+
+#minijogo-info {
+	-fx-fill: white;
+	-fx-font-size: 52;
+}
+
+#minijogo-textfield {
+	-fx-font-size: 42;
+	-fx-background-color: #0073d3;
+}
