@@ -95,5 +95,5 @@ public class QuatroEmLinha implements Serializable {
     public boolean isJogavelColuna(int coluna) { return !jogoAcabou() && tabuleiro.isJogavelColuna(coluna); }
     public boolean isEmpatado() { return tabuleiro.isEmpatado(); }
     public TipoFicha getFichaAtual() { return jogadorLista.getFichaAtual(); }
-
+    public boolean jogoComecou() { return isFullJogadores(); }
 }

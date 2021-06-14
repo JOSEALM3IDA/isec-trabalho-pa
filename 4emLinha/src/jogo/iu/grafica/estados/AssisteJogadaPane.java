@@ -73,10 +73,10 @@ public class AssisteJogadaPane extends BorderPane {
         menuBarJogo = new MenuBarJogo(observable);
         setTop(menuBarJogo);
 
-        FooterBox footerBox = new FooterBox(30);
+        FooterBox footerBox = new FooterBox();
         BorderPane footerPane = new BorderPane();
         footerPane.setMinWidth(footerBox.getMinWidth());
-        footerPane.setPadding(new Insets(30));
+        footerPane.setPadding(new Insets(28, 50, 0, 50));
 
         avancarButton = new NormalMenuButton("Avançar");
         footerPane.setRight(avancarButton);

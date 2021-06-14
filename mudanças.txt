@@ -9,3 +9,4 @@
 - replay acaba no fimJogo
 - replay e continuar durante o pededecisaojogada
 - getDescricaoComandoSeguinte
+- jogoacabou()
