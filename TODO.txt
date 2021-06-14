@@ -1,5 +1,4 @@
 Implementar som no replay
-Refazer as imagens do board
 Drawing do board
 
 Sons de:
