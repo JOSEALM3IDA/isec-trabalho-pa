@@ -51,15 +51,9 @@ public class TabuleiroPane extends GridPane {
         slot.setOnMouseEntered(e -> {
             if (observable.jogoAcabou()) return;
 
-            Color corHover = Color.web(switch(observable.getFichaAtual()) {
-                case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HOVER_HEX;
-                case FICHA_AMARELA -> Constantes.COR_AMARELA_HOVER_HEX;
-                case NONE -> Constantes.BACKGROUND_COLOR_HEX;
-            });
-
             for (Node child : getChildren()) {
                 if (GridPane.getColumnIndex(child) == col && ((SlotTabuleiro) child).getTipoFicha() == TipoFicha.NONE) {
-                    ((SlotTabuleiro) child).setMouseInside(true, corHover);
+                    ((SlotTabuleiro) child).setMouseInside(true, observable.getFichaAtual());
                     return;
                 }
             }
@@ -71,7 +65,7 @@ public class TabuleiroPane extends GridPane {
             int colEntered = GridPane.getColumnIndex(slot);
             for (Node node : getChildren()) {
                 if (GridPane.getColumnIndex(node) == colEntered) {
-                    ((SlotTabuleiro) node).setMouseInside(false);
+                    ((SlotTabuleiro) node).setMouseInside(false, TipoFicha.NONE);
                 }
             }
         });

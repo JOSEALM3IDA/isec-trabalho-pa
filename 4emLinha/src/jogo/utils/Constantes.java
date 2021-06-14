@@ -42,6 +42,8 @@ public class Constantes {
 
     public static final String SLOT_VERMELHO_IMG = "slot-vermelho.png";
     public static final String SLOT_AMARELO_IMG = "slot-amarelo.png";
+    public static final String SLOT_VERMELHO_HOVER_IMG = "slot-vermelho-hover.png";
+    public static final String SLOT_AMARELO_HOVER_IMG = "slot-amarelo-hover.png";
     public static final String SLOT_VAZIO_IMG = "slot-vazio.png";
 
 }

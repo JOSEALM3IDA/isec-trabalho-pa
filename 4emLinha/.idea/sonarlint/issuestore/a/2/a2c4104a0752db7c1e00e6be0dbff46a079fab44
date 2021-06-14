@@ -1,25 +1,0 @@
-
-c
-java:S1192]"FDefine a constant instead of duplicating this literal "Todos" 3 times.(€º£8„ñƒæŸ/
-o
-java:S1450"YRemove the "aboutMItem" field and declare it as a local variable in the relevant methods.(”§ë€
-n
-java:S1450"XRemove the "ajudaMenu" field and declare it as a local variable in the relevant methods.(í¤ÉÒ
-s
-java:S1450"]Remove the "comoJogarMItem" field and declare it as a local variable in the relevant methods.(ŒïÌ²
-w
-java:S1450"aRemove the "continuarJogoMItem" field and declare it as a local variable in the relevant methods.(ş±û”
-t
-java:S1450"^Remove the "gravarJogoMItem" field and declare it as a local variable in the relevant methods.(˜Á£÷
-r
-java:S1450"WRemove the "jogoMenu" field and declare it as a local variable in the relevant methods.(ÊÉõÇıÿÿÿÿ
-w
-java:S1450"\Remove the "novoJogoMItem" field and declare it as a local variable in the relevant methods.(¡ı¸üûÿÿÿÿ
-n
-java:S1450"XRemove the "sairMItem" field and declare it as a local variable in the relevant methods.(¾È†«
-
-java:S1450"]Remove the "verReplayMItem" field and declare it as a local variable in the relevant methods.(ª¬àæùÿÿÿÿ8˜…ıåŸ/
-—
-java:S1186Q"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÙúÍª
-œ
-java:S1186T"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(áÃ…ƒøÿÿÿÿ

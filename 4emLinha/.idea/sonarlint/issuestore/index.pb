@@ -42,8 +42,6 @@ _
 \
 ,src/jogo/iu/grafica/resources/Resources.java,e\f\ef7a401d5dd68d0fcb20322a79c3c1131e68ced0
 ^
-.src/jogo/iu/grafica/resources/ImageLoader.java,b\4\b4589e236f0a6868c9cf551f81f21c3894814920
-^
 .src/jogo/iu/grafica/resources/FontManager.java,2\0\20e0093514e8f997d2be3fd4e61023d1db56d38f
 ]
 -src/jogo/iu/grafica/resources/CSSManager.java,9\d\9d9965433d16c0fe6ce8f7dc9f1fd9942f6eee23
@@ -65,14 +63,8 @@ c
 3src/jogo/logica/dados/jogadores/JogadorAdapter.java,9\8\98dbe9bc88b76ec408e1a32077794a4c6c18f712
 _
 /src/jogo/iu/grafica/stage/NormalMenuButton.java,b\4\b4c1dc858e2dfc2631f2e62d76efe1a129c3bdf3
-Z
-*src/jogo/iu/grafica/stage/MenuBarJogo.java,a\2\a2c4104a0752db7c1e00e6be0dbff46a079fab44
-\
-,src/jogo/iu/grafica/stage/SlotTabuleiro.java,9\d\9d8f7e7de28853add0f2b6d79adae05b1cf68275
 I
 src/jogo/utils/Utils.java,8\7\87805914b11b09dd23a88d6745d93455badef70a
-N
-src/jogo/utils/Constantes.java,e\1\e170b67ec29ddc1f4917b3c4acb3dda2a0787236
 X
 (src/jogo/iu/grafica/stage/FooterBox.java,d\a\daeb0cdd2d5f77a79ef25778d305c03fd2e5593c
 [
@@ -89,8 +81,6 @@ Y
 )src/jogo/logica/estados/JogaMinijogo.java,d\b\db4092118bb21d9aaae6c77e30f76c51e58d4f4e
 ^
 .src/jogo/logica/dados/tabuleiro/Tabuleiro.java,8\0\803e9103a345d6faaaa8f3c4006ec91acd3259b9
-\
-,src/jogo/iu/grafica/stage/TabuleiroPane.java,7\c\7c52c1b513dd6fc3d23a3ae51a0b547beed97be2
 Q
 !src/jogo/logica/Propriedades.java,0\3\0388c2a3cbf9287dcfa0f88e5c1ccac9c16c6942
 \

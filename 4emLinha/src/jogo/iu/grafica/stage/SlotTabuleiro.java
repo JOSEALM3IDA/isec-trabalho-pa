@@ -1,9 +1,7 @@
 package jogo.iu.grafica.stage;
 
-import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import jogo.iu.grafica.resources.ImageLoader;
 import jogo.logica.dados.tabuleiro.TipoFicha;
 import jogo.utils.Constantes;
@@ -23,33 +21,46 @@ public class SlotTabuleiro extends HBox {
 
     public void setAs(TipoFicha tipoFicha) {
         this.tipoFicha = tipoFicha;
-        String nomeFichImagem = switch (this.tipoFicha) {
-            case FICHA_VERMELHA -> Constantes.SLOT_VERMELHO_IMG;
-            case FICHA_AMARELA -> Constantes.SLOT_AMARELO_IMG;
-            case NONE -> Constantes.SLOT_VAZIO_IMG;
-        };
-
         imageView = new ImageView();
         imageView.setFitWidth(tamanho);
         imageView.setFitHeight(tamanho);
-        imageView.setImage(ImageLoader.getImage(nomeFichImagem));
+        imageView.setImage(ImageLoader.getImage(getImgFicha()));
         this.getChildren().add(imageView);
     }
 
     public TipoFicha getTipoFicha() { return tipoFicha; }
 
-    public void setMouseInside(boolean val) { setMouseInside(val, Color.WHITE); }
-
-    public void setMouseInside(boolean val, Color color) {
-        if (tipoFicha != TipoFicha.NONE) return;
+    public void setMouseInside(boolean val, TipoFicha tipoFichaHover) {
+        if (this.tipoFicha != TipoFicha.NONE) return;
 
         if (!val) {
-            this.setBackground(Background.EMPTY);
+            imageView.setImage(ImageLoader.getImage(getImgFicha()));
             return;
         }
 
-        this.setBackground(new Background(new BackgroundFill(
-                color,
-                CornerRadii.EMPTY, Insets.EMPTY)));
+        //this.setBackground(new Background(new BackgroundFill(
+        //        color,
+        //        CornerRadii.EMPTY, Insets.EMPTY)));
+
+        imageView.setImage(ImageLoader.getImage(getImgFichaHover(tipoFichaHover)));
+
+        //this.setBackground(new Background(new BackgroundImage(,
+        //        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+    }
+
+    private String getImgFicha() {
+        return switch (this.tipoFicha) {
+            case FICHA_VERMELHA -> Constantes.SLOT_VERMELHO_IMG;
+            case FICHA_AMARELA -> Constantes.SLOT_AMARELO_IMG;
+            case NONE -> Constantes.SLOT_VAZIO_IMG;
+        };
+    }
+
+    private String getImgFichaHover(TipoFicha tipoFichaHover) {
+        return switch (tipoFichaHover) {
+            case FICHA_VERMELHA -> Constantes.SLOT_VERMELHO_HOVER_IMG;
+            case FICHA_AMARELA -> Constantes.SLOT_AMARELO_HOVER_IMG;
+            case NONE -> Constantes.SLOT_VAZIO_IMG;
+        };
     }
 }
