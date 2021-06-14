@@ -1,4 +1,4 @@
-package jogo.iu.grafica.stage;
+package jogo.iu.grafica.stage.menu;
 
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;

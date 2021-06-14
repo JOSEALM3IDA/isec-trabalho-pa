@@ -1,4 +1,4 @@
-package jogo.iu.grafica.stage;
+package jogo.iu.grafica.stage.menu.button;
 
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;

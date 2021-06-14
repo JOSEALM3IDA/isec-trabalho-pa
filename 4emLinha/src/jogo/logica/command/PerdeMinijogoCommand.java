@@ -15,5 +15,8 @@ public class PerdeMinijogoCommand extends CommandAdapter {
     }
 
     @Override
+    public TipoJogada getTipoJogada() { return TipoJogada.PERDER_MINIJOGO; }
+
+    @Override
     public String toString() { return nomeJogador + " perde minijogo"; }
 }

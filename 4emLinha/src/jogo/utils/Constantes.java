@@ -29,15 +29,18 @@ public class Constantes {
     public static final String FONT_MENU = "RetroWide.ttf";
     public static final String IMG_BACKGROUND_MENU = "menu-background.jpg";
 
-    public static final String SOM_PECA_DROP = "peca-drop.mp3";
+    public static final String SOM_FICHA_DROP = "ficha-drop.wav";
+    public static final String SOM_FICHA_HOVER = "ficha-hover.mp3";
+    public static final String SOM_FICHA_ESPECIAL = "ficha-especial.mp3";
     public static final String SOM_HOVER_BTN = "btn-hover.wav";
     public static final String SOM_CLICK_BTN = "btn-click.mp3";
+    public static final String SOM_GANHA_MINIJOGO = "ganha-minijogo.mp3";
+    public static final String SOM_PERDE_MINIJOGO = "perde-minijogo.mp3";
+    public static final String SOM_FIM_JOGO = "fim-jogo.mp3";
 
     public static final String COR_AZUL_HEX = "0x0073d3";
     public static final String COR_VERMELHA_HEX = "0xff0000";
     public static final String COR_AMARELA_HEX = "0xeee800";
-    public static final String COR_VERMELHA_HOVER_HEX = "0xffc4c4";
-    public static final String COR_AMARELA_HOVER_HEX = "0xeee896";
     public static final String BACKGROUND_COLOR_HEX = "0x8197a7";
 
     public static final String SLOT_VERMELHO_IMG = "slot-vermelho.png";

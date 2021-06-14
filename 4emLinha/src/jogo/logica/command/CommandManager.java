@@ -59,4 +59,6 @@ public class CommandManager implements Serializable {
         historico.clear();
         fullHistorico.clear();
     }
+
+    public TipoJogada getTipoJogadaAtual() { return !fullHistorico.isEmpty() ? fullHistorico.get(0).getTipoJogada() : TipoJogada.NONE; }
 }

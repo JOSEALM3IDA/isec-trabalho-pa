@@ -1,8 +1,9 @@
-package jogo.iu.grafica.stage;
+package jogo.iu.grafica.stage.tabuleiro;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import jogo.iu.grafica.resources.ImageLoader;
+import jogo.iu.grafica.resources.MusicPlayer;
 import jogo.logica.dados.tabuleiro.TipoFicha;
 import jogo.utils.Constantes;
 
@@ -38,14 +39,8 @@ public class SlotTabuleiro extends HBox {
             return;
         }
 
-        //this.setBackground(new Background(new BackgroundFill(
-        //        color,
-        //        CornerRadii.EMPTY, Insets.EMPTY)));
-
+        MusicPlayer.playMusic(Constantes.SOM_FICHA_HOVER);
         imageView.setImage(ImageLoader.getImage(getImgFichaHover(tipoFichaHover)));
-
-        //this.setBackground(new Background(new BackgroundImage(,
-        //        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 
     private String getImgFicha() {

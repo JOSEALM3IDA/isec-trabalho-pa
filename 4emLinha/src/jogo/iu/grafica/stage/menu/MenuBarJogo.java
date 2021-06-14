@@ -1,7 +1,10 @@
-package jogo.iu.grafica.stage;
+package jogo.iu.grafica.stage.menu;
 
 import javafx.application.Platform;
 import javafx.scene.control.*;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -10,7 +13,10 @@ import javafx.stage.FileChooser;
 import jogo.logica.QuatroEmLinhaObservable;
 import jogo.utils.Constantes;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.Optional;
 
 public class MenuBarJogo extends MenuBar {
@@ -79,9 +85,15 @@ public class MenuBarJogo extends MenuBar {
     }
 
     private void comoJogarAction() {
+        try {
+            Desktop.getDesktop().browse(URI.create("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+        } catch (IOException ignored) { /* ignored */ }
     }
 
     private void aboutAction() {
+        try {
+            Desktop.getDesktop().browse(URI.create("https://github.com/JOSEALM3IDA"));
+        } catch (IOException ignored) { /* ignored */ }
     }
 
     private void novoJogoAction() { observable.iniciarJogo(); }

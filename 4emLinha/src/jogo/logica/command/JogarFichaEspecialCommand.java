@@ -36,5 +36,8 @@ public class JogarFichaEspecialCommand extends CommandAdapter {
     public boolean temUndo() { return true; }
 
     @Override
+    public TipoJogada getTipoJogada() { return TipoJogada.JOGAR_FICHA_ESPECIAL; }
+
+    @Override
     public String toString() { return nomeJogador + " joga ficha especial em " + (col + 1); }
 }

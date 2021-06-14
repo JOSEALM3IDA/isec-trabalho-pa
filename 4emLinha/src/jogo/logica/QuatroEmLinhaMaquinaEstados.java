@@ -1,5 +1,6 @@
 package jogo.logica;
 
+import jogo.logica.command.TipoJogada;
 import jogo.logica.dados.QuatroEmLinhaGestor;
 import jogo.logica.dados.tabuleiro.TipoFicha;
 import jogo.logica.dados.jogadores.TipoJogador;
@@ -30,9 +31,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
         return false;
     }
 
-    public boolean gravarJogo(String pathFicheiro) {
-        return Utils.gravarObjeto(pathFicheiro, quatroEmLinhaGestor);
-    }
+    public boolean gravarJogo(String pathFicheiro) { return Utils.gravarObjeto(pathFicheiro, quatroEmLinhaGestor); }
 
     public void verReplay(String pathFicheiro) {
         if (!carregaGestorDeFicheiro(pathFicheiro)) return;
@@ -78,6 +77,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public boolean temProximo() { return quatroEmLinhaGestor.temProximo(); }
     public boolean isEmpatado() { return quatroEmLinhaGestor.isEmpatado(); }
     public String getDescricaoComandoAtual() { return quatroEmLinhaGestor.getDescricaoComandoAtual(); }
+    public TipoJogada getTipoJogadaAtual() { return quatroEmLinhaGestor.getTipoJogadaAtual(); }
     public TipoFicha getFichaAtual() { return quatroEmLinhaGestor.getFichaAtual(); }
     public boolean isReplayAtivo() { return quatroEmLinhaGestor.isReplayAtivo(); }
     public boolean jogoComecou() { return quatroEmLinhaGestor.jogoComecou(); }

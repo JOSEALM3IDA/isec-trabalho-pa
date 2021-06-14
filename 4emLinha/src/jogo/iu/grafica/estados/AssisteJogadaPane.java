@@ -7,12 +7,14 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import jogo.iu.grafica.stage.FooterBox;
-import jogo.iu.grafica.stage.MenuBarJogo;
-import jogo.iu.grafica.stage.NormalMenuButton;
-import jogo.iu.grafica.stage.TabuleiroPane;
+import jogo.iu.grafica.resources.MusicPlayer;
+import jogo.iu.grafica.stage.menu.FooterBox;
+import jogo.iu.grafica.stage.menu.MenuBarJogo;
+import jogo.iu.grafica.stage.menu.button.NormalMenuButton;
+import jogo.iu.grafica.stage.tabuleiro.TabuleiroPane;
 import jogo.logica.Propriedades;
 import jogo.logica.QuatroEmLinhaObservable;
+import jogo.logica.command.TipoJogada;
 import jogo.logica.estados.Situacao;
 import jogo.utils.Constantes;
 
@@ -93,6 +95,7 @@ public class AssisteJogadaPane extends BorderPane {
     void registarListeners() {
         avancarButton.setOnAction(e -> {
             infoJogadaText.setText(observable.getDescricaoComandoAtual());
+            executarSomJogada(observable.getTipoJogadaAtual());
             observable.avancar();
         });
 
@@ -106,6 +109,20 @@ public class AssisteJogadaPane extends BorderPane {
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_LISTA_JOGADORES, evt -> atualizarListaJogadores());
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_JOGADOR_ATUAL, evt -> atualizarJogadorAtual());
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade());
+    }
+
+    private void executarSomJogada(TipoJogada tipoJogada) {
+        String som = switch (tipoJogada) {
+            case JOGAR_FICHA -> Constantes.SOM_FICHA_DROP;
+            case JOGAR_FICHA_ESPECIAL -> Constantes.SOM_FICHA_ESPECIAL;
+            case PERDER_MINIJOGO -> Constantes.SOM_PERDE_MINIJOGO;
+            case GANHAR_MINIJOGO -> Constantes.SOM_GANHA_MINIJOGO;
+            case NONE -> null;
+        };
+
+        if (som == null) return;
+
+        MusicPlayer.playMusic(som);
     }
 
     private void atualizarListaJogadores() { listaJogadores.setText(observable.getConfigJogadores()); }

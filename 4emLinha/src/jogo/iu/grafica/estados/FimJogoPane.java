@@ -6,7 +6,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import jogo.iu.grafica.stage.*;
+import jogo.iu.grafica.resources.MusicPlayer;
+import jogo.iu.grafica.stage.menu.FooterBox;
+import jogo.iu.grafica.stage.menu.MenuBarJogo;
+import jogo.iu.grafica.stage.menu.button.NormalMenuButton;
+import jogo.iu.grafica.stage.tabuleiro.TabuleiroPane;
 import jogo.logica.Propriedades;
 import jogo.logica.QuatroEmLinhaObservable;
 import jogo.logica.estados.Situacao;
@@ -101,5 +105,9 @@ public class FimJogoPane extends BorderPane {
         }));
     }
 
-    private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.FimJogo); }
+    private void atualizarVisibilidade() {
+        boolean isEstadoCorreto = observable.getSituacao() == Situacao.FimJogo;
+        this.setVisible(isEstadoCorreto);
+        if (isEstadoCorreto) MusicPlayer.playMusic(Constantes.SOM_FIM_JOGO);
+    }
 }

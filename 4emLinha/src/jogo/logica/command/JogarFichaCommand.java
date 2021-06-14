@@ -30,5 +30,8 @@ public class JogarFichaCommand extends CommandAdapter {
     public boolean temUndo() { return true; }
 
     @Override
+    public TipoJogada getTipoJogada() { return TipoJogada.JOGAR_FICHA; }
+
+    @Override
     public String toString() { return nomeJogador + " joga ficha em " + (col + 1); }
 }

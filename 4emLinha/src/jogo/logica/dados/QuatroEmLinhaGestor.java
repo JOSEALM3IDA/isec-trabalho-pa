@@ -60,6 +60,7 @@ public class QuatroEmLinhaGestor implements Serializable {
     public boolean isJogavelColuna(int coluna) { return quatroEmLinha.isJogavelColuna(coluna); }
     public boolean isEmpatado() { return quatroEmLinha.isEmpatado(); }
     public String getDescricaoComandoAtual() { return commandManager.getDescricaoComandoAtual(); }
+    public TipoJogada getTipoJogadaAtual() { return commandManager.getTipoJogadaAtual(); }
     public void setReplayAtivo(boolean val) { isReplayAtivo = val; }
     public boolean isReplayAtivo() { return isReplayAtivo; }
     public boolean jogoComecou() { return quatroEmLinha.jogoComecou(); }

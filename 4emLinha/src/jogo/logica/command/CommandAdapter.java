@@ -23,5 +23,9 @@ public class CommandAdapter implements Command, Serializable {
     public boolean temUndo() { return false; }
 
     @Override
+    public TipoJogada getTipoJogada() { return TipoJogada.NONE; }
+
+    @Override
     public String toString() { return nomeJogador + " fez algo indefinido"; }
+
 }

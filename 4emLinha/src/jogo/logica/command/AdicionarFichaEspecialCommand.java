@@ -15,5 +15,8 @@ public class AdicionarFichaEspecialCommand extends CommandAdapter {
     }
 
     @Override
+    public TipoJogada getTipoJogada() { return TipoJogada.GANHAR_MINIJOGO; }
+
+    @Override
     public String toString() { return nomeJogador + " recebe ficha especial"; }
 }

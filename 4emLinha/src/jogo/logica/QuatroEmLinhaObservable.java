@@ -1,5 +1,6 @@
 package jogo.logica;
 
+import jogo.logica.command.TipoJogada;
 import jogo.logica.dados.jogadores.TipoJogador;
 import jogo.logica.dados.tabuleiro.TipoFicha;
 import jogo.logica.estados.Situacao;
@@ -25,11 +26,12 @@ public class QuatroEmLinhaObservable {
         boolean rtn = maquinaEstados.continuarJogo(pathFicheiro);
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_LISTA_JOGADORES), null, null);
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
         return rtn;
     }
 
-    public boolean gravarJogo(String pathFicheiro) { return maquinaEstados.gravarJogo(pathFicheiro); }
+    public void gravarJogo(String pathFicheiro) { maquinaEstados.gravarJogo(pathFicheiro); }
 
     public void verReplay(String pathFicheiro) {
         maquinaEstados.verReplay(pathFicheiro);
@@ -98,6 +100,7 @@ public class QuatroEmLinhaObservable {
 
         if (isAcabadoMinijogo()) {
             propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.FIM_MINIJOGO), null, null);
             return;
         }
 
@@ -130,23 +133,19 @@ public class QuatroEmLinhaObservable {
     public boolean temMinijogoDisponivel() { return maquinaEstados.temMinijogoDisponivel(); }
     public boolean isComputadorAJogar() { return maquinaEstados.isComputadorAJogar(); }
     public String getPerguntaMinijogo() { return maquinaEstados.getPerguntaMinijogo(); }
-    public boolean isValidaRespostaMinijogo(String resposta) { return maquinaEstados.isValidaRespostaMinijogo(resposta); }
     public boolean ganhouUltimoMinijogo() { return maquinaEstados.ganhouUltimoMinijogo(); }
     public boolean isAcabadoMinijogo() { return maquinaEstados.isAcabadoMinijogo(); }
-    public int getPontuacaoAtualMinijogo() { return maquinaEstados.getPontuacaoAtualMinijogo(); }
     public int getNumFichasEspeciaisJogadorAtual() { return maquinaEstados.getNumFichasEspeciaisJogadorAtual(); }
     public boolean jogoAcabou() { return maquinaEstados.jogoAcabou(); }
-    public int getNumCreditos() { return maquinaEstados.getNumCreditos(); }
     public boolean podeVoltarAtras() { return maquinaEstados.podeVoltarAtras(); }
     public int getNumCreditosJogaveis() { return maquinaEstados.getNumCreditosJogaveis(); }
     public boolean isJogavelColuna(int coluna) { return maquinaEstados.isJogavelColuna(coluna); }
-    public boolean temProximo() { return maquinaEstados.temProximo(); }
     public boolean isEmpatado() { return maquinaEstados.isEmpatado(); }
     public String getDescricaoComandoAtual() { return maquinaEstados.getDescricaoComandoAtual(); }
+    public TipoJogada getTipoJogadaAtual() { return maquinaEstados.getTipoJogadaAtual(); }
     public TipoFicha getFichaAtual() { return maquinaEstados.getFichaAtual(); }
     public boolean isReplayAtivo() { return maquinaEstados.isReplayAtivo(); }
 
     public Situacao getSituacao() { return maquinaEstados.getSituacao(); }
-
 
 }

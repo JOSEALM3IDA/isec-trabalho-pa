@@ -9,7 +9,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import jogo.iu.grafica.resources.MusicPlayer;
-import jogo.iu.grafica.stage.*;
+import jogo.iu.grafica.stage.menu.FooterBox;
+import jogo.iu.grafica.stage.menu.MenuBarJogo;
+import jogo.iu.grafica.stage.menu.button.NormalMenuButton;
+import jogo.iu.grafica.stage.tabuleiro.TabuleiroPane;
 import jogo.logica.Propriedades;
 import jogo.logica.QuatroEmLinhaObservable;
 import jogo.logica.estados.Situacao;
@@ -26,6 +29,8 @@ public class PedeDecisaoJogadaPane extends BorderPane {
     private final QuatroEmLinhaObservable observable;
 
     private MenuBarJogo menuBarJogo;
+
+    private Text infoText;
 
     private Text listaJogadores;
     private TabuleiroPane tabuleiroPane;
@@ -149,7 +154,7 @@ public class PedeDecisaoJogadaPane extends BorderPane {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.schedule(() -> {
             Platform.runLater(() -> {
-                MusicPlayer.playMusic(Constantes.SOM_PECA_DROP);
+                MusicPlayer.playMusic(Constantes.SOM_FICHA_DROP);
                 int jogadaAutomatica = observable.getJogadaAutomatica();
                 observable.jogarFicha(jogadaAutomatica);
             });
@@ -160,6 +165,7 @@ public class PedeDecisaoJogadaPane extends BorderPane {
     private void registarObservadores() {
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_LISTA_JOGADORES, evt -> atualizarListaJogadores());
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_JOGADOR_ATUAL, evt -> atualizarJogadorAtual());
+        observable.addPropertyChangeListener(Propriedades.FIM_MINIJOGO, evt -> processarFimMinijogo());
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade());
     }
 
@@ -183,6 +189,17 @@ public class PedeDecisaoJogadaPane extends BorderPane {
 
         setLockBotoes(true);
         fazJogadaAutomatica();
+    }
+
+    private void processarFimMinijogo() {
+        if (observable.isAcabadoMinijogo()) {
+            if (observable.ganhouUltimoMinijogo()) {
+                MusicPlayer.playMusic(Constantes.SOM_GANHA_MINIJOGO);
+                return;
+            }
+
+            MusicPlayer.playMusic(Constantes.SOM_PERDE_MINIJOGO);
+        }
     }
 
     private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.PedeDecisaoJogada); }

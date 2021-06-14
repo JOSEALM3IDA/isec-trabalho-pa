@@ -1,9 +1,8 @@
-package jogo.iu.grafica.stage;
+package jogo.iu.grafica.stage.tabuleiro;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import jogo.iu.grafica.resources.MusicPlayer;
 import jogo.logica.Propriedades;
 import jogo.logica.QuatroEmLinhaObservable;
@@ -38,13 +37,14 @@ public class TabuleiroPane extends GridPane {
 
         slot.setOnMouseClicked(e -> {
             if (isJogarFichaEspecial) {
+                MusicPlayer.playMusic(Constantes.SOM_FICHA_ESPECIAL);
                 observable.jogarFichaEspecial(col);
                 return;
             }
 
             if (!observable.isJogavelColuna(col)) return;
 
-            MusicPlayer.playMusic(Constantes.SOM_PECA_DROP);
+            MusicPlayer.playMusic(Constantes.SOM_FICHA_DROP);
             observable.jogarFicha(col);
         });
 
