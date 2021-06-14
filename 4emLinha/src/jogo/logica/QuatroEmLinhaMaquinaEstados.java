@@ -80,6 +80,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public String getDescricaoComandoAtual() { return quatroEmLinhaGestor.getDescricaoComandoAtual(); }
     public TipoFicha getFichaAtual() { return quatroEmLinhaGestor.getFichaAtual(); }
     public boolean isReplayAtivo() { return quatroEmLinhaGestor.isReplayAtivo(); }
+    public boolean jogoComecou() { return quatroEmLinhaGestor.jogoComecou(); }
 
     private boolean carregaGestorDeFicheiro(String pathFicheiro) {
         QuatroEmLinhaGestor novoGestor;

@@ -47,9 +47,12 @@ public class QuatroEmLinhaObservable {
 
     public void adicionarJogador(TipoJogador tipoJogador, String nomeJogador) {
         maquinaEstados.adicionarJogador(tipoJogador, nomeJogador);
+        if (maquinaEstados.jogoComecou()) {
+            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
+        }
+
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_LISTA_JOGADORES), null, null);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
@@ -93,7 +96,7 @@ public class QuatroEmLinhaObservable {
 
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
 
-        if (!isAcabadoMinijogo()) {
+        if (isAcabadoMinijogo()) {
             propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
             return;
         }

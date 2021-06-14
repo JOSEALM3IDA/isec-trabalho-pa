@@ -62,6 +62,7 @@ public class QuatroEmLinhaGestor implements Serializable {
     public String getDescricaoComandoAtual() { return commandManager.getDescricaoComandoAtual(); }
     public void setReplayAtivo(boolean val) { isReplayAtivo = val; }
     public boolean isReplayAtivo() { return isReplayAtivo; }
+    public boolean jogoComecou() { return quatroEmLinha.jogoComecou(); }
 
     public void undo(int numVezes) {
         if (jogoAcabou()) return;
@@ -69,5 +70,4 @@ public class QuatroEmLinhaGestor implements Serializable {
         if (!quatroEmLinha.temCreditosJogadorAtual(numVezes)) return;
         commandManager.undo(numVezes, quatroEmLinha);
     }
-
 }

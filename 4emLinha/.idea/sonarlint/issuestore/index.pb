@@ -65,8 +65,13 @@ _
 /src/jogo/iu/grafica/stage/NormalMenuButton.java,b\4\b4c1dc858e2dfc2631f2e62d76efe1a129c3bdf3
 I
 src/jogo/utils/Utils.java,8\7\87805914b11b09dd23a88d6745d93455badef70a
+<<<<<<< HEAD
 X
 (src/jogo/iu/grafica/stage/FooterBox.java,d\a\daeb0cdd2d5f77a79ef25778d305c03fd2e5593c
+=======
+N
+src/jogo/utils/Constantes.java,e\1\e170b67ec29ddc1f4917b3c4acb3dda2a0787236
+>>>>>>> 0f754db41128a74a54fd9f011572adb1d6c68ab9
 [
 +src/jogo/logica/command/CommandManager.java,6\f\6fb532b5147be72ddbd01184b9040eb0b56490a4
 [
@@ -91,17 +96,19 @@ e
 5src/jogo/iu/grafica/estados/PedeConfiguracaoPane.java,f\a\fadf39354267df156b63efaa98147b24beb605f5
 f
 6src/jogo/iu/grafica/estados/PedeDecisaoInicioPane.java,1\4\14643d734c60acfacb125b9cdfdf638d83b0244f
-\
-,src/jogo/logica/QuatroEmLinhaObservable.java,b\5\b51e2169db1856f336565e0184a3bc164b79f37c
-a
-1src/jogo/logica/dados/jogadores/JogadorLista.java,8\2\8206c7d61e8bb7899deb05a3a58d4c32be2b8ab0
-b
-2src/jogo/iu/grafica/estados/AssisteJogadaPane.java,4\5\4554f882225c174b89a04d0a4ee0e8e1d44d72ef
-`
-0src/jogo/logica/QuatroEmLinhaMaquinaEstados.java,3\0\30f82a94fb1cd0b5f73b7b4d89f0777b4bf880bf
-X
-(src/jogo/logica/dados/QuatroEmLinha.java,0\3\039d63dd047b5d4feb0a6916d64c6eca5bde1d32
 ^
 .src/jogo/logica/dados/QuatroEmLinhaGestor.java,8\0\806c1c99df5b8ae3f162cfb598a5d78075aca438
+b
+2src/jogo/iu/grafica/estados/AssisteJogadaPane.java,4\5\4554f882225c174b89a04d0a4ee0e8e1d44d72ef
+a
+1src/jogo/logica/dados/jogadores/JogadorLista.java,8\2\8206c7d61e8bb7899deb05a3a58d4c32be2b8ab0
+X
+(src/jogo/logica/dados/QuatroEmLinha.java,0\3\039d63dd047b5d4feb0a6916d64c6eca5bde1d32
+`
+0src/jogo/logica/QuatroEmLinhaMaquinaEstados.java,3\0\30f82a94fb1cd0b5f73b7b4d89f0777b4bf880bf
+\
+,src/jogo/logica/QuatroEmLinhaObservable.java,b\5\b51e2169db1856f336565e0184a3bc164b79f37c
+X
+(src/jogo/iu/grafica/stage/FooterBox.java,d\a\daeb0cdd2d5f77a79ef25778d305c03fd2e5593c
 f
 6src/jogo/iu/grafica/estados/PedeDecisaoJogadaPane.java,3\9\392da012eb3ede2978bef1ad662b508b6b4f7dc6
