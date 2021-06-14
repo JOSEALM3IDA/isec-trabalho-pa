@@ -51,6 +51,17 @@ public class TabuleiroPane extends GridPane {
         slot.setOnMouseEntered(e -> {
             if (observable.jogoAcabou()) return;
 
+            if (isJogarFichaEspecial) {
+                for (Node child : getChildren()) {
+                    if (GridPane.getColumnIndex(child) == col) {
+                        ((SlotTabuleiro) child).setMouseInside(true);
+                    }
+                }
+
+                MusicPlayer.playMusic(Constantes.SOM_FICHA_HOVER);
+                return;
+            }
+
             for (Node child : getChildren()) {
                 if (GridPane.getColumnIndex(child) == col && ((SlotTabuleiro) child).getTipoFicha() == TipoFicha.NONE) {
                     ((SlotTabuleiro) child).setMouseInside(true, observable.getFichaAtual());

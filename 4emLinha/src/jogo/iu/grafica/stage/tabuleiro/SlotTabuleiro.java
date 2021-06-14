@@ -31,8 +31,17 @@ public class SlotTabuleiro extends HBox {
 
     public TipoFicha getTipoFicha() { return tipoFicha; }
 
+    public void setMouseInside(boolean val) {
+        if (!val) {
+            imageView.setImage(ImageLoader.getImage(getImgFicha()));
+            return;
+        }
+
+        imageView.setImage(ImageLoader.getImage(getImgFichaHover(tipoFicha)));
+    }
+
     public void setMouseInside(boolean val, TipoFicha tipoFichaHover) {
-        if (this.tipoFicha != TipoFicha.NONE) return;
+        if (val && this.tipoFicha != TipoFicha.NONE) return;
 
         if (!val) {
             imageView.setImage(ImageLoader.getImage(getImgFicha()));

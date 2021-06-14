@@ -1,8 +1,10 @@
 package jogo.iu.grafica.estados;
 
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -36,6 +38,7 @@ public class JogaMinijogoPane extends BorderPane {
         respostaTextField = new TextField();
         respostaTextField.setId("minijogo-textfield");
         respostaTextField.setAlignment(Pos.CENTER);
+        respostaTextField.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
 
         minijogoBox.setAlignment(Pos.CENTER);
         minijogoBox.getChildren().addAll(infoText, respostaTextField);

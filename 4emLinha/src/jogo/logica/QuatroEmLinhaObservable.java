@@ -49,13 +49,16 @@ public class QuatroEmLinhaObservable {
 
     public void adicionarJogador(TipoJogador tipoJogador, String nomeJogador) {
         maquinaEstados.adicionarJogador(tipoJogador, nomeJogador);
+
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
+
         if (maquinaEstados.jogoComecou()) {
             propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
             propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
         }
 
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_LISTA_JOGADORES), null, null);
-        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
+
     }
 
     public void jogarFicha(int col) {
@@ -138,6 +141,7 @@ public class QuatroEmLinhaObservable {
     public int getNumFichasEspeciaisJogadorAtual() { return maquinaEstados.getNumFichasEspeciaisJogadorAtual(); }
     public boolean jogoAcabou() { return maquinaEstados.jogoAcabou(); }
     public boolean podeVoltarAtras() { return maquinaEstados.podeVoltarAtras(); }
+    public int getNumCreditos() { return maquinaEstados.getNumCreditos(); }
     public int getNumCreditosJogaveis() { return maquinaEstados.getNumCreditosJogaveis(); }
     public boolean isJogavelColuna(int coluna) { return maquinaEstados.isJogavelColuna(coluna); }
     public boolean isEmpatado() { return maquinaEstados.isEmpatado(); }
@@ -145,7 +149,7 @@ public class QuatroEmLinhaObservable {
     public TipoJogada getTipoJogadaAtual() { return maquinaEstados.getTipoJogadaAtual(); }
     public TipoFicha getFichaAtual() { return maquinaEstados.getFichaAtual(); }
     public boolean isReplayAtivo() { return maquinaEstados.isReplayAtivo(); }
+    public boolean jogoComecou() { return maquinaEstados.jogoComecou(); }
 
     public Situacao getSituacao() { return maquinaEstados.getSituacao(); }
-
 }

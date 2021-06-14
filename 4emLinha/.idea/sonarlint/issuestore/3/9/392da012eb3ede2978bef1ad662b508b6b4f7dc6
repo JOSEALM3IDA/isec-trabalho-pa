@@ -1,7 +1,9 @@
 
+t
+java:S1192="RDefine a constant instead of duplicating this literal "-fx-font-size: 20" 3 times.(«Öãüÿÿÿÿ8«½¹â /
 q
-java:S1450%"[Remove the "jogadorText1" field and declare it as a local variable in the relevant methods.(¾ïÆ©
+java:S1450#"[Remove the "jogadorText1" field and declare it as a local variable in the relevant methods.(¾ïÆ©
 u
 java:S1450"ZRemove the "menuBarJogo" field and declare it as a local variable in the relevant methods.(Ê¿Úêüÿÿÿÿ
-N
-java:S1068!",Remove this unused "infoText" private field.(Âï²Íüÿÿÿÿ8œí‰à /
+u
+java:S1450."XRemove the "scheduler" field and declare it as a local variable in the relevant methods.(“„¹Í8Ú¯ıá /

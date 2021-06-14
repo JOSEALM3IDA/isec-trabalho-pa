@@ -30,12 +30,11 @@ public class PedeDecisaoJogadaPane extends BorderPane {
 
     private MenuBarJogo menuBarJogo;
 
-    private Text infoText;
-
     private Text listaJogadores;
     private TabuleiroPane tabuleiroPane;
     private Text jogadorText1;
     private Text jogadorText2;
+    private Text jogadorText3;
 
     private NormalMenuButton voltarAtrasButton;
     private Slider voltarAtrasSlider;
@@ -43,6 +42,8 @@ public class PedeDecisaoJogadaPane extends BorderPane {
     private NormalMenuButton aceitarMinijogoButton;
     private NormalMenuButton jogarFichaEspecialButton;
     private NormalMenuButton desistirButton;
+
+    private ScheduledExecutorService scheduler;
 
     public PedeDecisaoJogadaPane(QuatroEmLinhaObservable observable) {
         this.observable = observable;
@@ -76,8 +77,13 @@ public class PedeDecisaoJogadaPane extends BorderPane {
         jogadorText2.setStyle("-fx-font-size: 28; -fx-font-weight: bold");
         jogadorText2.setStroke(Color.BLACK);
         jogadorText2.setStrokeWidth(1);
+        jogadorText3 = new Text();
+        jogadorText3.setStyle("-fx-font-size: 20");
+        jogadorText3.setTextAlignment(TextAlignment.CENTER);
+        jogadorText3.setFill(Color.WHITE);
+
         jogadorTextBox.setAlignment(Pos.CENTER);
-        jogadorTextBox.getChildren().addAll(jogadorText1, jogadorText2);
+        jogadorTextBox.getChildren().addAll(jogadorText1, jogadorText2, jogadorText3);
         jogadorTextBox.setPadding(new Insets(100));
         jogadorTextBox.setMinWidth(Constantes.LARG_SIDEBAR); jogadorTextBox.setMaxWidth(Constantes.LARG_SIDEBAR);
         setRight(jogadorTextBox);
@@ -151,9 +157,10 @@ public class PedeDecisaoJogadaPane extends BorderPane {
     }
 
     private void fazJogadaAutomatica() {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler = Executors.newScheduledThreadPool(1);
         scheduler.schedule(() -> {
             Platform.runLater(() -> {
+                if (!isVisible()) return;
                 MusicPlayer.playMusic(Constantes.SOM_FICHA_DROP);
                 int jogadaAutomatica = observable.getJogadaAutomatica();
                 observable.jogarFicha(jogadaAutomatica);
@@ -176,6 +183,7 @@ public class PedeDecisaoJogadaPane extends BorderPane {
         resetJogarFichaEspecial();
 
         jogadorText2.setText(observable.getNomeJogadorAtual());
+        jogadorText3.setText("Creditos: " + observable.getNumCreditos());
         jogadorText2.setFill(Color.web(switch (observable.getFichaAtual()) {
             case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HEX;
             case FICHA_AMARELA -> Constantes.COR_AMARELA_HEX;
@@ -188,7 +196,8 @@ public class PedeDecisaoJogadaPane extends BorderPane {
         }
 
         setLockBotoes(true);
-        fazJogadaAutomatica();
+
+        if (observable.jogoComecou() && !observable.jogoAcabou() && isVisible()) fazJogadaAutomatica();
     }
 
     private void processarFimMinijogo() {
