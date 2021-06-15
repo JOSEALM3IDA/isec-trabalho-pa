@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import jogo.iu.grafica.resources.MusicPlayer;
+import jogo.iu.grafica.stage.JogadorInfoBox;
 import jogo.iu.grafica.stage.menu.FooterBox;
 import jogo.iu.grafica.stage.menu.MenuBarJogo;
 import jogo.iu.grafica.stage.menu.button.NormalMenuButton;
@@ -26,8 +27,7 @@ public class AssisteJogadaPane extends BorderPane {
     private TabuleiroPane tabuleiroPane;
 
     private Text listaJogadores;
-    private Text jogadorText1;
-    private Text jogadorText2;
+    private JogadorInfoBox jogadorInfoBox;
 
     private Text infoJogadaText;
     private NormalMenuButton avancarButton;
@@ -57,20 +57,8 @@ public class AssisteJogadaPane extends BorderPane {
         tabuleiroPane = new TabuleiroPane(observable);
         setCenter(tabuleiroPane);
 
-        VBox jogadorTextBox = new VBox();
-        jogadorText1 = new Text("Jogador Atual:");
-        jogadorText1.setStyle("-fx-font-size: 20");
-        jogadorText1.setTextAlignment(TextAlignment.CENTER);
-        jogadorText1.setFill(Color.WHITE);
-        jogadorText2 = new Text();
-        jogadorText2.setStyle("-fx-font-size: 24; -fx-font-weight: bold");
-        jogadorText2.setStroke(Color.BLACK);
-        jogadorText2.setStrokeWidth(1);
-        jogadorTextBox.setAlignment(Pos.CENTER);
-        jogadorTextBox.getChildren().addAll(jogadorText1, jogadorText2);
-        jogadorTextBox.setPadding(new Insets(100));
-        jogadorTextBox.setMinWidth(Constantes.LARG_SIDEBAR); jogadorTextBox.setMaxWidth(Constantes.LARG_SIDEBAR);
-        setRight(jogadorTextBox);
+        jogadorInfoBox = new JogadorInfoBox(observable);
+        setRight(jogadorInfoBox);
 
         menuBarJogo = new MenuBarJogo(observable);
         setTop(menuBarJogo);
@@ -107,7 +95,6 @@ public class AssisteJogadaPane extends BorderPane {
 
     private void registarObservadores() {
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_LISTA_JOGADORES, evt -> atualizarListaJogadores());
-        observable.addPropertyChangeListener(Propriedades.ATUALIZAR_JOGADOR_ATUAL, evt -> atualizarJogadorAtual());
         observable.addPropertyChangeListener(Propriedades.COMECAR_REPLAY, evt -> resetInfoReplay());
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade());
     }
@@ -128,20 +115,9 @@ public class AssisteJogadaPane extends BorderPane {
 
     private void atualizarListaJogadores() { listaJogadores.setText(observable.getConfigJogadores()); }
 
-    private void atualizarJogadorAtual() {
-        if (!jogadorText1.isVisible()) jogadorText1.setVisible(true);
-
-        jogadorText2.setText(observable.getNomeJogadorAtual());
-        jogadorText2.setFill(Color.web(switch (observable.getFichaAtual()) {
-            case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HEX;
-            case FICHA_AMARELA -> Constantes.COR_AMARELA_HEX;
-            default -> Constantes.BACKGROUND_COLOR_HEX;
-        }));
-    }
-
     private void resetInfoReplay() {
-        jogadorText1.setVisible(false);
-        jogadorText2.setText("");
+        infoJogadaText.setText("");
+        jogadorInfoBox.setVisible(false);
     }
 
     private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.AssisteJogada); }

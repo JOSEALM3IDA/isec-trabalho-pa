@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import jogo.iu.grafica.resources.MusicPlayer;
+import jogo.iu.grafica.stage.JogadorInfoBox;
 import jogo.iu.grafica.stage.menu.FooterBox;
 import jogo.iu.grafica.stage.menu.MenuBarJogo;
 import jogo.iu.grafica.stage.menu.button.NormalMenuButton;
@@ -32,9 +33,7 @@ public class PedeDecisaoJogadaPane extends BorderPane {
 
     private Text listaJogadores;
     private TabuleiroPane tabuleiroPane;
-    private Text jogadorText1;
-    private Text jogadorText2;
-    private Text jogadorText3;
+    private JogadorInfoBox jogadorInfoBox;
 
     private NormalMenuButton voltarAtrasButton;
     private Slider voltarAtrasSlider;
@@ -68,25 +67,8 @@ public class PedeDecisaoJogadaPane extends BorderPane {
         tabuleiroPane = new TabuleiroPane(observable);
         setCenter(tabuleiroPane);
 
-        VBox jogadorTextBox = new VBox();
-        jogadorText1 = new Text("Jogador Atual:");
-        jogadorText1.setStyle("-fx-font-size: 20");
-        jogadorText1.setTextAlignment(TextAlignment.CENTER);
-        jogadorText1.setFill(Color.WHITE);
-        jogadorText2 = new Text();
-        jogadorText2.setStyle("-fx-font-size: 28; -fx-font-weight: bold");
-        jogadorText2.setStroke(Color.BLACK);
-        jogadorText2.setStrokeWidth(1);
-        jogadorText3 = new Text();
-        jogadorText3.setStyle("-fx-font-size: 20");
-        jogadorText3.setTextAlignment(TextAlignment.CENTER);
-        jogadorText3.setFill(Color.WHITE);
-
-        jogadorTextBox.setAlignment(Pos.CENTER);
-        jogadorTextBox.getChildren().addAll(jogadorText1, jogadorText2, jogadorText3);
-        jogadorTextBox.setPadding(new Insets(100));
-        jogadorTextBox.setMinWidth(Constantes.LARG_SIDEBAR); jogadorTextBox.setMaxWidth(Constantes.LARG_SIDEBAR);
-        setRight(jogadorTextBox);
+        jogadorInfoBox = new JogadorInfoBox(observable);
+        setRight(jogadorInfoBox);
 
         setBackground(new Background(new BackgroundFill(Color.web(Constantes.BACKGROUND_COLOR_HEX), CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -181,14 +163,6 @@ public class PedeDecisaoJogadaPane extends BorderPane {
     private void atualizarJogadorAtual() {
         voltarAtrasSlider.setMax(observable.getNumCreditosJogaveis());
         resetJogarFichaEspecial();
-
-        jogadorText2.setText(observable.getNomeJogadorAtual());
-        jogadorText3.setText("Creditos: " + observable.getNumCreditos());
-        jogadorText2.setFill(Color.web(switch (observable.getFichaAtual()) {
-            case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HEX;
-            case FICHA_AMARELA -> Constantes.COR_AMARELA_HEX;
-            default -> Constantes.BACKGROUND_COLOR_HEX;
-        }));
 
         if (!observable.isComputadorAJogar()) {
             setLockBotoes(false);
