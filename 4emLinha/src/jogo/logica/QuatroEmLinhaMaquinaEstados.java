@@ -49,6 +49,7 @@ public class QuatroEmLinhaMaquinaEstados implements Serializable {
     public void jogarFichaEspecial(int col) { estadoAtual = estadoAtual.jogarFichaEspecial(col); }
     public void enviarRespostaMinijogo(String resposta) { estadoAtual = estadoAtual.jogarMinijogo(resposta); }
     public void avancar() { estadoAtual = estadoAtual.avancar(); }
+    public void voltar() { estadoAtual = estadoAtual.voltar(); }
 
     public boolean existeJogador(String nome) { return quatroEmLinhaGestor.existeJogador(nome); }
     public int getNumJogadores() { return quatroEmLinhaGestor.getNumJogadores(); }

@@ -28,6 +28,7 @@ public class MenuBarJogo extends MenuBar {
     private MenuItem continuarJogoMItem;
     private MenuItem verReplayMItem;
     private MenuItem gravarJogoMItem;
+    private MenuItem voltarMItem;
     private MenuItem sairMItem;
 
     private Menu ajudaMenu;
@@ -55,16 +56,20 @@ public class MenuBarJogo extends MenuBar {
         gravarJogoMItem = new MenuItem("Gravar Jogo");
         gravarJogoMItem.setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN));
 
+        voltarMItem = new MenuItem("Voltar ao Menu");
+        voltarMItem.setAccelerator(new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN));
+
         sairMItem = new MenuItem("Sair");
         sairMItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
 
         jogoMenu.getItems().addAll(novoJogoMItem, continuarJogoMItem, verReplayMItem, gravarJogoMItem,
-                new SeparatorMenuItem(), sairMItem);
+                new SeparatorMenuItem(), voltarMItem, sairMItem);
 
         novoJogoMItem.setOnAction(e -> novoJogoAction());
         continuarJogoMItem.setOnAction(e -> continuarJogoAction());
         verReplayMItem.setOnAction(e -> verReplayAction());
         gravarJogoMItem.setOnAction(e -> gravarJogoAction());
+        voltarMItem.setOnAction(e -> voltarAction());
         sairMItem.setOnAction(e -> sairAction());
 
         // AJUDA
@@ -124,6 +129,8 @@ public class MenuBarJogo extends MenuBar {
         File hFile = fileChooser.showSaveDialog(getScene().getWindow());
         if (hFile != null) { observable.gravarJogo(hFile.getAbsolutePath()); }
     }
+
+    private void voltarAction() { observable.voltar(); }
 
     private void sairAction() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

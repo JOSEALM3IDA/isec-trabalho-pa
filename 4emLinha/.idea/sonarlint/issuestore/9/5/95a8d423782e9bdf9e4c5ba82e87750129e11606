@@ -1,12 +1,12 @@
 
 \
-java:S1192i"FDefine a constant instead of duplicating this literal "Todos" 3 times.(€º£
+java:S1192n"FDefine a constant instead of duplicating this literal "Todos" 3 times.(€º£
 o
-java:S1450#"YRemove the "aboutMItem" field and declare it as a local variable in the relevant methods.(”§ë€
+java:S1450$"YRemove the "aboutMItem" field and declare it as a local variable in the relevant methods.(”§ë€
 n
-java:S1450!"XRemove the "ajudaMenu" field and declare it as a local variable in the relevant methods.(í¤ÉÒ
+java:S1450""XRemove the "ajudaMenu" field and declare it as a local variable in the relevant methods.(í¤ÉÒ
 s
-java:S1450""]Remove the "comoJogarMItem" field and declare it as a local variable in the relevant methods.(ŒïÌ²
+java:S1450#"]Remove the "comoJogarMItem" field and declare it as a local variable in the relevant methods.(ŒïÌ²
 w
 java:S1450"aRemove the "continuarJogoMItem" field and declare it as a local variable in the relevant methods.(ş±û”
 t
@@ -16,6 +16,8 @@ java:S1450"WRemove the "jogoMenu" field and declare it as a local variable in 
 w
 java:S1450"\Remove the "novoJogoMItem" field and declare it as a local variable in the relevant methods.(¡ı¸üûÿÿÿÿ
 n
-java:S1450"XRemove the "sairMItem" field and declare it as a local variable in the relevant methods.(¾È†«
+java:S1450 "XRemove the "sairMItem" field and declare it as a local variable in the relevant methods.(¾È†«
 x
 java:S1450"]Remove the "verReplayMItem" field and declare it as a local variable in the relevant methods.(ª¬àæùÿÿÿÿ
+|
+java:S1450"ZRemove the "voltarMItem" field and declare it as a local variable in the relevant methods.(ó²ôÃüÿÿÿÿ8Ü’Âæ /

@@ -55,5 +55,8 @@ public class PedeDecisaoJogada extends EstadoAdapter {
     }
 
     @Override
+    public Estado voltar() { return new PedeDecisaoInicio(quatroEmLinhaGestor); }
+
+    @Override
     public Situacao getSituacao() { return Situacao.PedeDecisaoJogada; }
 }

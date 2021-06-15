@@ -31,6 +31,7 @@ public class PedeConfiguracaoPane extends BorderPane {
     private ComboBox<TipoJogador> tipoJogadorCombobox;
     private Text erroText;
     private NormalMenuButton adicionarButton;
+    private NormalMenuButton voltarButton;
 
     public PedeConfiguracaoPane(QuatroEmLinhaObservable observable) {
         this.observable = observable;
@@ -90,9 +91,13 @@ public class PedeConfiguracaoPane extends BorderPane {
         erroText.setStrokeWidth(1);
         erroText.setStyle("-fx-font-size: 12");
 
+        VBox vBox = new VBox(15);
         adicionarButton = new NormalMenuButton("Adicionar Jogador");
+        voltarButton = new NormalMenuButton("Voltar");
+        vBox.getChildren().addAll(adicionarButton, voltarButton);
+        vBox.setAlignment(Pos.CENTER);
 
-        buttonBox.getChildren().addAll(jogadorAtualText, nomeBox, erroText, adicionarButton);
+        buttonBox.getChildren().addAll(jogadorAtualText, nomeBox, erroText, vBox);
         buttonBox.setAlignment(Pos.CENTER);
 
         configBox.getChildren().addAll(configText, infoText, buttonBox);
@@ -126,10 +131,7 @@ public class PedeConfiguracaoPane extends BorderPane {
             erroText.setText("");
         });
 
-        setOnKeyReleased(e -> {
-            if (e.getCode() != KeyCode.ENTER) return;
-            adicionarButton.fire();
-        });
+        voltarButton.setOnAction(e -> observable.voltar());
 
         setOnKeyReleased(e -> {
             if (e.getCode() != KeyCode.ENTER) return;
@@ -143,19 +145,12 @@ public class PedeConfiguracaoPane extends BorderPane {
     }
 
     private void atualizarListaJogadores() {
-        infoText.setText(observable.getConfigJogadores());
-    }
-
-    private void atualizarVisibilidade() {
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////
         nomeField.setText("");
         nomeField.requestFocus();
         tipoJogadorCombobox.getSelectionModel().select(TipoJogador.HUMANO);
         jogadorAtualText.setText("Jogador " + (observable.getNumJogadores() + 1));
-
-        this.setVisible(observable.getSituacao() == Situacao.PedeConfiguracao);
+        infoText.setText(observable.getConfigJogadores());
     }
+
+    private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.PedeConfiguracao); }
 }

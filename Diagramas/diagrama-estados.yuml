@@ -13,6 +13,7 @@
 (assisteJogada)[continuarJogo]->(pedeDecisaoJogada)
 (assisteJogada)[verReplay]->(assisteJogada)
 
+(pedeConfiguracao)[voltar]->(pedeDecisaoInicio)
 (pedeConfiguracao)[adicionarJogador]->(pedeConfiguracao)
 (pedeConfiguracao)[adicionarJogador]->(pedeDecisaoJogada)
 

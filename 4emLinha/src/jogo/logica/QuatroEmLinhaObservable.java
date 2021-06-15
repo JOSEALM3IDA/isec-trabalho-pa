@@ -123,6 +123,11 @@ public class QuatroEmLinhaObservable {
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
+    public void voltar() {
+        maquinaEstados.voltar();
+        propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
+    }
+
     public boolean existeJogador(String nome) { return maquinaEstados.existeJogador(nome); }
     public int getNumJogadores() { return maquinaEstados.getNumJogadores(); }
     public int getNumLinhas() { return maquinaEstados.getNumLinhas(); }
