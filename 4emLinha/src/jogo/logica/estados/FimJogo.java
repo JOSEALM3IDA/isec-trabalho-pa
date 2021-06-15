@@ -59,12 +59,6 @@ public class FimJogo extends EstadoAdapter {
     }
 
     @Override
-    public Estado avancar() {
-        quatroEmLinhaGestor.resetTotal();
-        return new PedeDecisaoInicio(quatroEmLinhaGestor);
-    }
-
-    @Override
     public Estado iniciarJogo() {
         quatroEmLinhaGestor.resetTotal();
         return new PedeConfiguracao(quatroEmLinhaGestor);
@@ -83,7 +77,10 @@ public class FimJogo extends EstadoAdapter {
     }
 
     @Override
-    public Estado voltar() { return new PedeDecisaoInicio(quatroEmLinhaGestor); }
+    public Estado voltar() {
+        quatroEmLinhaGestor.resetTotal();
+        return new PedeDecisaoInicio(quatroEmLinhaGestor);
+    }
 
     @Override
     public Situacao getSituacao() { return Situacao.FimJogo; }

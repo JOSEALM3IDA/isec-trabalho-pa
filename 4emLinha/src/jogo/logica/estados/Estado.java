@@ -23,8 +23,8 @@ public interface Estado {
     // JogoMinijogo
     Estado jogarMinijogo(String resposta); // -> PedeDecisaoJogada
 
-    // AssisteJogada ; PedeConfiguracao ; FimJogo
-    Estado avancar();           // -> Varios Estados
+    // AssisteJogada ; PedeConfiguracao
+    Estado avancar();           // -> PedeDecisaoInicio ; AssisteJogada
 
     // AssisteJogada ; PedeConfiguracao ; PedeDecisaoJogada ; FimJogo
     Estado voltar();        // -> PedeDecisaoInicio

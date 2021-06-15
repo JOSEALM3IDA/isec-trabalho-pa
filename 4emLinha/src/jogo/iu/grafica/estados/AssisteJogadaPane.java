@@ -108,6 +108,7 @@ public class AssisteJogadaPane extends BorderPane {
     private void registarObservadores() {
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_LISTA_JOGADORES, evt -> atualizarListaJogadores());
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_JOGADOR_ATUAL, evt -> atualizarJogadorAtual());
+        observable.addPropertyChangeListener(Propriedades.COMECAR_REPLAY, evt -> resetInfoReplay());
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_ESTADO, evt -> atualizarVisibilidade());
     }
 
@@ -128,12 +129,19 @@ public class AssisteJogadaPane extends BorderPane {
     private void atualizarListaJogadores() { listaJogadores.setText(observable.getConfigJogadores()); }
 
     private void atualizarJogadorAtual() {
+        if (!jogadorText1.isVisible()) jogadorText1.setVisible(true);
+
         jogadorText2.setText(observable.getNomeJogadorAtual());
         jogadorText2.setFill(Color.web(switch (observable.getFichaAtual()) {
             case FICHA_VERMELHA -> Constantes.COR_VERMELHA_HEX;
             case FICHA_AMARELA -> Constantes.COR_AMARELA_HEX;
             default -> Constantes.BACKGROUND_COLOR_HEX;
         }));
+    }
+
+    private void resetInfoReplay() {
+        jogadorText1.setVisible(false);
+        jogadorText2.setText("");
     }
 
     private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.AssisteJogada); }

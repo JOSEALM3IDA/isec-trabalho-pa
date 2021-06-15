@@ -38,6 +38,11 @@ public class QuatroEmLinhaObservable {
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_LISTA_JOGADORES), null, null);
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
+
+        if (maquinaEstados.isReplayAtivo()) {
+            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.COMECAR_REPLAY), null, null);
+        }
+
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);
     }
 
@@ -113,11 +118,18 @@ public class QuatroEmLinhaObservable {
     public void avancar() {
         boolean jogoAcabou = jogoAcabou();
 
+        if (!jogoAcabou) {
+            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
+        }
+
         maquinaEstados.avancar();
 
         if (!jogoAcabou) {
-            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_JOGADOR_ATUAL), null, null);
             propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_TABULEIRO), null, null);
+        }
+
+        if (jogoAcabou()) {
+            propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_VENCEDOR), null, null);
         }
 
         propertyChangeSupport.firePropertyChange(String.valueOf(Propriedades.ATUALIZAR_ESTADO), null, null);

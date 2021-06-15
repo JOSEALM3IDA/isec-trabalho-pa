@@ -10,3 +10,4 @@
 - replay e continuar durante o pededecisaojogada
 - jogoacabou()
 - getTipoJogadaAtual
+- voltar()

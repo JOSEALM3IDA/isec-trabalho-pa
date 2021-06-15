@@ -80,7 +80,7 @@ public class FimJogoPane extends BorderPane {
         setBottom(buttonBox);
     }
 
-    void registarListeners() { avancarButton.setOnAction(e -> observable.avancar()); }
+    void registarListeners() { avancarButton.setOnAction(e -> observable.voltar()); }
 
     private void registarObservador() {
         observable.addPropertyChangeListener(Propriedades.ATUALIZAR_LISTA_JOGADORES, evt -> atualizarListaJogadores());
@@ -91,6 +91,10 @@ public class FimJogoPane extends BorderPane {
     private void atualizarListaJogadores() { listaJogadores.setText(observable.getConfigJogadores()); }
 
     private void atualizarVencedor() {
+        if (!observable.jogoAcabou()) return;
+
+        MusicPlayer.playMusic(Constantes.SOM_FIM_JOGO);
+
         if (observable.isEmpatado()) {
             vencedorText2.setText("Empate!");
             vencedorText2.setFill(Color.web(Constantes.COR_AZUL_HEX));
@@ -105,9 +109,5 @@ public class FimJogoPane extends BorderPane {
         }));
     }
 
-    private void atualizarVisibilidade() {
-        boolean isEstadoCorreto = observable.getSituacao() == Situacao.FimJogo;
-        this.setVisible(isEstadoCorreto);
-        if (isEstadoCorreto) MusicPlayer.playMusic(Constantes.SOM_FIM_JOGO);
-    }
+    private void atualizarVisibilidade() { this.setVisible(observable.getSituacao() == Situacao.FimJogo); }
 }

@@ -153,7 +153,7 @@ public class QuatroEmLinhaUITexto {
         printResultadoJogo();
 
         if (UtilsUITexto.getOpcao("O que pretende fazer?", "Voltar ao menu", "Sair") == 1) {
-            maquinaEstados.avancar();
+            maquinaEstados.voltar();
             return;
         }
 
