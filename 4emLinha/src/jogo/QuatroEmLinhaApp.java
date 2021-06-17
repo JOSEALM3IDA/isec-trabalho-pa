@@ -1,7 +1,7 @@
 package jogo;
 
 import javafx.application.Application;
-import jogo.iu.grafica.QuatroEmLinhaUIGrafica;
+import jogo.iu.gui.QuatroEmLinhaUIGrafica;
 import jogo.logica.QuatroEmLinhaMaquinaEstados;
 import jogo.iu.texto.QuatroEmLinhaUITexto;
 import jogo.utils.UtilsUITexto;
